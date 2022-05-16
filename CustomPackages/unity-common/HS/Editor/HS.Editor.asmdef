@@ -1,0 +1,18 @@
+{
+    "name": "HS.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:635420eaacecc892a81ad31aea275fbe"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

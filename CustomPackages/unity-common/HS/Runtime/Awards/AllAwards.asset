@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b92300773a9644b98d33e52714788e, type: 3}
+  m_Name: AllAwards
+  m_EditorClassIdentifier: 
+  List:
+  - Team: IntellectEU
+    RGBA: {fileID: 2800000, guid: 783e63aeae6255849b339d9e853d5be5, type: 3}
+    Normal: {fileID: 2800000, guid: c0e5a40b91047de4ba09a779fea8fa4e, type: 3}
+  - Team: Startblock.online
+    RGBA: {fileID: 2800000, guid: 783e63aeae6255849b339d9e853d5be5, type: 3}
+    Normal: {fileID: 2800000, guid: c0e5a40b91047de4ba09a779fea8fa4e, type: 3}
+  - Team: TRACKSPACE_Nature2.0
+    RGBA: {fileID: 2800000, guid: c32726274f1aca94799691f8b3cdc992, type: 3}
+    Normal: {fileID: 2800000, guid: 1f7e2bfed7bd2c049bbbfe657137ea31, type: 3}
+  - Team: OVSoftware
+    RGBA: {fileID: 2800000, guid: dce238d12693b33439ec82c6a4b4e890, type: 3}
+    Normal: {fileID: 2800000, guid: b92ceee940cab544a979361d8e0eecdc, type: 3}
+  - Team: Cryptomice
+    RGBA: {fileID: 2800000, guid: 5e79f26aa0cfafe479b6fa09a3f02ff4, type: 3}
+    Normal: {fileID: 2800000, guid: 0dffde05f95f785428e5ebd2851bbace, type: 3}
+  - Team: Gimly
+    RGBA: {fileID: 2800000, guid: 5e79f26aa0cfafe479b6fa09a3f02ff4, type: 3}
+    Normal: {fileID: 2800000, guid: 0dffde05f95f785428e5ebd2851bbace, type: 3}
+  - Team: Poort8
+    RGBA: {fileID: 2800000, guid: f8e420cb59af4c9409824d8828a13e08, type: 3}
+    Normal: {fileID: 2800000, guid: a023257b6d79b7b43acbf20e0f6765cd, type: 3}
+  - Team: Theriak
+    RGBA: {fileID: 2800000, guid: f6cf8479b72e0f54088616277565b8fc, type: 3}
+    Normal: {fileID: 2800000, guid: a916346c70b199448b0b485ce0db8bf0, type: 3}
+  - Team: ovrhd
+    RGBA: {fileID: 2800000, guid: 6fa28631ca73f3e44b5bc47ca72f5c26, type: 3}
+    Normal: {fileID: 2800000, guid: 3e517017d4a8b354482310c8ba48dbdf, type: 3}
+  - Team: Wavy
+    RGBA: {fileID: 2800000, guid: 2d178994525e32b41afb34f51123658a, type: 3}
+    Normal: {fileID: 2800000, guid: 943a7df620fa1ae4b8ddd5c711698c1d, type: 3}
+  - Team: LIFESAVERS
+    RGBA: {fileID: 2800000, guid: 9ddf6bbe81177104fb9d98e07e9d91fe, type: 3}
+    Normal: {fileID: 2800000, guid: f848f97ab5ed4c649bae2fd4b6db6f9d, type: 3}
+  - Team: The Senate
+    RGBA: {fileID: 2800000, guid: 5142ec9b032ad5f498468720947e1197, type: 3}
+    Normal: {fileID: 2800000, guid: 7d5dab9743b212a4babcffb1321bb043, type: 3}
+  - Team: SixTeens
+    RGBA: {fileID: 2800000, guid: 1ed5024209fc8cd48a8076542674ddcc, type: 3}
+    Normal: {fileID: 2800000, guid: 2ae8f59f31967be44a621be7b4662428, type: 3}
+  - Team: GSV
+    RGBA: {fileID: 2800000, guid: d44448f028338b04c8d78bbe8a06be35, type: 3}
+    Normal: {fileID: 2800000, guid: 26857140ccd37704e9e4b6e5187fbfaa, type: 3}
+  - Team: ReCheck
+    RGBA: {fileID: 2800000, guid: 8d0268087c88d194ab15f5c92e4c627f, type: 3}
+    Normal: {fileID: 2800000, guid: 999057317f5f57d418e82886e246959f, type: 3}
+  - Team: Identifire
+    RGBA: {fileID: 2800000, guid: b2cb2d7886690764aa8673145a289e84, type: 3}
+    Normal: {fileID: 2800000, guid: 4328dfbd3ed39624d9d5203ed37a58b6, type: 3}
+  - Team: Greenlytics
+    RGBA: {fileID: 2800000, guid: 1ae4ef1f845b1394598b9f06eeea5d5a, type: 3}
+    Normal: {fileID: 2800000, guid: e44e7d07a7cc48f48b9546c3267f1a3e, type: 3}
+  - Team: Streaming Potential
+    RGBA: {fileID: 2800000, guid: 1f87ccd96606fc24495698d207b49af0, type: 3}
+    Normal: {fileID: 2800000, guid: 0407f111ccfd08e47a6240ffd6da1af5, type: 3}
+  - Team: rvolt
+    RGBA: {fileID: 2800000, guid: 1f87ccd96606fc24495698d207b49af0, type: 3}
+    Normal: {fileID: 2800000, guid: 0407f111ccfd08e47a6240ffd6da1af5, type: 3}
+  - Team: Cyber Justice Warriors
+    RGBA: {fileID: 2800000, guid: 09aaa78b893e25044991d3da56b44f11, type: 3}
+    Normal: {fileID: 2800000, guid: 1d3b317fb0f3e8d448aef26993751899, type: 3}
+  - Team: WASTEPARTY.ORG
+    RGBA: {fileID: 2800000, guid: 6ca78e52371710b409755125e5b6fb0e, type: 3}
+    Normal: {fileID: 2800000, guid: b010a8447618c244887232f7fd11c36a, type: 3}
+  - Team: CEVEN.protect
+    RGBA: {fileID: 2800000, guid: 812bc4e3e388ad24791344a5f02bd3d9, type: 3}
+    Normal: {fileID: 2800000, guid: 8b660e743796db747bed6b445085a124, type: 3}
+  - Team: NATIX
+    RGBA: {fileID: 2800000, guid: 7623db01b68a09544b948c817504818b, type: 3}
+    Normal: {fileID: 2800000, guid: 608a92cbf82b9d74d8826ca55e97961c, type: 3}
+  - Team: Hyper42
+    RGBA: {fileID: 2800000, guid: 4bd426e93c2bb8641bcd54abea7bf7e0, type: 3}
+    Normal: {fileID: 2800000, guid: 4de6da58a55e5d948be435b382727884, type: 3}
+  - Team: WorkPi
+    RGBA: {fileID: 2800000, guid: e594c5a4dd472d34388efa055ab12a22, type: 3}
+    Normal: {fileID: 2800000, guid: 564248e75aa204749a0e385a4f0d12a6, type: 3}
+  - Team: Bencom Group
+    RGBA: {fileID: 2800000, guid: c629d05207d6abd40ba796dd1b1bccbe, type: 3}
+    Normal: {fileID: 2800000, guid: 3cebfee7c8e6cdd429f80afa0214da1a, type: 3}

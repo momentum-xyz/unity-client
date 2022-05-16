@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 46c15951f88134946a01951111a857fa
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - BadgeSource: {instanceID: 0}
+  - SubMeshMaterial: {fileID: 2100000, guid: 53567616c8a5ed448b962130877f2655, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

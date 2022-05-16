@@ -1,0 +1,265 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ebc2e8ce53bb8444936d0a00f6461c2, type: 3}
+  m_Name: Assets
+  m_EditorClassIdentifier: 
+  assets:
+    list:
+    - Key: Alpha
+      Value:
+      - address: AlphaAnchorSpace
+        guid: 88415343-90db-4d23-a9e7-79a11aaaaf04
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Structures/AnchorSpace.prefab
+      - address: AlphaProgramSpace
+        guid: e5609914-e673-7f48-a666-574ed2baff92
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Structures/ProgramSpace_base_generic
+          Variant.prefab
+      - address: AlphaProjectSpace
+        guid: 4e2f6a4a-4d7a-4e6d-b3cd-f7e69a88e964
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Structures/ProjectSpace_base_generic
+          Variant.prefab
+      - address: AlphaTeamSpace
+        guid: ac97c919-dbee-4b34-b18f-6914b843070d
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Structures/TeamSpace_two_screens_base_generic
+          Variant.prefab
+      - address: 3rdPersonAvatarController
+        guid: 2eeb56e2-5ac4-42c2-a348-d167862260f6
+        prefabPath: Assets/___MOMENTUM3D___/Prefabs/3rdPersonAvatarController.prefab
+      - address: AlphaPlanetEarth
+        guid: 53f2b5bd-f60e-4661-bc4f-e29191f5da55
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Decorations/decoration_planet_earth.prefab
+      - address: AlphaSkybox
+        guid: 658611b8-a86a-4bf0-a956-12129b06dbfd
+        prefabPath: Assets/Prefabs/Legacy/Managers/SkyboxManagerCore.prefab
+      - address: AlphaTickers
+        guid: 0a57b79b-98e7-4c88-97a9-8c6b66b46132
+        prefabPath: Assets/___MOMENTUM3D___/Prefabs/Tickers.prefab
+      - address: AlphaMoon
+        guid: 2929bf54-ce7e-4b84-88bd-3dd82a4e6665
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Decorations/planetMoon Variant.prefab
+      - address: CubeDebug
+        guid: f02baae7-fe84-45a4-952a-5469b3866f02
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Decorations/decoration_cube_debug.prefab
+      - address: CubeCore
+        guid: 0f792e1c-8fd8-4465-bf2e-d692002e7fba
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Decorations/decoration_cube_core.prefab
+      - address: CryptoPill
+        guid: 166a9e05-202d-4c3e-8fdc-0546e91063e7
+        prefabPath: Assets/Prefabs/Momentum4/Alpha/Decorations/decoration_cube_core.prefab
+    - Key: Mombiza
+      Value:
+      - address: MombizaProjectPlatform
+        guid: b01b37e9-efed-4fe0-a3dc-aafdb11d59fc
+        prefabPath: Assets/Prefabs/Momentum4/Mombiza/Structures/ProjectPlatformTower
+          Variant Variant.prefab
+      - address: MombizaChallengePlatform
+        guid: a8908041-fc52-4ea4-9e55-8cec30d2e594
+        prefabPath: Assets/Prefabs/Momentum4/Mombiza/Structures/ChallengePlatform
+          Variant Variant.prefab
+      - address: MombizaWorld
+        guid: 3cae990e-cd47-42eb-b1c7-97e78531ed37
+        prefabPath: Assets/Prefabs/Momentum4/Mombiza/Decorations/MOMBIZA_World Variant.prefab
+      - address: MombizaSkybox
+        guid: 1bc5d9c7-3373-42a5-9205-db25e645cd27
+        prefabPath: Assets/Prefabs/Momentum4/Mombiza/Decorations/MOMBIZA_SkyboxManager
+          Variant.prefab
+      - address: MombizaAvatarController
+        guid: cd517719-c631-4720-8065-2fe5e2a8179d
+        prefabPath: Assets/__MOMBIZA3D__/Prefabs/Avatars/MOMBIZAAvatarController.prefab
+      - address: MombizaTeamPlatform
+        guid: 10069c6b-5277-4355-aa56-27f15b405b8c
+        prefabPath: Assets/Prefabs/Momentum4/Mombiza/Structures/TeamPlatformWithTwoScreens
+          Variant Variant.prefab
+    - Key: Sni
+      Value:
+      - address: SniProgramSpace
+        guid: 51e11487-b1fd-42f7-9282-be1f0d3c0610
+        prefabPath: Assets/Prefabs/Momentum4/Momsni/Structures/ProgramSpace Variant.prefab
+      - address: SniChallengeSpace
+        guid: 7ac29159-d229-49ab-9098-9572d01689b2
+        prefabPath: Assets/Prefabs/Momentum4/Momsni/Structures/ChallengeSpace Variant.prefab
+      - address: SniTeamSpace
+        guid: 220ee053-8fa1-4da6-aef4-3a1bd92742e9
+        prefabPath: Assets/Prefabs/Momentum4/Momsni/Structures/TeamSpace Variant.prefab
+      - address: SniWorld
+        guid: cd4a8351-9f71-4640-960a-a61c2af06579
+        prefabPath: Assets/Prefabs/Momentum4/Momsni/Decorations/World Variant.prefab
+      - address: SniSkybox
+        guid: 103dc7a9-08be-4d8e-a5a7-0df9b7eff35b
+        prefabPath: Assets/Prefabs/Momentum4/Momsni/Decorations/SkyboxManager Variant.prefab
+      - address: SniAvatarController
+        guid: 700c6d0d-fae1-444f-90d5-413b8a15bfce
+        prefabPath: Assets/Prefabs/Momentum4/Wisps/TO REMOVE/MOMSNI_avaController
+          Variant.prefab
+    - Key: Nen
+      Value:
+      - address: NenProgramSpace
+        guid: 0b80d574-f7ff-4599-a5f9-f2b9776f7e4c
+        prefabPath: Assets/Prefabs/Momentum4/Nen/Structures/ProgramSpace Variant.prefab
+      - address: NenChallengeSpace
+        guid: c5be9570-29db-4462-9be5-d7b9757fe257
+        prefabPath: Assets/Prefabs/Momentum4/Nen/Structures/ChallengeSpace Variant.prefab
+      - address: NenTeamSpace
+        guid: 452f3bf9-740c-4431-9c46-de374e4eed78
+        prefabPath: Assets/Prefabs/Momentum4/Nen/Structures/TeamSpace Variant.prefab
+      - address: NenWorld
+        guid: 3e9313bb-9544-437f-ba71-76c471818da3
+        prefabPath: Assets/Prefabs/Momentum4/Nen/Decorations/NENWorldElements Variant.prefab
+      - address: NenSkybox
+        guid: 19ec85c4-510b-488b-b7f5-ecc353996424
+        prefabPath: Assets/Prefabs/Momentum4/Nen/Decorations/NENSkyboxManager Variant.prefab
+      - address: NenAvatarController
+        guid: 188562eb-8f2d-4d48-8082-f4ded998a1c8
+        prefabPath: Assets/Prefabs/Momentum4/Nen/Decorations/NEN_avaController Variant.prefab
+    - Key: Dica
+      Value:
+      - address: DicaProgramSpace
+        guid: 4cac6683-f197-4b24-94dc-1d115803c1a1
+        prefabPath: Assets/Prefabs/Momentum4/Dica/Structures/ProgramSpace Variant.prefab
+      - address: DicaChallengeSpace
+        guid: 5259ab8f-c60c-4bd1-8211-83fbaba4d104
+        prefabPath: Assets/Prefabs/Momentum4/Dica/Structures/ChallengeSpace Variant.prefab
+      - address: DicaTeamSpace
+        guid: 3eb80d10-b1f7-4b05-a058-b42db0eb8b58
+        prefabPath: Assets/Prefabs/Momentum4/Dica/Structures/TeamSpace Variant.prefab
+      - address: DicaSkybox
+        guid: 32e32fee-4cf1-486e-bfcf-88df5df8c409
+        prefabPath: Assets/Prefabs/Momentum4/Dica/Decorations/MOMDICA_SkyboxManager
+          Variant.prefab
+      - address: DicaAvatarController
+        guid: f67f9040-1a13-4fcf-8b33-44c363ff485d
+        prefabPath: Assets/Prefabs/Momentum4/Dica/Decorations/MOMDICA_AvaController
+          Variant.prefab
+      - address: DicaWorld
+        guid: 0e6548b9-d3be-4404-8b0f-02a1e1c54624
+        prefabPath: Assets/Prefabs/Momentum4/Dica/Decorations/MOMDICA_worldObject
+          Variant.prefab
+    - Key: Waves
+      Value:
+      - address: WavesProgramSpace
+        guid: 12fb2f8a-9e8a-4978-81d8-356079e4b9ca
+        prefabPath: Assets/Prefabs/Momentum4/Waves/Structures/ProgramSpace Variant.prefab
+      - address: WavesChallengeSpace
+        guid: 872dd419-c4ef-4c33-b57d-2ea0cd770f8f
+        prefabPath: Assets/Prefabs/Momentum4/Waves/Structures/ChallengeSpace Variant.prefab
+      - address: WavesTeamSpace
+        guid: 3ba2bf90-e35e-416a-aa7e-f24713e9ccc6
+        prefabPath: Assets/Prefabs/Momentum4/Waves/Structures/TeamSpace Variant.prefab
+      - address: WavesSkybox
+        guid: 7063cf2d-cf7a-44f5-a200-56dbe74b9849
+        prefabPath: Assets/Prefabs/Momentum4/Waves/Decorations/SkyboxManager Variant.prefab
+      - address: WavesAvatarController
+        guid: c8886bba-0645-4678-959d-b1c9c77694ee
+        prefabPath: Assets/Prefabs/Momentum4/Waves/Decorations/MOMWAV_avaController
+          Variant.prefab
+      - address: WavesWorld
+        guid: 3d699fc9-6fc3-4d3c-b2c8-6576c88d8fab
+        prefabPath: Assets/Prefabs/Momentum4/Waves/Decorations/WAVESWorldCore Variant.prefab
+    - Key: Vattenfall
+      Value:
+      - address: VattenfallProgramSpace
+        guid: e3033920-d9d4-4916-916c-f7bb7026c63b
+        prefabPath: Assets/Prefabs/Momentum4/Vattenfall/Structures/ProgramSpace Variant.prefab
+      - address: VattenfallChallengeSpace
+        guid: e496e679-4080-46d8-90a1-e0e14ec95e76
+        prefabPath: Assets/Prefabs/Momentum4/Vattenfall/Structures/ChallengeValley
+          Variant.prefab
+      - address: VattenfallTeamSpace
+        guid: 460102ef-8ee4-4911-b5f5-80fb59c997b8
+        prefabPath: Assets/Prefabs/Momentum4/Vattenfall/Structures/TeamSpace Variant.prefab
+      - address: VattenfallSkybox
+        guid: 4b0c7bcf-c441-449d-92f8-d0f66db16a86
+        prefabPath: Assets/Prefabs/Momentum4/Vattenfall/Decorations/MOMVAT_WORLD
+          Variant.prefab
+      - address: VattenfallAvatarController
+        guid: b9c857d9-a7d1-4482-9aea-b82078e5f584
+        prefabPath: Assets/Prefabs/Momentum4/Vattenfall/Decorations/MOMVAT_avaController
+          Variant.prefab
+    - Key: Kusama
+      Value:
+      - address: ValidatorEntity
+        guid: eaf84784-f5a5-4395-b2e9-46e9c773f52b
+        prefabPath: Assets/Prefabs/Kusama/Objects/ValidatorEntity Variant.prefab
+      - address: ValidatorNode
+        guid: 2a0cf227-6cbd-4a01-800f-0c8a98922338
+        prefabPath: Assets/Prefabs/Kusama/Objects/ValidatorNode Variant.prefab
+      - address: RelayChain
+        guid: ebea2866-f99e-427a-b0a8-c184d2e33ee2
+        prefabPath: Assets/Prefabs/Kusama/Objects/RelayChain Variant.prefab
+      - address: WorldLobby
+        guid: 9d01cc66-fc56-4301-9e52-e2943a332ef9
+        prefabPath: Assets/Prefabs/Kusama/Objects/WorldLobby Variant.prefab
+      - address: Parachain
+        guid: 82fba905-d776-4f1a-b1d5-052c1c40fec8
+        prefabPath: Assets/Prefabs/Kusama/Objects/ParaChain Variant.prefab
+      - address: RewardsAccumulator
+        guid: 7a2c0a87-cd7d-4372-9807-a613e4740fba
+        prefabPath: Assets/Prefabs/Kusama/Objects/RewardsAccumulator Variant.prefab
+      - address: Sidestage
+        guid: 0d0bad95-616a-4c19-9820-99c1998862a6
+        prefabPath: Assets/Prefabs/Kusama/Objects/SideStage Variant.prefab
+      - address: Skybox
+        guid: 221d418e-4a5f-4910-acf4-861970f2175e
+        prefabPath: Assets/Prefabs/Kusama/Objects/SkyboxManager Variant.prefab
+      - address: ThinAir
+        guid: 7f9458ad-d058-4b6e-bd1c-ba8626c5e336
+        prefabPath: Assets/Prefabs/Kusama/Objects/ThinAir Variant.prefab
+      - address: TransactionCore
+        guid: 6f777863-c8b8-4468-bf3d-501c2a13e070
+        prefabPath: Assets/Prefabs/Kusama/Objects/TransactionCore Variant.prefab
+      - address: EventsClock
+        guid: 3ff9f56d-263f-434a-bae7-15907823c64f
+        prefabPath: Assets/Prefabs/Kusama/Objects/EventClock.prefab
+      - address: AvatarController
+        guid: 857cea68-8064-47c6-928f-f4c9eb307f45
+        prefabPath: Assets/Prefabs/Kusama/Objects/KUSA_AVAController Variant.prefab
+      - address: Block
+        guid: 70eb1c0d-674f-469c-b9ff-df0d4b5dbdb4
+        prefabPath: Assets/Prefabs/Kusama/Objects/BlockInProgress Variant.prefab
+      - address: ValidatorNodeUI
+        guid: 6e8f6673-9f00-4102-87d6-cc9377355b95
+        prefabPath: Assets/Prefabs/Kusama/UI/ValidatorNodeUI.prefab
+      - address: ValidatorsCloud
+        guid: ee3030e7-eb6a-44ff-9323-92fe518ab230
+        prefabPath: Assets/Prefabs/Kusama/Objects/ValidatorsCloud.prefab
+      - address: Operators
+        guid: 1da55812-26be-4b66-ad6d-6fbeba1ceb49
+        prefabPath: Assets/Prefabs/Kusama/Objects/Operators.prefab
+      - address: EraClock
+        guid: 2506a716-6143-43cf-8e74-f1689eead697
+        prefabPath: Assets/Prefabs/Kusama/Objects/EraClock.prefab
+      - address: OperatorSpaceUI
+        guid: 8e080029-1a37-4319-bc8a-e7d15e1f0eb1
+        prefabPath: Assets/Prefabs/Kusama/UI/OperatorSpaceUI.prefab
+      - address: WorldLobbyUI
+        guid: d32b3600-4fd4-4550-97c8-dd065c2854a9
+        prefabPath: Assets/Prefabs/Kusama/UI/WorldLobbyUI.prefab
+      - address: ParachainUI
+        guid: 6df572e9-eeb8-4b29-8d03-7ba2f711f6a0
+        prefabPath: Assets/Prefabs/Kusama/UI/ParachainUI.prefab
+      - address: BlockUI
+        guid: 61465ad2-9cfb-456b-8cd9-d8ca3676d732
+        prefabPath: Assets/Prefabs/Kusama/UI/BlockUI.prefab
+    keyCollision: 0
+  sharedAssets:
+  - address: WorldCenter
+    guid: b2ef3600-9595-2743-ac9d-0a86c1a327a2
+    prefabPath: Assets/Prefabs/Legacy/System/WorldObject.prefab
+  - address: InfoUI_Red
+    guid: 9c0aac3e-76ea-43ac-ad2a-a481fd43cc51
+    prefabPath: Assets/Prefabs/UI/PlatforumUIRed.prefab
+  - address: InfoUI_Blue
+    guid: 9c0aac3e-76ea-43ac-ad2a-a481fd43cc52
+    prefabPath: Assets/Prefabs/UI/PlatforumUIBlue.prefab
+  - address: WorldEffects
+    guid: 6846dba3-38b1-4540-a80d-4ba04af4111e
+    prefabPath: Assets/Prefabs/Momentum4/Global/WorldEffects.prefab

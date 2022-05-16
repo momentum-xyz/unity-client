@@ -1,0 +1,92 @@
+name: Unity client build branch
+
+on:
+  push:
+    branches:
+      - shrubbery
+
+jobs:
+  build:
+    name: Build client
+    runs-on: self-hosted
+    outputs:
+      version: ${{ steps.setvars.outputs.version }}
+      world: ${{ steps.setvars.outputs.world }}
+    env:
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+      PRODNAME: ${{ github.event.repository.name }}
+      REGISTRY_SERVER: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+      REGISTRY_USER: ${{ secrets.REGISTRY_USERNAME }}
+      REGISTRY_PASS: ${{ secrets.REGISTRY_PASSWORD }}
+      ACR_CREDENTIALS: ${{ secrets.REGISTRY_AZURE_CREDS }}
+    steps:
+      - id: setvars
+        name: ${{github.event_name}}-${{github.event.ref }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            VERSION=nightly
+          elif [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          elif [[ $GITHUB_REF == refs/heads/* ]]; then
+            VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
+            if [ "momentum3" = "$VERSION" ]; then
+              VERSION=develop
+            elif [ "momentum3a" = "$VERSION" ]; then
+              VERSION=develop
+            fi
+          elif [[ $GITHUB_REF == refs/pull/* ]]; then
+            VERSION=pr-${{ github.event.number }}
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "::set-output name=version::${VERSION}"
+          echo "::set-output name=image-name::${PRODNAME}"
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+          submodules: true
+          token: ${{ secrets.READ_PRIVATE_GIT_REPOS }}
+      - name: "Login to ACR"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY_SERVER }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASS }}
+      - name: Cache Library
+        uses: OdysseyMomentumExperience/local-cache-action@v1
+        env:
+          cache-name: build
+        with:
+          path: Library
+          cache-dir: /opt/unity-build-cache
+          key: Library-client-WebGL-${{ env.cache-name }}-${{ hashFiles('.cache-base') }}-${{ hashFiles('.cache-version') }}
+          restore-keys: |
+            Library-WebGL-${{ env.cache-name }}-${{ hashFiles('.cache-base') }}-
+      - name: Build Unity Project
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2020.3.20f1
+          targetPlatform: WebGL
+          buildMethod: Odyssey.CI.OdysseyBuild.Build
+          customParameters: -useAddressables true -buildScenes MainScene,Loading -stackTrace true
+
+      - name: "Build and push Image"
+        shell: bash
+        env:
+          IMAGE_NAME: ${{ steps.setvars.outputs.image-name }}
+        run: |
+          docker build -f Dockerfile . \
+                   -t ${REGISTRY_SERVER}/${IMAGE_NAME}:${{ github.sha }} \
+                   -t ${REGISTRY_SERVER}/${IMAGE_NAME}:${VERSION}
+          docker push ${REGISTRY_SERVER}/${IMAGE_NAME}:${{ github.sha }}
+          docker push ${REGISTRY_SERVER}/${IMAGE_NAME}:${VERSION}
+      - name: "Deploy to development environment"
+        id: dev-deploy
+        if: ${{ github.ref == 'refs/heads/shrubbery'}}
+        uses: OdysseyMomentumExperience/deploy-action@v1
+        with:
+          project: ${{ steps.setvars.outputs.image-name }}
+          version: ${{ needs.build.outputs.version }}
+          k8s-credentials: ${{ secrets[secrets.REF_K8S_SHRUBBERY] }}

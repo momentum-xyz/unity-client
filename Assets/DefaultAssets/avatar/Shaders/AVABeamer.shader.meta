@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 0086e9c744c113d41b373466ea0dd42b
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _AVAMaterial: {fileID: 2800000, guid: fbfb547b433352043b08996fe03d1e5c, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

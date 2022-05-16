@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2e26c5ea-0612-4d57-9b15-bc77902ae70e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/TeamUpEvent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/HighFiveSettings.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/MakeGameEventsExample/MakeEventExample.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.serialization@1.2.0-preview/Runtime/Unity.Serialization/Json/Adapters/JsonAdapter.UnityEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../RoadNetwork/Assets/Clayxels/Claymation.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.properties.ui@1.1.1-preview/Editor/Inspector/Internal/BuiltinInspectors/Vector2Inspector.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/CreateGetAWowEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GrabATableEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/HighFiveEventExample.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GetAWowEventSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GameEventSettings/ScriptableSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/HighFiveSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GameEventSettings/GetAWowEventSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/MakeEventExample.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GameEventSettings/JoinThePlanEventSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/HighFiveEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/JoinThePlanEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/MadeAMemeEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GetAWowEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GameEventSettings/MadeAMemeEventSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/MadeAPosterEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventsGeoffreyTest/GameEventSettings/MadeAPosterEventSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/ArcTravelSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/ArcAvatarTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/ArcTravel.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/ArcExample.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/JoinThePlanSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/GetAWowSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/GrabATableSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/ScriptableObjectCreater.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/ScriptableEventsCreater.cs" />
+        <option value="$PROJECT_DIR$/Assets/ExternalAssets/Tayx/Graphy - Ultimate Stats Monitor/Scripts/Util/G_FloatString.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/System/UnityManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/LODTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GrabATableTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/TeamUpSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/MakeGameEventsExample/MakeEventExample.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/ArrangeSpacesInteractively.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/MadeAPosterSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/MadeAMemeSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/Pool/Pool.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/AutoDestructEffect.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/Plasma/PlasmaTether.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/Extensions.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/JoinThePlanTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/MadeAMemeTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/MadeAPosterTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/TeamUpEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/TeamUpTester.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GetAWowEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/HighFiveSettings.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/TestScriptable.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/GameEventSettings/HeadTestScriptable.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/HighFiveEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/MadeAMemeEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/MadeAPosterEvent.cs" />
+        <option value="$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/GameEvents/JoinThePlanEvent.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1hxM2BD8UN9yAzsmlgo9n7YY7rL" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Discover.Launch.Via.Unity" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.C#" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e26c5ea-0612-4d57-9b15-bc77902ae70e" name="Default Changelist" comment="" />
+      <created>1600948090100</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600948090100</updated>
+      <workItem from="1600948114101" duration="2412000" />
+      <workItem from="1600950590969" duration="5609000" />
+      <workItem from="1600957015004" duration="1120000" />
+      <workItem from="1601288708641" duration="3463000" />
+      <workItem from="1601292428862" duration="594000" />
+      <workItem from="1601378192569" duration="4674000" />
+      <workItem from="1601456463416" duration="2627000" />
+      <workItem from="1601461086595" duration="1992000" />
+      <workItem from="1601543183643" duration="5388000" />
+      <workItem from="1601549295551" duration="18431000" />
+      <workItem from="1601638834689" duration="4842000" />
+      <workItem from="1601643753709" duration="951000" />
+      <workItem from="1601645912758" duration="719000" />
+      <workItem from="1601979195822" duration="3261000" />
+      <workItem from="1601983422346" duration="3883000" />
+      <workItem from="1601987684942" duration="216000" />
+      <workItem from="1602063472851" duration="248000" />
+      <workItem from="1602064173693" duration="234000" />
+      <workItem from="1602145679509" duration="1382000" />
+      <workItem from="1602147360106" duration="16968000" />
+      <workItem from="1602164577716" duration="2382000" />
+      <workItem from="1602232403367" duration="1830000" />
+      <workItem from="1602234819768" duration="4452000" />
+      <workItem from="1602239561105" duration="4020000" />
+      <workItem from="1602243973948" duration="746000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="535" y="136" key="RiderGenerateDialog" timestamp="1602243051259">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="-1251" y="172" key="RiderGenerateDialog/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1601458360343" />
+    <state x="535" y="136" key="RiderGenerateDialog/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1602243051259" />
+    <state x="535" y="136" key="RiderGenerateDialog/0.0.1536.824@0.0.1536.824" timestamp="1601557513357" />
+    <state x="-1574" y="72" key="SettingsEditor" timestamp="1602233034589">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-1574" y="72" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1602233034589" />
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1600957823551" />
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1601551951661" />
+    <state x="-683" y="171" width="791" height="1028" key="dock-window-1" timestamp="1601641746314">
+      <screen x="-1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="-683" y="171" width="791" height="1028" key="dock-window-1/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1601641746314" />
+    <state x="218" y="109" width="1330" height="811" key="dock-window-1/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1601628141010" />
+    <state x="0" y="0" width="1371" height="882" key="dock-window-2" timestamp="1601644234216">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="0" y="0" width="1371" height="882" key="dock-window-2/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1601644234216" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1602235880461">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="-1389" y="236" key="run.anything.popup/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1601457593066" />
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1602235880461" />
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup" timestamp="1602238576457">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="-1297" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1601457274907" />
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1602238576457" />
+    <state x="498" y="178" width="672" height="538" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1601561502784" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/___MOMENTUM3D___/Scripts/Pool/Pool.cs</url>
+          <line>29</line>
+          <properties documentPath="D:\Users\Geoffrey\unity-MomntumClient\unity-src\Assets\___MOMENTUM3D___\Scripts\Pool\Pool.cs" initialLine="29">
+            <startOffsets>
+              <option value="1333" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1388" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

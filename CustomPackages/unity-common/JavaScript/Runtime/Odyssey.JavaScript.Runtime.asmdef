@@ -1,0 +1,19 @@
+{
+    "name": "Odyssey.JavaScript.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c2778cb29464cfa5d866d47c96bfcebf",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd420502b6f8784aa07f41dd17a1c7e, type: 3}
+  m_Name: NetworkConfiguration_Sni
+  m_EditorClassIdentifier: 
+  TestToken: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQZW5PUXd2ZmNQTHgxNks3akdud0tWX29jS29Pd3JqMkVvTTVtU0pYNmpvIn0.eyJleHAiOjE2NDQzOTg0MjcsImlhdCI6MTY0NDE2MjMzNSwiYXV0aF90aW1lIjoxNjQ0MTM5MjI3LCJqdGkiOiI0NmExMTYyNy03MWJhLTRjZjQtOGZmMy04MjgzMzFjZDg3YWEiLCJpc3MiOiJodHRwczovL2F1dGgub2R5c3NleS5uaW5qYS9hdXRoL3JlYWxtcy9Nb21lbnR1bSIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI3MDA3ODZjZi04Njg5LTRjM2YtOWZlMi02YmY0ZGFiOGNmMmEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJyZWFjdC1jbGllbnQiLCJub25jZSI6IjZkOTQ2YzZjLWZiZGYtNGJjNC1hZjdiLTg4MDVhN2MzNDRmMSIsInNlc3Npb25fc3RhdGUiOiI1OTdhODcwZC1lYmZiLTRiMDMtYWRmOC04MjRkNWMwNjM0ODQiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbIioiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJLYW1lbiBEaW1pdHJvdiIsInByZWZlcnJlZF91c2VybmFtZSI6ImtkQG9keXNzZXkub3JnIiwiZ2l2ZW5fbmFtZSI6IkthbWVuIiwiZmFtaWx5X25hbWUiOiJEaW1pdHJvdiIsImVtYWlsIjoia2RAb2R5c3NleS5vcmcifQ.K5HPW7hTuIyOwe_ZWkYnttbu8Z9_o2zflitx-4YJURU_rm6mPdqboXS5Qjag7dsEBhiMbEjPBb7eYbfBtZ2O4rz19RY7WEOk5pXMf1q_-QNazmgdVheiPIK2jJYWyqzo5PVOBIw6V2n-MT-vBxyCHjiL60htsHUPNjxv6AyGjEYXMeSo1a-9Zip6BI4KslICshXfke1N3vwSgeLcsibPTjB2CzSh5x6sh6MIpU97daTjo9s7cjbhyvykVa3IEmVxQJXee8vyHTdLSZp-yf0ZhvRJ6ZVXw8PJT1hrJDLASci7aR3zkifyRdqSRfGU7SRTqx0NVc03ZC3FuYiAOlLb4g
+  domain: sni.odyssey.org
+  localDomainOverwrite: sni.odyssey.org
+  apiURI: /api/v3
+  posBusURL: wss://sni.odyssey.org/posbus
+  useOldPosBusHandshake: 0
+  mqttHostname: momentum.odyssey.org
+  mqttPort: 443
+  mqttUser: mqttuser
+  mqttPassword: 6ifz88hMUNABUoPe
+  mqttUsesWebsockets: 1
+  mqttURI: wss://alpha.prod.odyssey.ninja/ws
+  rendermanURL: https://momentum.odyssey.org/api/v3/render/get
+  userEndpoint: https://momentum.odyssey.org/api/v3/backend/users/profile
+  apiEndpoint: https://momentum.odyssey.org/api/v3
+  UseAddressablesInTheEditor: 0
+  addressablesURL: http://dev.odyssey.ninja/unity-addrs
