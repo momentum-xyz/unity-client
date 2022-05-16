@@ -21,6 +21,7 @@ namespace Odyssey.CI
         public static string GenerateSemanticCommitVersion()
         {
             string version;
+
             if (HasAnyVersionTags())
             {
                 version = GetSemanticCommitVersion();
@@ -49,6 +50,8 @@ namespace Odyssey.CI
         {
             string version = Run(@"tag --points-at HEAD | grep v[0-9]*");
 
+            if (version.Length == 0) return "";
+
             version = version.Substring(1);
 
             return version;
@@ -60,6 +63,8 @@ namespace Odyssey.CI
         static int GetTotalNumberOfCommits()
         {
             string numberOfCommitsAsString = Run(@"git rev-list --count HEAD");
+
+            if (numberOfCommitsAsString.Length == 0) return 0;
 
             return int.Parse(numberOfCommitsAsString);
         }
@@ -82,6 +87,9 @@ namespace Odyssey.CI
         {
             // v0.1-2-g12345678 (where 2 is the amount of commits, g stands for git)
             string version = GetVersionString();
+
+            if (version.Length == 0) return "";
+
             // 0.1-2
             version = version.Substring(1, version.LastIndexOf('-') - 1);
             // 0.1.2
