@@ -14,6 +14,7 @@ namespace Odyssey
         public Dictionary<Guid, List<IEffectsTrigger>> EffectsHandlers { get; }
         public List<Guid> WorldsList { get; }
         public List<GameObject> WorldDecorations { get; }
+        public List<WorldObject> AlwaysUpdateTexturesList { get; set; }
         public WorldObject Get(Guid key);
         public bool Exists(Guid key);
         public void Clear();
@@ -54,6 +55,19 @@ namespace Odyssey
             internal set { }
         }
 
+        public List<WorldObject> AlwaysUpdateTexturesList
+        {
+            get
+            {
+                return alwaysUpdateTexturesList;
+            }
+
+            set
+            {
+
+            }
+        }
+
         public Dictionary<Guid, List<IEffectsTrigger>> EffectsHandlers
         {
             get
@@ -69,6 +83,7 @@ namespace Odyssey
         List<Guid> worldsList = new List<Guid>();
         Dictionary<Guid, WorldObject> worldHierarchy = new Dictionary<Guid, WorldObject>();
         List<GameObject> worldDecorations = new List<GameObject>();
+        List<WorldObject> alwaysUpdateTexturesList = new List<WorldObject>();
 
         public WorldObject Get(Guid key)
         {
@@ -89,6 +104,7 @@ namespace Odyssey
         {
             worldHierarchy.Clear();
             worldDecorations.Clear();
+            alwaysUpdateTexturesList.Clear();
         }
     }
 

@@ -262,6 +262,15 @@ namespace Odyssey
                 }
 
                 structureDriver.LookAtParent = options.lookAtParent;
+
+                worldObject.onlyHighQualityTextures = options.onlyHighQualityTextures;
+                worldObject.alwaysUpdateTextures = options.alwaysUpdateTextures;
+
+                if (options.alwaysUpdateTextures)
+                {
+                    _c.Get<IWorldData>().AlwaysUpdateTexturesList.Add(worldObject);
+                }
+
             }
 
             structureDriver.guid = worldObject.guid;
@@ -371,8 +380,6 @@ namespace Odyssey
             }
 
             _objectPools.Clear();
-
-            _c.Get<IWorldData>().WorldDecorations.Clear();
 
             // Clear Content
             _c.Get<IAddressablesProvider>().Clear();

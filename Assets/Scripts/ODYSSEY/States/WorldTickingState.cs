@@ -11,6 +11,7 @@ namespace Odyssey
     {
         IMomentumContext _c;
 
+        IWorldData worldData;
         ILODSystem lodSystem;
         Transform avatarTransform;
         ISessionData sessionData;
@@ -54,6 +55,7 @@ namespace Odyssey
             minimapDriver = _c.Get<IMinimapDriver>();
             thirdPersonController = _c.Get<HS.IThirdPersonController>();
             infoUIDriver = _c.Get<IInfoUIDriver>();
+            worldData = _c.Get<IWorldData>();
 
             // InfoUI Click Event
             infoUIDriver.OnLabelClicked_Event += OnInofUILabelClicked;
@@ -183,7 +185,6 @@ namespace Odyssey
 
             _c.Get<IMinimapDriver>().Clear();
 
-
             _c.Get<IResolutionManager>().Enabled = false;
             _c.Get<ITourManager>().Stop();
 
@@ -210,15 +211,29 @@ namespace Odyssey
 
                 if (!driver) continue;
 
+                driver.UpdateBehaviours(Time.deltaTime);
+                driver.lastVisit = Time.fixedTime;
+            }
+
+            // update textures
+            for (var i = 0; i < nearby.Count; ++i)
+            {
                 // Update the textures for objects that are close to the user
                 if (nearby[i].LOD <= 2 && nearby[i].texturesDirty)
                 {
                     textureService.UpdateTexturesForObject(nearby[i]);
                 }
+            }
 
-                driver.UpdateBehaviours(Time.deltaTime);
+            // Go through all objects that needs their textures updated, no matter the LOD status
+            for (var i = 0; i < worldData.AlwaysUpdateTexturesList.Count; ++i)
+            {
+                WorldObject wo = worldData.AlwaysUpdateTexturesList[i];
 
-                driver.lastVisit = Time.fixedTime;
+                if (wo.alwaysUpdateTextures && wo.texturesDirty)
+                {
+                    textureService.UpdateTexturesForObject(wo);
+                }
             }
 
             foreach (var controller in _controllers)

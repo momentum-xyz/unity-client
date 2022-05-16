@@ -57,7 +57,8 @@ public class WorldObject : IInfoUIHovarable
     public bool texturesLoaded = false;
     public bool texturesDirty = false;
     public bool hasFullMetadata = false;    // a flag that shows if the object has received it's full metadata information
-
+    public bool onlyHighQualityTextures = false;
+    public bool alwaysUpdateTextures = false;
     public Vector3 PositionInWorld { get { return WorldPosition(); } set { } }
 
     public AlphaStructureDriver GetStructureDriver()

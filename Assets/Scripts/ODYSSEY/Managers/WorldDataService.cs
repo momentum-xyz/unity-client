@@ -281,7 +281,7 @@ namespace Odyssey
                 _c.Get<ILODSystem>().RemoveFromLODCalculation(obj.Value);
             }
 
-            _c.Get<IWorldData>().WorldHierarchy.Clear();
+            _c.Get<IWorldData>().Clear();
 
         }
     }

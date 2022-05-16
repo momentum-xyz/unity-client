@@ -90,7 +90,14 @@ namespace Odyssey
                 // textures lod (load different size of textures based on distance)
                 if (nearby[i].texturesLOD != lod) nearby[i].texturesDirty = true;
 
-                nearby[i].texturesLOD = GetTextureLODForDistance(distance);
+                if (nearby[i].onlyHighQualityTextures)
+                {
+                    nearby[i].texturesLOD = 0; // use the highest texture quality, if onlyHighQualitytextures is set to true in the StructureOption behaviour
+                }
+                else
+                {
+                    nearby[i].texturesLOD = GetTextureLODForDistance(distance);
+                }
 
                 AlphaStructureDriver structureDriver = nearby[i].GetStructureDriver();
 
