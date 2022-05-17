@@ -59,6 +59,10 @@ namespace Odyssey
             // set the Wisps to use the default material
             _c.Get<IWispManager>().SetDefaultParticleMaterial();
 
+            _c.Get<IWispManager>().AvatarCruiseSpeed = _c.Get<HS.IThirdPersonController>().CruiseSpeed;
+            _c.Get<IWispManager>().AvatarBoostSpeed = _c.Get<HS.IThirdPersonController>().BoostSpeed;
+
+
             // Apply AvatarOptions if there are any
             AvatarOptions options = _c.Get<ISessionData>().WorldAvatarController.GetComponent<AvatarOptions>();
             if (options != null)

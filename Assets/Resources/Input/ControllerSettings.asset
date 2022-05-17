@@ -28,7 +28,7 @@ MonoBehaviour:
     MouseSense: 1.8
     MovementSpeed: 3
     BoostedSpeed: 8
-    CruiseSpeed: 32
-    MaxSpeed: 65
+    CruiseSpeed: 64
+    MaxSpeed: 128
     SpeedAccelerationFactor: 1.2
     BoostedSpeedAccelerationFactor: 1.5

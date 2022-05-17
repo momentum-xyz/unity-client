@@ -28,6 +28,9 @@ namespace Odyssey
         public void SetOptions(int maxParticleWisps, int maxFullWisps, float wispTimeout);
         public void Clear();
 
+        public float AvatarCruiseSpeed { get; set; }
+        public float AvatarBoostSpeed { get; set; }
+
         public Action<WispData> OnWispAdded { get; set; }
         public Action<WispData> OnWispRemoved { get; set; }
     }
@@ -51,6 +54,9 @@ namespace Odyssey
 
         public Action<WispData> OnWispAdded { get; set; }
         public Action<WispData> OnWispRemoved { get; set; }
+
+        public float AvatarCruiseSpeed { get; set; } = 64.0f;
+        public float AvatarBoostSpeed { get; set; } = 128.0f;
 
         // used to tell unity manager that this has loaded
         private Dictionary<Guid, WispData> wisps = new Dictionary<Guid, WispData>();
@@ -368,7 +374,7 @@ namespace Odyssey
             foreach (KeyValuePair<Guid, WispData> wisp in wisps)
             {
                 // check to see if wisp has been updated
-                if (wisp.Value.lastUpdate + wispTimeout < Time.fixedTime)
+                if (wisp.Value.timeOfLastServerUpdate + wispTimeout < Time.fixedTime)
                 {
                     Logging.Log("[WispsManager] Wisp timeout: " + wisp.Key);
                     timeoutWisps.Add(wisp.Key);
@@ -388,51 +394,63 @@ namespace Odyssey
         /// </summary>
         void MoveWispsParticles()
         {
+
+            float reachThreshold = 0.05f; // the min distance to consider the targetPosition reached
+
             foreach (KeyValuePair<Guid, WispData> wisp in wisps)
             {
                 Vector3 currentPosition = wisp.Value.currentPosition;
                 Vector3 targetPosition = wisp.Value.updatedPosition;
 
-                float d = Vector3.Distance(currentPosition, targetPosition);
+                float distanceToTarget = Vector3.Distance(currentPosition, targetPosition);
 
-                if (d > 0.05f)
+                if (distanceToTarget < reachThreshold) continue;
+
+                // if there is a huge gap between the server and current position
+                // teleport the wisp directly at the targetPosition
+                // we are sending positions every 0.5f, we consider some huge lag
+                // so the wisp should not lag more than the distance it can travel for 1 second at max speed
+
+                float distanceToTriggerDirectMove = AvatarBoostSpeed * 1.0f;
+
+                if (distanceToTarget > distanceToTriggerDirectMove)
                 {
+                    wisp.Value.currentPosition = wisp.Value.updatedPosition;
+                }
+                else
+                {
+                    // The distance the avatar normally takes for 1 second of time, without pressing the boost button
+                    float speedPerSecond = wisp.Value.isBoosted ? AvatarBoostSpeed : AvatarCruiseSpeed;
 
-                    float SPEED = 0.0f;
-
-                    Vector3 direction = (targetPosition - currentPosition).normalized;
-                    float distance = (currentPosition - targetPosition).sqrMagnitude;
-
-                    if (d > 50.0f)
+                    if (distanceToTarget < 1.0f)
                     {
-                        SPEED = maxSpeed;
-                    }
-                    else if (d > 1.0f)
-                    {
-                        SPEED = normalSpeed;
-                    }
-                    else
-                    {
-                        // slow down when we reach close distance
-                        SPEED = normalSpeed * d;
+                        speedPerSecond *= distanceToTarget;
                     }
 
+                    Vector3 moveDirection = (wisp.Value.updatedPosition - wisp.Value.currentPosition).normalized;
 
-                    Vector3 delta = direction * Time.deltaTime * SPEED;
+                    Vector3 delta = moveDirection * Time.deltaTime * speedPerSecond;
 
-                    if (delta.magnitude < d)
+                    // Fix the problem with overshooting the min distance to stop
+                    // by checking if our delta movement is larger than the distance to the target position
+
+                    if (delta.magnitude < distanceToTarget)
                     {
                         wisp.Value.currentPosition += delta;
                     }
                     else
                     {
-                        wisp.Value.currentPosition += delta.normalized * d;
+                        wisp.Value.currentPosition += delta.normalized * distanceToTarget;
                     }
 
-                    particles[wisp.Value.particleID].position = wisp.Value.currentPosition;
-
-                    _isWispsParticleSystemDirty = true;
                 }
+
+
+                particles[wisp.Value.particleID].position = wisp.Value.currentPosition;
+
+                _isWispsParticleSystemDirty = true;
+
+                wisp.Value.timeOfLastPositionUpdate = Time.fixedTime;
             }
 
         }
@@ -570,6 +588,8 @@ namespace Odyssey
                 wispData.guid = wispID;
                 //wispData.uiAssetGuid = Guid.Parse("61465ad2-9cfb-456b-8cd9-d8ca3676d732");
                 wispData.currentPosition = positionFromNetwork;
+                wispData.updatedPosition = positionFromNetwork;
+                wispData.timeOfLastServerUpdate = Time.fixedTime;
                 wispData.particleID = -1;
                 wispData.fullWisp = null;
 
@@ -582,7 +602,18 @@ namespace Odyssey
                 OnWispAdded?.Invoke(wispData);
             }
 
-            wispData.lastUpdate = Time.fixedTime;
+            // check if the avatar is boosted
+            // if the avatar has traveled more than it should be, if moving with cruise speed
+            float currentFixedTime = Time.fixedTime;
+            float diff = currentFixedTime - wispData.timeOfLastServerUpdate;
+
+            float distanceTraveledBetweenNetworkUpdates = Vector3.Distance(positionFromNetwork, wispData.updatedPosition);
+
+            float distNoBoost = (diff / 1.0f) * AvatarCruiseSpeed * 1.3f;
+
+            wispData.isBoosted = distanceTraveledBetweenNetworkUpdates > distNoBoost;
+
+            wispData.timeOfLastServerUpdate = currentFixedTime;
             wispData.updatedPosition = positionFromNetwork;
 
             wisps[wispID] = wispData;
@@ -646,11 +677,13 @@ namespace Odyssey
         public Guid guid { get; set; }
         public Vector3 currentPosition;
         public Vector3 updatedPosition;
-        public float lastUpdate;
+        public float timeOfLastServerUpdate;
+        public float timeOfLastPositionUpdate;
         public bool processed;
         public int particleID;
         public GameObject fullWisp;
         public string name;
         public FullWispManager wispManager = null;
+        public bool isBoosted = false;
     }
 }
