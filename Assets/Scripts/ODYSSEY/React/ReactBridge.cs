@@ -11,7 +11,6 @@ namespace Odyssey
         public Action TurnAllSoundOff_Event { get; set; }
         public Action<string> OnSetVolume_Event { get; set; }
         public Action<string> LookAtWisp_Event { get; set; }
-        public Action<string> Token_Event { get; set; }
         public Action PauseUnity_Event { get; set; }
         public Action ResumeUnity_Event { get; set; }
         public Action<string> TeleportToSpace_Event { get; set; }
@@ -22,6 +21,7 @@ namespace Odyssey
         public Action<Vector3, int> GoToWaypoint_Event { get; set; }
         public Action CancelGoToWaypoint_Event { get; set; }
         public Action<string> ControllerSettings_Event { get; set; }
+        public Action<string> OnConnectedToPosBus { get; set; }
     }
 
     /// <summary>
@@ -36,7 +36,6 @@ namespace Odyssey
         public Action TurnAllSoundOff_Event { get; set; }
         public Action<string> OnSetVolume_Event { get; set; }
         public Action<string> LookAtWisp_Event { get; set; }
-        public Action<string> Token_Event { get; set; }
         public Action PauseUnity_Event { get; set; }
         public Action ResumeUnity_Event { get; set; }
         public Action<string> TeleportToSpace_Event { get; set; }
@@ -47,6 +46,8 @@ namespace Odyssey
         public Action<Vector3, int> GoToWaypoint_Event { get; set; }
         public Action CancelGoToWaypoint_Event { get; set; }
         public Action<string> ControllerSettings_Event { get; set; }
+
+        public Action<string> OnConnectedToPosBus { get; set; }
 
         IMomentumContext _c;
 
@@ -90,7 +91,7 @@ namespace Odyssey
         public void setToken(string token)
         {
             Debug.Log("Got token from React: " + token);
-            Token_Event?.Invoke(token);
+            //      Token_Event?.Invoke(token);
         }
         public void setPosbusURL(string url)
         {
@@ -180,6 +181,12 @@ namespace Odyssey
             float z = float.Parse(temp[2]);
             Vector3 rValue = new Vector3(x, y, z);
             return rValue;
+        }
+
+        public void ConnectedToController(string guid)
+        {
+            Logging.Log("[ReactBridge] Connected to controller withj guid: " + guid);
+            OnConnectedToPosBus?.Invoke(guid);
         }
         #endregion
     }

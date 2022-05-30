@@ -81,19 +81,19 @@ namespace Odyssey
         public void SetupEventHandling()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
+            _c.Get<IReactBridge>().OnConnectedToPosBus += OnConnectedToReactPosBus;
 #endif
+            _posBus = _c.Get<IPosBus>();
+
+            _posBus.OnPosBusConnected += OnPosBusConnected;
+            _posBus.OnPosBusDisconnected += OnPosBusDisconnected;
+            _posBus.OnPosBusMessage += OnPosBusMessage;
         }
 
         public void InitNetworkingServices()
         {
             _posBus = _c.Get<IPosBus>();
-
             _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
-
-            _posBus.OnPosBusConnected += OnPosBusConnected;
-            _posBus.OnPosBusDisconnected += OnPosBusDisconnected;
-            _posBus.OnPosBusMessage += OnPosBusMessage;
 
             _afterReconnect = false;
             _doReconnect = false;
@@ -101,7 +101,7 @@ namespace Odyssey
         public void Dispose()
         {
 #if !UNITY_EDITOR && UNITY_WEBGL
-            _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
+            _c.Get<IReactBridge>().OnConnectedToPosBus -= OnConnectedToReactPosBus;
 #endif
             _posBus.OnPosBusConnected -= OnPosBusConnected;
             _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
@@ -121,15 +121,11 @@ namespace Odyssey
 
         public void ConnectServices()
         {
-            _posBus.SetToken(_c.Get<ISessionData>().Token, _c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID);
             _posBus.Connect();
         }
 
         public void AuthenticatePosBus(bool sendDomain = true)
         {
-
-            //Logging.Log("[NetworkingService] Sending handshake to posbus...");
-
             _posBus.SendHandshake
                 (_c.Get<ISessionData>().Token,
                 _c.Get<ISessionData>().UserID.ToString(),
@@ -157,7 +153,6 @@ namespace Odyssey
             _c.Get<ISessionData>().UserID = Guid.Parse(tokenData.sub);
             _c.Get<ISessionData>().Token = token;
 
-            //Logging.Log("Got token: " + token, LogMsgType.USER);
             Logging.Log("Got userID:" + _c.Get<ISessionData>().UserID, LogMsgType.USER);
             Logging.Log("Got name: " + tokenData.name);
         }
@@ -169,7 +164,9 @@ namespace Odyssey
 
             _isConnected = true;
             _posBus.ProcessMessageQueue = true;
+#if UNITY_EDITOR
             AuthenticatePosBus(!_resendHandshakeOnConnect);
+#endif
             _resendHandshakeOnConnect = false;
 
         }
@@ -198,20 +195,20 @@ namespace Odyssey
             }
         }
 
-        void OnReceivedToken(string token)
+        /// <summary>
+        /// If we have received a message that the JavaScript PosBus Client has connected
+        /// </summary>
+        /// <param name="userGuid"></param>
+
+        void OnConnectedToReactPosBus(string userGuid)
         {
-            if (_isConnected)
-            {
-                // if we are connected, just update the token we are using
-                SetUserToken(token);
-                _posBus.SetToken(_c.Get<ISessionData>().Token, _c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID);
-            }
-            else
-            {
-                SetUserToken(token);
-                InitNetworkingServices();
-                ConnectServices();
-            }
+            _c.Get<ISessionData>().UserID = Guid.Parse(userGuid);
+
+            // Set the local PosBus handler as connected, so it can process messages
+            _c.Get<IPosBus>().IsConnected = true;
+            _c.Get<IPosBus>().ProcessMessageQueue = true;
+
+            _isConnected = true;
         }
 
         void OnPosBusMessage(IPosBusMessage msg)

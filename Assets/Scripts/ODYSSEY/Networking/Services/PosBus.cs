@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using HybridWebSocket;
+
 using System;
 using FlatBuffers;
 using API;
@@ -8,149 +8,20 @@ using System.Collections.Concurrent;
 
 namespace Odyssey.Networking
 {
-    public enum WebsocketHandlerState
-    {
-        Open,
-        Closed,
-        Closing,
-        Unknown
-    }
-
-    public enum WebsocketHandlerCloseCode
-    {
-        Normal,
-        Abnormal
-    }
-
-    public interface IWebsocketsHandler
-    {
-        public Action OnOpen { get; set; }
-        public Action<WebsocketHandlerCloseCode> OnClose { get; set; }
-        public Action<string> OnError { get; set; }
-        public Action<byte[]> OnMessage { get; set; }
-        public bool IsInit { get; set; }
-        public WebsocketHandlerState State { get; set; }
-        public void Init(string url);
-        public void Dispose();
-        public void Connect();
-        public void Close();
-        public void Send(byte[] data);
-
-        public WebsocketHandlerState GetState();
-
-    }
-
-    public class HybridWS : IWebsocketsHandler
-    {
-        public Action OnOpen { get; set; }
-        public Action<WebsocketHandlerCloseCode> OnClose { get; set; }
-        public Action<string> OnError { get; set; }
-        public WebsocketHandlerState State { get; set; }
-        public Action<byte[]> OnMessage { get; set; }
-        public bool IsInit { get; set; } = false;
-
-        private WebSocket websocket;
-
-        public void Init(string url)
-        {
-            websocket = WebSocketFactory.CreateInstance(url);
-
-            websocket.OnOpen += OnWSOpen;
-            websocket.OnError += OnWSError;
-            websocket.OnClose += OnWSClose;
-            websocket.OnMessage += OnWSMessage;
-
-            IsInit = true;
-
-        }
-
-        public void Dispose()
-        {
-            websocket.OnOpen -= OnWSOpen;
-            websocket.OnError -= OnWSError;
-            websocket.OnClose -= OnWSClose;
-            websocket.OnMessage -= OnWSMessage;
-
-            IsInit = false;
-        }
-
-        public void Close()
-        {
-            websocket.Close();
-        }
-
-        public WebsocketHandlerState GetState()
-        {
-            switch (websocket.GetState())
-            {
-                case WebSocketState.Open:
-                    return WebsocketHandlerState.Open;
-                case WebSocketState.Closing:
-                    return WebsocketHandlerState.Closing;
-                case WebSocketState.Closed:
-                    return WebsocketHandlerState.Closed;
-                default:
-                    return WebsocketHandlerState.Unknown;
-
-            }
-        }
-
-        public void Connect()
-        {
-            websocket.Connect();
-        }
-
-        public void Send(byte[] data)
-        {
-            websocket.Send(data);
-        }
-
-        void OnWSOpen()
-        {
-            OnOpen?.Invoke();
-        }
-
-        void OnWSError(string err)
-        {
-            OnError?.Invoke(err);
-        }
-
-        void OnWSClose(WebSocketCloseCode code)
-        {
-            switch (code)
-            {
-                case WebSocketCloseCode.Normal:
-                    OnClose?.Invoke(WebsocketHandlerCloseCode.Normal);
-                    break;
-                default:
-                    OnClose?.Invoke(WebsocketHandlerCloseCode.Abnormal);
-                    break;
-            }
-        }
-
-        void OnWSMessage(byte[] msgInBytes)
-        {
-            OnMessage?.Invoke(msgInBytes);
-        }
-    }
-
     public interface IPosBus
     {
         public IWebsocketsHandler WebsocketHandler { get; set; }
         public Action<IPosBusMessage> OnPosBusMessage { get; set; }
         public Action OnPosBusConnected { get; set; }
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
-
         public void Init(string url);
-        public void SetToken(string userToken, string userUUID, string sessionId);
         public void Connect();
         public void Disconnect();
-        public bool IsConnected { get; }
+        public bool IsConnected { get; set; }
         public bool ProcessMessageQueue { get; set; }
         public void ProcessReceivedMessagesFromMainThread();
         public unsafe void SendPosition(in UnityEngine.Vector3 pos);
         public void UnityReady();
-
         public void TriggerTeleport(in Guid target);
         public void TriggerInteractionMsg(uint kind, Guid targetID, int flag, string message);
         public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "");
@@ -410,7 +281,7 @@ namespace Odyssey.Networking
     public class PosBus : IPosBus
     {
         private bool _connected = false;
-        public bool IsConnected => _connected;
+        public bool IsConnected { get { return _connected; } set { _connected = value; } }
         public bool ProcessMessageQueue { get; set; } = true;
         public IWebsocketsHandler WebsocketHandler { get; set; }
         readonly private PosBusAPI.SendPositionMsg MyPosMsg;
@@ -420,10 +291,6 @@ namespace Odyssey.Networking
         public Action<IPosBusMessage> OnPosBusMessage { get; set; }
         public Action OnPosBusConnected { get; set; }
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
-
-        private string _sessionId;
-        private string _userUUID;
-        private string _userToken;
 
         public PosBus()
         {
@@ -442,13 +309,6 @@ namespace Odyssey.Networking
 
             WebsocketHandler.Init(url);
             SubscribeToWebSocketEvents();
-        }
-
-        public void SetToken(string userToken, string userUUID, string sessionId)
-        {
-            _sessionId = sessionId;
-            _userToken = userToken;
-            _userUUID = userUUID;
         }
 
         public void Connect()
@@ -723,26 +583,22 @@ namespace Odyssey.Networking
 
         private void SubscribeToWebSocketEvents()
         {
+            // Try unsunscribing, just in case somebody call this twice
+            WebsocketHandler.OnOpen -= OnOpen;
+            WebsocketHandler.OnClose -= OnClose;
+            WebsocketHandler.OnError -= OnError;
+            WebsocketHandler.OnMessage -= OnMessage;
+
             WebsocketHandler.OnOpen += OnOpen;
             WebsocketHandler.OnClose += OnClose;
             WebsocketHandler.OnError += OnError;
             WebsocketHandler.OnMessage += OnMessage;
         }
 
-        private void UnsubscribeWebSocketEvents()
-        {
-            WebsocketHandler.OnOpen -= OnOpen;
-            WebsocketHandler.OnClose -= OnClose;
-            WebsocketHandler.OnError -= OnError;
-            WebsocketHandler.OnMessage -= OnMessage;
-        }
-
         private void OnOpen()
         {
             _connected = true;
-
             Logging.Log("[PosBus] Connected", LogMsgType.NETWORKING);
-
             OnPosBusConnected?.Invoke();
         }
 

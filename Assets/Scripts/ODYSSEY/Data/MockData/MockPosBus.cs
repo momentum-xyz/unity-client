@@ -13,7 +13,7 @@ public class MockPosBus : IPosBus
     public Action OnPosBusConnected { get; set; }
     public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
 
-    public bool IsConnected => true;
+    public bool IsConnected { get; set; } = true;
 
     public bool ProcessMessageQueue { get; set; } = true;
 

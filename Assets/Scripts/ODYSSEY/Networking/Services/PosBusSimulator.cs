@@ -9,7 +9,7 @@ public class PosBusSimulator : IPosBus
 {
 
     public IWebsocketsHandler WebsocketHandler { get; set; }
-    public bool IsConnected => true;
+    public bool IsConnected { get; set; } = true;
     public bool ProcessMessageQueue { get; set; } = true;
 
     public Action<IPosBusMessage> OnPosBusMessage { get; set; }
