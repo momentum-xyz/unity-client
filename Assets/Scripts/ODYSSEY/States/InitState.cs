@@ -34,8 +34,6 @@ namespace Odyssey
             if (_networkConfigData.AuthenticationToken == null) return;
 #endif
 
-            _c.Get<IPosBus>().OnPosBusMessage += OnPosBusMessage;
-
             SessionStats.StartSession();
             SessionStats.AddTime("start");
 
@@ -114,13 +112,9 @@ namespace Odyssey
         public void OnExit()
         {
 
-            _c.Get<IPosBus>().OnPosBusMessage -= OnPosBusMessage;
-        }
-
-        void OnPosBusMessage(IPosBusMessage msg)
-        {
 
         }
+
     }
 
 }

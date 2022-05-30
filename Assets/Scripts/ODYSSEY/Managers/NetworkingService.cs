@@ -27,6 +27,7 @@ namespace Odyssey
 
     public class NetworkingSerivce : INetworkingService, IRequiresContext
     {
+        private const float RECONNECT_TIMEOUT_SEC = 3.0f;
         public Action<string> OnConnectedToWorld_Event { get; set; }
         public Action OnDisconnected_Event { get; set; }
         public Action NetworkConnectionLost_Event { get; set; }
@@ -43,6 +44,8 @@ namespace Odyssey
         bool _ignorePositionMessages = false;
         bool _isConnected = false;
         bool _networkingConnectionLost = false;
+        float _reconnectTimer = 0.0f;
+
 
         public void Init(IMomentumContext context)
         {
@@ -81,7 +84,9 @@ namespace Odyssey
 
         public void SetupEventHandling()
         {
+#if !UNITY_EDITOR && UNITY_WEBGL
             _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
+#endif
         }
 
         public void InitNetworkingServices()
@@ -99,8 +104,9 @@ namespace Odyssey
         }
         public void Dispose()
         {
+#if !UNITY_EDITOR && UNITY_WEBGL
             _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
-
+#endif
             _posBus.OnPosBusConnected -= OnPosBusConnected;
             _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
             _posBus.OnPosBusMessage -= OnPosBusMessage;
@@ -194,21 +200,7 @@ namespace Odyssey
             {
                 Logging.Log("[NetworkingManager] PosBus disconnected due to unknown reason, trying to re-connect", LogMsgType.NETWORKING);
 
-                // Disabled the limit for re-connection (TODO: Maybe think of a better way to handle this)
-                /*
-                
-                _reconnectedNumTimes++;
-                if (_reconnectedNumTimes > 5)
-                {
-                    Logging.Log("[NetworkingManager] Tried to reconnect to PosBus more than 5 times, giving up...");
-                    _networkingConnectionLost = true;
-                    return;
-                }
-                */
-
-                _doReconnect = true;
-                _afterReconnect = true;
-                _resendHandshakeOnConnect = true;
+                DoReconnectAfterTime();
             }
         }
 
@@ -286,6 +278,17 @@ namespace Odyssey
             }
         }
 
+        /// <summary>
+        /// This function will force a reconnect, but after RECONNECT_TIMEOUT_SEC time seconds
+        /// </summary>
+        void DoReconnectAfterTime()
+        {
+            _resendHandshakeOnConnect = true;
+            _afterReconnect = true;
+            _doReconnect = true;
+            _reconnectTimer = 0.0f;
+        }
+
         public void Update()
         {
             if (_isConnected)
@@ -301,9 +304,14 @@ namespace Odyssey
 
             if (_doReconnect)
             {
-                _doReconnect = false;
-                _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
-                _posBus.Connect();
+                _reconnectTimer += Time.deltaTime;
+
+                if (_reconnectTimer >= RECONNECT_TIMEOUT_SEC)
+                {
+                    _doReconnect = false;
+                    _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
+                    _posBus.Connect();
+                }
             }
 
         }
