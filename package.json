@@ -1,0 +1,24 @@
+{
+  "name": "unity-client",
+  "version": "1.0.0",
+  "description": "Odyssey Momentum 2 Unity Client",
+  "main": "config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OdysseyMomentumExperience/unity-client.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OdysseyMomentumExperience/unity-client/issues"
+  },
+  "homepage": "https://github.com/OdysseyMomentumExperience/unity-client#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

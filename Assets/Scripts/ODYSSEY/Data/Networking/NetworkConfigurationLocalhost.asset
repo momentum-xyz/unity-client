@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcd420502b6f8784aa07f41dd17a1c7e, type: 3}
+  m_Name: NetworkConfigurationLocalhost
+  m_EditorClassIdentifier: 
+  TestToken: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJQZW5PUXd2ZmNQTHgxNks3akdud0tWX29jS29Pd3JqMkVvTTVtU0pYNmpvIn0.eyJleHAiOjE2NTA4MDU5NDksImlhdCI6MTY1MDU0Njc0OSwianRpIjoiN2I5Mjk5MDMtOWY5MC00MWE4LTkwYWUtZjZkNjE0NGM1MzgwIiwiaXNzIjoiaHR0cHM6Ly9kZXYteDV1NDJkby5vZHlzc2V5Lm5pbmphL2F1dGgvcmVhbG1zL01vbWVudHVtIiwiYXVkIjpbIm5lc3QtbWljcm9zZXJ2aWNlcyIsImFjY291bnQiXSwic3ViIjoiYzQwMGIxMjAtZGMxZi00MTU0LTlmNGEtZTQwZGU3ODViMGM0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmVhY3QtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjhjN2NlZWEzLTQ5ZTctNDZlNy1iMTU4LTRiN2NjMjgxYmIyMiIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJtcXR0Ijp7InRvcGljcyI6eyJyZWFkIjpbImludGVyYWN0aW9ucy9jNDAwYjEyMC1kYzFmLTQxNTQtOWY0YS1lNDBkZTc4NWIwYzQvIyIsInVuaXR5LWFjdGlvbnMvYzQwMGIxMjAtZGMxZi00MTU0LTlmNGEtZTQwZGU3ODViMGM0LyMiXSwid3JpdGUiOlsidXNlcnMvYzQwMGIxMjAtZGMxZi00MTU0LTlmNGEtZTQwZGU3ODViMGM0LyMiLCJzcGFjZXMvIyIsInN0cnVjdHVyZS8jIiwiY29udHJvbC9saXZlc3RyZWFtL3NldCIsImludGVyYWN0aW9ucy8rL2M0MDBiMTIwLWRjMWYtNDE1NC05ZjRhLWU0MGRlNzg1YjBjNCJdfX0sIm5hbWUiOiJLYW1lbiBEZXZlbG9wbWVudCIsInByZWZlcnJlZF91c2VybmFtZSI6ImtkQG9keXNzZXkub3JnIiwiZ2l2ZW5fbmFtZSI6IkthbWVuIiwiZmFtaWx5X25hbWUiOiJEZXZlbG9wbWVudCIsImVtYWlsIjoia2RAb2R5c3NleS5vcmcifQ.e_rFyj1rrO5UdVIBk8IGOKR2LY1fYBdx9ceLiPtYfL911XFTilIPl929rOMqIbKV3tN5uHq5kcWSQAS9Fjyug7ojv85wOG320MQK7ykF2LlMiHbrZi268GDhqXeRPesoZXkKwbApEKdXboke-4-sjub4qwjM4_BYcI5TJEm7sYwKYIe8wmpIETRiIgbdLJMqUAdROoaPpP0etduiDNykNyKAjyPySNy1-4-hr0JWNvZ2Nw8mMG2yCRmYdZ4zotjtus7czyzRQRWy-gnr9LMi1qA4FfiSdUxecyPnW_TBYuAT0kEGNiLUPZWQDAESnO1PT7hIXX8fm6d9-2XYcjNrGg
+  domain: dev.odyssey.ninja
+  localDomainOverwrite: dev.odyssey.ninja
+  apiURI: /api/v3
+  posBusURL: ws://127.0.0.1:4000/posbus
+  rendermanURL: https://dev.odyssey.ninja/api/v3/render
+  userEndpoint: https://dev.odyssey.ninja/api/v3/backend/users/profile
+  apiEndpoint: https://dev.odyssey.ninja/api/v3
+  addressablesURL: https://dev.odyssey.ninja/unity-assets
+  useMockData: 0
+  mockData: {fileID: 0}
+  useMockAddressables: 0
+  mockAddressableData: {fileID: 0}
+  overwriteWebGLAddressables: 0
+  overwriteWebGLAddressablesURL: 
+  ignoreApplicationURL: 0

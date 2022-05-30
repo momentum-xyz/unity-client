@@ -1,0 +1,3 @@
+[submodule "CustomPackages/unity-common"]
+	path = CustomPackages/unity-common
+	url = git@github.com:momentum-xyz/unity-common.git
