@@ -56,7 +56,11 @@ public class MomentumContextInit : MonoBehaviour
         else
         {
             var posBus = new PosBus();
+#if UNITY_EDITOR
             posBus.WebsocketHandler = new HybridWS();
+#elif !UNITY_EDITOR && UNITY_WEBGL
+            posBus.WebsocketHandler = new ReactWS();
+#endif
             context.RegisterService<IPosBus>(posBus);
         }
 

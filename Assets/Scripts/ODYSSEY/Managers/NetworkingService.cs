@@ -205,6 +205,7 @@ namespace Odyssey
             _c.Get<ISessionData>().UserID = Guid.Parse(userGuid);
 
             // Set the local PosBus handler as connected, so it can process messages
+            _c.Get<IPosBus>().Init("");
             _c.Get<IPosBus>().IsConnected = true;
             _c.Get<IPosBus>().ProcessMessageQueue = true;
 
