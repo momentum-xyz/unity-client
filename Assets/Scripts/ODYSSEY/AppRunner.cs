@@ -23,13 +23,11 @@ public class AppRunner : MonoBehaviour, IRequiresContext
         networkingService = _c.Get<INetworkingService>();
         textureCache = _c.Get<ITextureCache>();
         posBus = _c.Get<IPosBus>();
-
-        networkingService.NetworkConnectionLost_Event += OnNetworkConnectionLost;
     }
 
     void OnDisable()
     {
-        _c.Get<INetworkingService>().NetworkConnectionLost_Event -= OnNetworkConnectionLost;
+
     }
 
     public void Dispose()

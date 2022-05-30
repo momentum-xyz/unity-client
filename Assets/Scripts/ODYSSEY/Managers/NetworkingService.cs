@@ -12,7 +12,6 @@ namespace Odyssey
     {
         public Action<string> OnConnectedToWorld_Event { get; set; }
         public Action OnDisconnected_Event { get; set; }
-        public Action NetworkConnectionLost_Event { get; set; }
 
         public bool IsConnected { get; set; }
 
@@ -30,7 +29,6 @@ namespace Odyssey
         private const float RECONNECT_TIMEOUT_SEC = 3.0f;
         public Action<string> OnConnectedToWorld_Event { get; set; }
         public Action OnDisconnected_Event { get; set; }
-        public Action NetworkConnectionLost_Event { get; set; }
 
         public bool IsConnected { get { return _isConnected; } set { } }
 
@@ -38,12 +36,10 @@ namespace Odyssey
         NetworkingConfigData _configData;
         IPosBus _posBus;
         bool _resendHandshakeOnConnect = false;
-        int _reconnectedNumTimes = 0;
         bool _doReconnect = false;
         bool _afterReconnect = false;
         bool _ignorePositionMessages = false;
         bool _isConnected = false;
-        bool _networkingConnectionLost = false;
         float _reconnectTimer = 0.0f;
 
 
@@ -171,13 +167,11 @@ namespace Odyssey
         {
             if (_isConnected) return;
 
-            if (!_isConnected)
-            {
-                _isConnected = true;
-                _posBus.ProcessMessageQueue = true;
-                AuthenticatePosBus(!_resendHandshakeOnConnect);
-                _resendHandshakeOnConnect = false;
-            }
+            _isConnected = true;
+            _posBus.ProcessMessageQueue = true;
+            AuthenticatePosBus(!_resendHandshakeOnConnect);
+            _resendHandshakeOnConnect = false;
+
         }
 
         /// <summary>
@@ -294,12 +288,6 @@ namespace Odyssey
             if (_isConnected)
             {
                 _posBus.ProcessReceivedMessagesFromMainThread();
-            }
-
-            if (_networkingConnectionLost)
-            {
-                _networkingConnectionLost = false;
-                NetworkConnectionLost_Event?.Invoke();
             }
 
             if (_doReconnect)
