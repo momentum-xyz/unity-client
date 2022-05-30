@@ -7,6 +7,7 @@ using System;
 
 public class MockPosBus : IPosBus
 {
+    public IWebsocketsHandler WebsocketHandler { get; set; }
     public MockData Data { get; set; }
     public Action<IPosBusMessage> OnPosBusMessage { get; set; }
     public Action OnPosBusConnected { get; set; }
