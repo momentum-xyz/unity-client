@@ -7,7 +7,12 @@ using System;
 
 public class PosBusSimulator : IPosBus
 {
+    public string AuthenticationToken { get; set; }
+    public string UserID { get; set; }
+    public string SessionID { get; set; }
+    public bool HasReconnected { get; set; }
 
+    public string Domain { get; set; }
     public IWebsocketsHandler WebsocketHandler { get; set; }
     public bool IsConnected { get; set; } = true;
     public bool ProcessMessageQueue { get; set; } = true;
@@ -29,10 +34,6 @@ public class PosBusSimulator : IPosBus
         OnPosBusDisconnected?.Invoke(PosBusDisconnectError.NORMAL);
     }
 
-    public void Init(string url)
-    {
-
-    }
 
     public void ProcessReceivedMessagesFromMainThread()
     {
@@ -77,6 +78,11 @@ public class PosBusSimulator : IPosBus
     }
 
     public void UnityReady()
+    {
+
+    }
+
+    public void Init(string url, string token, string userId, string sessionId, string domain)
     {
 
     }

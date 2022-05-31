@@ -7,6 +7,11 @@ using System;
 
 public class MockPosBus : IPosBus
 {
+    public string Domain { get; set; }
+    public string AuthenticationToken { get; set; }
+    public string UserID { get; set; }
+    public string SessionID { get; set; }
+    public bool HasReconnected { get; set; }
     public IWebsocketsHandler WebsocketHandler { get; set; }
     public MockData Data { get; set; }
     public Action<IPosBusMessage> OnPosBusMessage { get; set; }
@@ -27,7 +32,8 @@ public class MockPosBus : IPosBus
 
     }
 
-    public void Init(string url)
+
+    public void Init(string url, string token, string userId, string sessionId, string domain)
     {
 
     }

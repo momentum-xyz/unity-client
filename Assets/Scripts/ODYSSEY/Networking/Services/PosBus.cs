@@ -5,16 +5,22 @@ using System;
 using FlatBuffers;
 using API;
 using System.Collections.Concurrent;
+using Cysharp.Threading.Tasks;
 
 namespace Odyssey.Networking
 {
     public interface IPosBus
     {
+        public string AuthenticationToken { get; set; }
+        public string UserID { get; set; }
+        public string SessionID { get; set; }
+        public string Domain { get; set; }
+        public bool HasReconnected { get; set; }
         public IWebsocketsHandler WebsocketHandler { get; set; }
         public Action<IPosBusMessage> OnPosBusMessage { get; set; }
         public Action OnPosBusConnected { get; set; }
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
-        public void Init(string url);
+        public void Init(string url, string token, string userId, string sessionId, string domain);
         public void Connect();
         public void Disconnect();
         public bool IsConnected { get; set; }
@@ -280,6 +286,12 @@ namespace Odyssey.Networking
 
     public class PosBus : IPosBus
     {
+        public string AuthenticationToken { get; set; }
+        public string UserID { get; set; }
+        public string SessionID { get; set; }
+        public string Domain { get; set; }
+        public bool HasReconnected { get; set; }
+
         private bool _connected = false;
         public bool IsConnected { get { return _connected; } set { _connected = value; } }
         public bool ProcessMessageQueue { get; set; } = true;
@@ -292,6 +304,9 @@ namespace Odyssey.Networking
         public Action OnPosBusConnected { get; set; }
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
 
+        private bool _isAuthenticated = false;
+        private bool _isFirstConnect = true;
+
         public PosBus()
         {
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
@@ -299,13 +314,21 @@ namespace Odyssey.Networking
             _builder = new FlatBufferBuilder(1024);
         }
 
-        public void Init(string url)
+        public void Init(string url, string token, string userId, string sessionId, string domain)
         {
             if (WebsocketHandler.IsInit && WebsocketHandler.GetState() == WebsocketHandlerState.Open)
             {
                 Logging.Log("PosBus] We already have an open websocket, close first, before Init!", LogMsgType.NETWORKING);
                 return;
             }
+
+            AuthenticationToken = token;
+            UserID = userId;
+            SessionID = sessionId;
+            Domain = domain;
+
+            _isAuthenticated = false;
+            _isFirstConnect = true;
 
             WebsocketHandler.Init(url);
             SubscribeToWebSocketEvents();
@@ -318,6 +341,8 @@ namespace Odyssey.Networking
                 Logging.Log("[PosBus] Connection is already open..", LogMsgType.NETWORKING);
                 return;
             }
+
+            _isAuthenticated = false;
 
             WebsocketHandler.Connect();
         }
@@ -332,7 +357,6 @@ namespace Odyssey.Networking
 
             _connected = false;
             ProcessMessageQueue = false;
-
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
 
             OnPosBusDisconnected?.Invoke(PosBusDisconnectError.NORMAL);
@@ -598,7 +622,22 @@ namespace Odyssey.Networking
         private void OnOpen()
         {
             _connected = true;
+
             Logging.Log("[PosBus] Connected", LogMsgType.NETWORKING);
+
+            if (!_isAuthenticated)
+            {
+                _isAuthenticated = true;
+
+                // We only send the Domain on the first connect, then after a re-connect we do not send a domain
+                // because the user might be on another world and that will force him back to the world that is tied to the domain name
+
+                SendHandshake(AuthenticationToken, UserID, SessionID, _isFirstConnect ? Domain : "");
+
+                _isFirstConnect = false;
+                ProcessMessageQueue = true;
+            }
+
             OnPosBusConnected?.Invoke();
         }
 
@@ -606,8 +645,9 @@ namespace Odyssey.Networking
         private void OnClose(WebsocketHandlerCloseCode code)
         {
             Logging.Log("[PosBus] Websocket OnClose Event with code: " + code.ToString(), LogMsgType.NETWORKING);
-            _connected = false;
 
+            _connected = false;
+            _isAuthenticated = false;
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
 
             if (code == WebsocketHandlerCloseCode.Normal)
@@ -618,6 +658,24 @@ namespace Odyssey.Networking
             {
                 OnPosBusDisconnected?.Invoke(PosBusDisconnectError.UNKNOWN);
             }
+
+            // Reconnect
+            if (code == WebsocketHandlerCloseCode.Abnormal)
+            {
+                Reconnect().Forget();
+            }
+        }
+
+        async UniTask Reconnect()
+        {
+            if (_connected) return;
+
+            await UniTask.Delay(2000);
+
+            Logging.Log("[PosBus] Trying to re-connect...");
+
+            HasReconnected = true;
+            Connect();
         }
 
         private void OnError(string err)
@@ -860,6 +918,11 @@ namespace Odyssey.Networking
             {
                 _receivedMessages.Enqueue(message);
             }
+        }
+
+        void OnTokenFromReact(string token)
+        {
+
         }
 
         readonly FlatBufferBuilder _builder;
