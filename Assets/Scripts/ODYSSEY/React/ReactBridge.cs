@@ -21,7 +21,6 @@ namespace Odyssey
         public Action<Vector3, int> GoToWaypoint_Event { get; set; }
         public Action CancelGoToWaypoint_Event { get; set; }
         public Action<string> ControllerSettings_Event { get; set; }
-        public Action<string> OnConnectedToPosBus { get; set; }
     }
 
     /// <summary>
@@ -46,8 +45,6 @@ namespace Odyssey
         public Action<Vector3, int> GoToWaypoint_Event { get; set; }
         public Action CancelGoToWaypoint_Event { get; set; }
         public Action<string> ControllerSettings_Event { get; set; }
-
-        public Action<string> OnConnectedToPosBus { get; set; }
 
         IMomentumContext _c;
 
@@ -181,12 +178,6 @@ namespace Odyssey
             float z = float.Parse(temp[2]);
             Vector3 rValue = new Vector3(x, y, z);
             return rValue;
-        }
-
-        public void ConnectedToController(string guid)
-        {
-            Logging.Log("[ReactBridge] Connected to controller withj guid: " + guid);
-            OnConnectedToPosBus?.Invoke(guid);
         }
         #endregion
     }

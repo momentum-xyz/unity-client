@@ -342,8 +342,6 @@ namespace Odyssey.Networking
                 return;
             }
 
-            _isAuthenticated = false;
-
             WebsocketHandler.Connect();
         }
 

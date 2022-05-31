@@ -23,6 +23,8 @@ namespace Odyssey
 
         public void OnEnter()
         {
+            _c.Get<IReactPosBusClient>().OnPosBusConnected += OnReactPosBusConnected;
+
             OnEnterAsync().Forget();
         }
 
@@ -70,12 +72,7 @@ namespace Odyssey
             }
 
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-            // Call Momentum Loaded event in Start, because
-            // at that point in time React has access to the unityInstance
-            // if we call it in Awake, unityInstance is not yet available
-            _c.Get<IUnityToReact>().SendMomentumLoadedToReact();
-#endif
+
             _c.Get<ILoadingScreenManager>().SetLoading(true, true);
 
             // Add local mock addressables as they are already downloaded addressables
@@ -95,17 +92,17 @@ namespace Odyssey
                 }
             }
 
-
-
-
-
 #if UNITY_EDITOR
-
             // If we are running in the Editor, parse the Token from NetworkConfigData
             // and use that to init and connect PosBus client
 
+            // Get the UserID from the Token
             ParseToken(_c.Get<ISessionData>().NetworkingConfig.AuthenticationToken);
 
+            // Set the Websocket Handler
+            _c.Get<IPosBus>().WebsocketHandler = new HybridWS();
+
+            // Init PosBus
             _c.Get<IPosBus>().Init(
                 _c.Get<ISessionData>().NetworkingConfig.posBusURL,
                 _c.Get<ISessionData>().Token,
@@ -114,9 +111,17 @@ namespace Odyssey
                 _c.Get<ISessionData>().NetworkingConfig.domain
                 );
 
+            // Connect
             _c.Get<IPosBus>().Connect();
 #endif
 
+#if !UNITY_EDITOR && UNITY_WEBGL
+            _c.Get<IReactPosBusClient>().Init();
+            _c.Get<IPosBus>().WebsocketHandler = new ReactWS(_c);
+            _c.Get<IPosBus>().Init("","","","","");
+
+            _c.Get<IUnityToReact>().SendMomentumLoadedToReact();
+#endif
         }
 
         void SetupNetworkingConfig(NetworkingConfigData data)
@@ -132,7 +137,7 @@ namespace Odyssey
             // if we are running on localhost
             // overwrite the domain with one provided in the configuration
             if(domain.Contains("localhost") || domain.Contains("127.0.0.1")) {
-                domain = configData.localDomainOverwrite;      
+                domain = data.localDomainOverwrite;      
             }
 
             if(!networkingConfigCopy.ignoreApplicationURL)
@@ -170,15 +175,20 @@ namespace Odyssey
             Logging.Log("Got name: " + tokenData.name);
         }
 
-        public void Update()
+        void OnReactPosBusConnected(string userId)
         {
+            Logging.Log("[InitState] ReactPosBus Connected with userId: " + userId);
 
+            _c.Get<ISessionData>().UserID = Guid.Parse(userId);
+            _c.Get<IPosBus>().IsConnected = true;
+            _c.Get<IPosBus>().ProcessMessageQueue = true;
         }
+
+        public void Update() { }
 
         public void OnExit()
         {
-
-
+            _c.Get<IReactPosBusClient>().OnPosBusConnected -= OnReactPosBusConnected;
         }
 
     }

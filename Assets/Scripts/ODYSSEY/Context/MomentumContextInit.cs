@@ -45,6 +45,7 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<ILODSystem>(new OctreeLODSystem());
         context.RegisterService<IFollowUserController>(new FollowUserController());
         context.RegisterService<IUserInteraction>(new UserInteraction());
+        context.RegisterService<IReactPosBusClient>(new ReactPosBusClient());
 
         if (networkingConfigData.useMockData)
         {
@@ -55,11 +56,6 @@ public class MomentumContextInit : MonoBehaviour
         else
         {
             var posBus = new PosBus();
-#if UNITY_EDITOR
-            posBus.WebsocketHandler = new HybridWS();
-#elif !UNITY_EDITOR && UNITY_WEBGL
-            posBus.WebsocketHandler = new ReactWS();
-#endif
             context.RegisterService<IPosBus>(posBus);
         }
 

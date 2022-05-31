@@ -142,13 +142,13 @@ namespace Odyssey.Networking
         public Action<WebsocketHandlerCloseCode> OnClose { get; set; }
         public Action<string> OnError { get; set; }
         public Action<byte[]> OnMessage { get; set; }
-        public bool IsInit { get { return true; } set { } }
+        public bool IsInit { get; set; } = false;
 
-        private IMomentumContext _ctx;
+        private IMomentumContext _c;
 
         public ReactWS(IMomentumContext ctx)
         {
-            _ctx = ctx;
+            _c = ctx;
         }
 
         public void Close()
@@ -173,7 +173,17 @@ namespace Odyssey.Networking
 
         public void Init(string url)
         {
+            _c.Get<IReactPosBusClient>().OnPosBusMessage -= OnReactPosBusMessage;
+            _c.Get<IReactPosBusClient>().OnPosBusMessage += OnReactPosBusMessage;
 
+            IsInit = true;
+        }
+
+        void OnReactPosBusMessage(byte[] data)
+        {
+            Debug.Log("Got message in ReactWS: " + data.Length);
+
+            OnMessage?.Invoke(data);
         }
 
         public void Send(byte[] data)
