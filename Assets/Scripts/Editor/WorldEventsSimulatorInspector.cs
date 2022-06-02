@@ -268,15 +268,31 @@ public class WorldEventsSimulatorInspector : Editor
 
         EditorGUILayout.BeginHorizontal();
         stageModeGUID = EditorGUILayout.TextField("GUID", stageModeGUID);
-        if(GUILayout.Button("Enable"))
+        if (GUILayout.Button("Enable"))
         {
             worldEventsSimulator.SetStageMode(stageModeGUID, true);
         }
 
-        if(GUILayout.Button("Disable"))
+        if (GUILayout.Button("Disable"))
         {
             worldEventsSimulator.SetStageMode(stageModeGUID, false);
         }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+
+        EditorGUILayout.LabelField("Application:");
+
+        if (GUILayout.Button("Pause"))
+        {
+            worldEventsSimulator.SetPaused(true);
+        }
+
+        if (GUILayout.Button("Resume"))
+        {
+            worldEventsSimulator.SetPaused(false);
+        }
+
         EditorGUILayout.EndHorizontal();
 
         serializedObject.Update();

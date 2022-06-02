@@ -150,5 +150,18 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
         HS.KUSA.GlobalResponder.RelayChainRadius = newRadius;
     }
 
+    public void SetPaused(bool isPaused)
+    {
+        if (isPaused)
+        {
+            _c.Get<IReactBridge>().PauseUnity_Event?.Invoke();
+
+        }
+        else
+        {
+            _c.Get<IReactBridge>().ResumeUnity_Event?.Invoke();
+        }
+    }
+
 
 }
