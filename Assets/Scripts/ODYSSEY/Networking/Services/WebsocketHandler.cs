@@ -173,8 +173,8 @@ namespace Odyssey.Networking
 
         public void Init(string url)
         {
-            _c.Get<IReactPosBusClient>().OnPosBusMessage -= OnReactPosBusMessage;
-            _c.Get<IReactPosBusClient>().OnPosBusMessage += OnReactPosBusMessage;
+            _c.Get<IPosBusRelay>().OnPosBusMessage -= OnReactPosBusMessage;
+            _c.Get<IPosBusRelay>().OnPosBusMessage += OnReactPosBusMessage;
 
             IsInit = true;
         }
@@ -188,7 +188,7 @@ namespace Odyssey.Networking
 
         public void Send(byte[] data)
         {
-
+            _c.Get<IPosBusRelay>().SendMsg(data, data.Length);
         }
     }
 

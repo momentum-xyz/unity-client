@@ -23,7 +23,7 @@ namespace Odyssey
 
         public void OnEnter()
         {
-            _c.Get<IReactPosBusClient>().OnPosBusConnected += OnReactPosBusConnected;
+            _c.Get<IPosBusRelay>().OnPosBusConnected += OnReactPosBusConnected;
 
             OnEnterAsync().Forget();
         }
@@ -116,7 +116,7 @@ namespace Odyssey
 #endif
 
 #if !UNITY_EDITOR && UNITY_WEBGL
-            _c.Get<IReactPosBusClient>().Init();
+            _c.Get<IPosBusRelay>().Init();
             _c.Get<IPosBus>().WebsocketHandler = new ReactWS(_c);
             _c.Get<IPosBus>().Init("","","","","");
 
@@ -188,7 +188,7 @@ namespace Odyssey
 
         public void OnExit()
         {
-            _c.Get<IReactPosBusClient>().OnPosBusConnected -= OnReactPosBusConnected;
+            _c.Get<IPosBusRelay>().OnPosBusConnected -= OnReactPosBusConnected;
         }
 
     }
