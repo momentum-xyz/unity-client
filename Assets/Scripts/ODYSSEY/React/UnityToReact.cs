@@ -16,6 +16,7 @@ public interface IUnityToReact
 
     public void RelayNotificationSimple(int kind, int flag, string message);
     public void RelayRelayMessage(string target,  string message);
+    public void SendPosBusConnected();
 
 }
 
@@ -63,6 +64,10 @@ public class UnityToReact : IUnityToReact
 
     [DllImport("__Internal")]
     private static extern void RelayMessage(string target, string message);
+
+    [DllImport("__Internal")]
+    private static extern void PosBusConnected();
+
 
 #endif
 
@@ -153,6 +158,14 @@ public class UnityToReact : IUnityToReact
         Debug.Log("Relaying: " + target + " / " + message);
 #if !UNITY_EDITOR && UNITY_WEBGL
         RelayMessage(target, message);
+#endif
+    }
+
+    public void SendPosBusConnected()
+    {
+        Debug.Log("[UnityToReact] PosBusConnected");
+#if !UNITY_EDITOR && UNITY_WEBGL
+        PosBusConnected();
 #endif
     }
 }
