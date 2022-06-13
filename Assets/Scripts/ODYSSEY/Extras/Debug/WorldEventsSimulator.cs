@@ -145,9 +145,39 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
         _c.Get<IPosBus>().TriggerInteractionMsg(kind, targetId, flag, message);
     }
 
+    public void UpdatePrivacy(Guid spaceGuid, int mode)
+    {
+        var msg = new PosBusSetAttributesMsg()
+        {
+            spaceID = spaceGuid,
+            attributes = new AttributeMetadata[1]
+            {
+                new AttributeMetadata()
+                {
+                    attribute=mode,
+                    label = "private"
+                }
+            }
+        };
+        _c.Get<IPosBus>().OnPosBusMessage(msg);
+    }
+
     public void UpdateRelayChainRadius(float newRadius)
     {
         HS.KUSA.GlobalResponder.RelayChainRadius = newRadius;
+    }
+
+    public void SetPaused(bool isPaused)
+    {
+        if (isPaused)
+        {
+            _c.Get<IReactBridge>().PauseUnity_Event?.Invoke();
+
+        }
+        else
+        {
+            _c.Get<IReactBridge>().ResumeUnity_Event?.Invoke();
+        }
     }
 
 

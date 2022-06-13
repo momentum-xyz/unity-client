@@ -40,7 +40,7 @@ namespace Odyssey
                             case "stagemode":
                                 _worldObjectsStateManager.SetState<int>(m.spaceID.ToString(), "stagemode", (int)m.attributes[i].attribute);
                                 break;
-                            case "privacy":
+                            case "private":
                                 int privacyValue = m.attributes[i].attribute;
                                 _worldDataService.UpdatePermissionsForObject(m.spaceID, privacyValue);
                                 break;

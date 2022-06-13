@@ -146,5 +146,8 @@ mergeInto(LibraryManager.library, {
     },
     RelayMessage: function(target, message) {
         ReactUnityWebGL.RelayMessage(Pointer_stringify(target), Pointer_stringify(message));
-    } 
+    }, 
+   	PosBusConnected: function()	{
+    	ReactUnityWebGL.PosBusConnected()
+    }
 });
