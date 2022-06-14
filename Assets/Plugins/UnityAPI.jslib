@@ -1,6 +1,19 @@
 mergeInto(LibraryManager.library, {
-    SetCallbacks: function(triggerInteractionMsgPtr, getUserPositionPtr, getCurrentWorldPtr, setTokenPtr, pauseUnityPtr, controlSoundPtr, controlVolumePtr,controlKeyboardPtr, lookAtWispPtr, toggleMinimapPtr,teleportToSpacePtr, teleportToVector3Ptr, teleportToUserPtr ) {
-        Module.UnityAPI.triggerInteractionMsgPtr = triggerInteractionMsgPtr
+    SetCallbacks: function(
+                getUserPositionPtr, 
+                getCurrentWorldPtr, 
+                setTokenPtr, 
+                pauseUnityPtr, 
+                controlSoundPtr, 
+                controlVolumePtr, 
+                controlKeyboardPtr, 
+                lookAtWispPtr, 
+                toggleMinimapPtr, 
+                teleportToSpacePtr, 
+                teleportToUserPtr, 
+                teleportToVector3Ptr, 
+                triggerInteractionMsgPtr 
+        ) {
         Module.UnityAPI.getUserPositionPtr = getUserPositionPtr
         Module.UnityAPI.getCurrentWorldPtr = getCurrentWorldPtr
         Module.UnityAPI.setTokenPtr = setTokenPtr
@@ -13,5 +26,6 @@ mergeInto(LibraryManager.library, {
         Module.UnityAPI.teleportToSpacePtr = teleportToSpacePtr
         Module.UnityAPI.teleportToVector3Ptr = teleportToVector3Ptr
         Module.UnityAPI.teleportToUserPtr = teleportToUserPtr
+        Module.UnityAPI.triggerInteractionMsgPtr = triggerInteractionMsgPtr
     }
 });

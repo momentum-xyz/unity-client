@@ -4,13 +4,14 @@ Module['UnityAPI'].triggerInteractionMsg = function(kind, guid, flag, message) {
 
 }
 
-Module['UnityAPI'].getUserPositionCallback = function() {
-    console.log(Module['UnityAPI'].getUserPositionPtr);
-    return "";
+Module['UnityAPI'].getUserPosition = function() {
+    let userPositionPtr = Module.dynCall_i(Module['UnityAPI'].getUserPositionPtr)
+    return Pointer_stringify(userPositionPtr);
 }
 
-Module['UnityAPI'].getCurrentWorldCallback = function() {
-
+Module['UnityAPI'].getCurrentWorld = function() {
+    let worldIdPtr = Module.dynCall_i(Module['UnityAPI'].getCurrentWorldPtr)
+    return Pointer_stringify(worldIdPtr);
 }
 
 Module['UnityAPI'].setToken = function(token) {
@@ -30,7 +31,11 @@ Module['UnityAPI'].controlSound = function(isOn) {
 }
 
 Module['UnityAPI'].controlVolume = function(gain) {
-
+  var strBufferSize = lengthBytesUTF8(gain) + 1;
+  var strBuffer = Module._malloc(strBufferSize);
+  stringToUTF8(gain, strBuffer, strBufferSize);
+  Module.dynCall_vi(Module.UnityAPI.controlVolumePtr, strBuffer);
+  Module._free(strBuffer);
 }
 
 Module['UnityAPI'].controlKeyboard = function(unityIsInControl) {
@@ -58,6 +63,7 @@ Module['UnityAPI'].teleportToVector3 = function(x,y,z) {
 }
 
 Module['UnityAPI'].teleportToUser = function(userGuid) {
+    console.log('teleporting to user: '+userGuid);
   var strBufferSize = lengthBytesUTF8(userGuid) + 1;
   var strBuffer = Module._malloc(strBufferSize);
   stringToUTF8(userGuid, strBuffer, strBufferSize);
@@ -66,7 +72,7 @@ Module['UnityAPI'].teleportToUser = function(userGuid) {
 }
 
 Module['UnityAPI'].toggleMinimap = function() {
-
+    Module.dynCall_v(Module.UnityAPI.toggleMinimapPtr);
 }
 
 

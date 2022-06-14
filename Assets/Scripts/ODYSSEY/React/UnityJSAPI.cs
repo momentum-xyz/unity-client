@@ -30,7 +30,7 @@ namespace Odyssey
         public delegate void SetTokenCallback(IntPtr token);
         public delegate void PauseUnityCallback(int isPaused);
         public delegate void ControlSoundCallback(int isOn);
-        public delegate void ControlVolumeCallback(int gain);
+        public delegate void ControlVolumeCallback(IntPtr gain);
         public delegate void ControlKeyboardCallback(int unityIsInControl);
         public delegate void LookAtWispCallback(IntPtr userId);
         public delegate void ToggleMinimapCallback();
@@ -95,6 +95,7 @@ namespace Odyssey
         public static string GetUserPosition()
         {
             Vector3 playerPosition = _c.Get<ISessionData>().WorldAvatarController.transform.position;
+            Debug.Log("Getting player position: "+playerPosition);
             return playerPosition.ToString();
         }
 
@@ -107,13 +108,14 @@ namespace Odyssey
         [MonoPInvokeCallback(typeof(SetTokenCallback))]
         public static void SetToken(IntPtr token)
         {
-
+            string tokenStr = Marshal.PtrToStringAuto(token);
+            _c.Get<IReactBridge>().Token_Event?.Invoke(tokenStr);
         }
 
         [MonoPInvokeCallback(typeof(PauseUnityCallback))]
         public static void PauseUnity(int isPaused)
         {
-
+            
         }
 
         [MonoPInvokeCallback(typeof(ControlSoundCallback))]
@@ -123,9 +125,10 @@ namespace Odyssey
         }
 
         [MonoPInvokeCallback(typeof(ControlVolumeCallback))]
-        public static void ControlVolume(int gain)
+        public static void ControlVolume(IntPtr gain)
         {
-
+            string gainStr = Marshal.PtrToStringAuto(gain);
+            _c.Get<IReactBridge>().OnSetVolume_Event?.Invoke(gainStr);
         }
 
         [MonoPInvokeCallback(typeof(ControlKeyboardCallback))]
@@ -137,30 +140,37 @@ namespace Odyssey
         [MonoPInvokeCallback(typeof(LookAtWispCallback))]
         public static void LookAtWisp(IntPtr userGuid)
         {
-
+            string userGuidStr = Marshal.PtrToStringAuto(userGuid);
+            _c.Get<IReactBridge>().LookAtWisp_Event?.Invoke(userGuidStr);
         }
 
         [MonoPInvokeCallback(typeof(ToggleMinimapCallback))]
         public static void ToggleMinimap()
         {
-
+            _c.Get<IReactBridge>().ToggleMinimap_Event?.Invoke();
         }
 
         [MonoPInvokeCallback(typeof(TeleportToSpaceCallback))]
         public static void TeleportToSpace(IntPtr spaceGuid)
         {
-
+            string spaceGuidStr = Marshal.PtrToStringAuto(spaceGuid);
+            Debug.Log("Teleporting to space: " + spaceGuidStr);
+            _c.Get<IReactBridge>().TeleportToSpace_Event?.Invoke(spaceGuidStr);
         }
 
         [MonoPInvokeCallback(typeof(TeleportToUserCallback))]
         public static void TeleportToUser(IntPtr userGuid)
         {
-
+            string userGuidStr = Marshal.PtrToStringAuto(userGuid);
+            Debug.Log("Teleporting to user: " + userGuidStr);
+            _c.Get<IReactBridge>().TeleportToUser_Event?.Invoke(userGuidStr);
         }
+
         [MonoPInvokeCallback(typeof(TeleportToVector3Callback))]
         public static void TeleportToVector3(float x, float y, float z)
         {
-
+            Debug.Log("Teleporting to position: " + new Vector3(x,y,z));
+            _c.Get<IReactBridge>().TeleportToPosition_Event?.Invoke(new Vector3(x,y,z));
         }
 #endif
     }
