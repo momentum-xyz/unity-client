@@ -17,14 +17,14 @@ public class TourManager : ITourManager, IRequiresContext
 
     public void Start()
     {
-        var reactBridge = _c.Get<IReactBridge>();
+        var reactBridge = _c.Get<IUnityJSAPI>();
         reactBridge.GoToWaypoint_Event += OnGoToWaypoint;
         reactBridge.CancelGoToWaypoint_Event += OnCancelGoToWaypoint;
     }
 
     public void Stop()
     {
-        var reactBridge = _c.Get<IReactBridge>();
+        var reactBridge = _c.Get<IUnityJSAPI>();
         reactBridge.GoToWaypoint_Event += OnGoToWaypoint;
         reactBridge.CancelGoToWaypoint_Event -= OnCancelGoToWaypoint;
     }

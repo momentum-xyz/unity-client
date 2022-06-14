@@ -78,7 +78,7 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
 
     public void TeleportToUser(string userId)
     {
-        _c.Get<IReactBridge>().TeleportToUser_Event?.Invoke(userId);
+        _c.Get<IUnityJSAPI>().TeleportToUser_Event?.Invoke(userId);
     }
 
     public void FollowUser(string userId)
@@ -106,7 +106,7 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
     {
         WorldObject worldObj = GetObjectByName(name);
         if (worldObj == null) return;
-        _c.Get<IReactBridge>().TeleportToSpace_Event?.Invoke(worldObj.guid.ToString());
+        _c.Get<IUnityJSAPI>().TeleportToSpace_Event?.Invoke(worldObj.guid.ToString());
     }
 
     public WorldObject GetObjectByName(string name)
@@ -171,12 +171,12 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
     {
         if (isPaused)
         {
-            _c.Get<IReactBridge>().PauseUnity_Event?.Invoke();
+            _c.Get<IUnityJSAPI>().PauseUnity_Event?.Invoke();
 
         }
         else
         {
-            _c.Get<IReactBridge>().ResumeUnity_Event?.Invoke();
+            _c.Get<IUnityJSAPI>().ResumeUnity_Event?.Invoke();
         }
     }
 

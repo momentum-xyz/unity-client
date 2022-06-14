@@ -67,7 +67,6 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IWispManager>(GetComponentInChildren<IWispManager>(true));
         context.RegisterService<ITeleportSystem>(GetComponentInChildren<ITeleportSystem>(true));
         context.RegisterService<ISpawner>(GetComponentInChildren<ISpawner>(true));
-        context.RegisterService<IReactBridge>(GetComponentInChildren<IReactBridge>(true));
         context.RegisterService<IMinimapDriver>(GetComponentInChildren<IMinimapDriver>(true));
         context.RegisterService<IInfoUIDriver>(GetComponentInChildren<IInfoUIDriver>(true));
         context.RegisterService<IResolutionManager>(GetComponentInChildren<IResolutionManager>(true));

@@ -25,7 +25,7 @@ public class MinimapDriver : MonoBehaviour, IRequiresContext, IMinimapDriver
         _c.Get<ISpawner>().OnPlayerAvatarSpawned += OnPlayerAvatarSpawned;
         _c.Get<ISpawner>().OnObjectSpawned += OnObjectSpwaned;
         _c.Get<ISpawner>().OnBeforeObjectDestroyed += OnBeforeObjectDestroyed;
-        _c.Get<IReactBridge>().ToggleMinimap_Event += OnToggleMinimap;
+        _c.Get<IUnityJSAPI>().ToggleMinimap_Event += OnToggleMinimap;
     }
 
 
@@ -38,7 +38,7 @@ public class MinimapDriver : MonoBehaviour, IRequiresContext, IMinimapDriver
         _c.Get<ISpawner>().OnPlayerAvatarSpawned -= OnPlayerAvatarSpawned;
         _c.Get<ISpawner>().OnObjectSpawned -= OnObjectSpwaned;
         _c.Get<ISpawner>().OnBeforeObjectDestroyed -= OnBeforeObjectDestroyed;
-        _c.Get<IReactBridge>().ToggleMinimap_Event -= OnToggleMinimap;
+        _c.Get<IUnityJSAPI>().ToggleMinimap_Event -= OnToggleMinimap;
     }
 
     public void Init(IMomentumContext context)

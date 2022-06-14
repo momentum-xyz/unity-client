@@ -9,10 +9,43 @@ namespace Odyssey
 {
     public interface IUnityJSAPI : IRequiresContext
     {
+        public Action ToggleAllSound_Event { get; set; }
+        public Action TurnAllSoundOn_Event { get; set; }
+        public Action TurnAllSoundOff_Event { get; set; }
+        public Action<string> OnSetVolume_Event { get; set; }
+        public Action<string> LookAtWisp_Event { get; set; }
+        public Action<string> Token_Event { get; set; }
+        public Action PauseUnity_Event { get; set; }
+        public Action ResumeUnity_Event { get; set; }
+        public Action<string> TeleportToSpace_Event { get; set; }
+        public Action<Vector3> TeleportToPosition_Event { get; set; }
+        public Action<string> TeleportToUser_Event { get; set; }
+        public Action ToggleMinimap_Event { get; set; }
+        public Action<bool> ControlKeyboard_Event { get; set; }
+        public Action<Vector3, int> GoToWaypoint_Event { get; set; }
+        public Action CancelGoToWaypoint_Event { get; set; }
+        public Action<string> ControllerSettings_Event { get; set; }
     }
 
     public class UnityJSAPI : IUnityJSAPI
     {
+        public Action ToggleAllSound_Event { get; set; }
+        public Action TurnAllSoundOn_Event { get; set; }
+        public Action TurnAllSoundOff_Event { get; set; }
+        public Action<string> OnSetVolume_Event { get; set; }
+        public Action<string> LookAtWisp_Event { get; set; }
+        public Action<string> Token_Event { get; set; }
+        public Action PauseUnity_Event { get; set; }
+        public Action ResumeUnity_Event { get; set; }
+        public Action<string> TeleportToSpace_Event { get; set; }
+        public Action<Vector3> TeleportToPosition_Event { get; set; }
+        public Action<string> TeleportToUser_Event { get; set; }
+        public Action ToggleMinimap_Event { get; set; }
+        public Action<bool> ControlKeyboard_Event { get; set; }
+        public Action<Vector3, int> GoToWaypoint_Event { get; set; }
+        public Action CancelGoToWaypoint_Event { get; set; }
+        public Action<string> ControllerSettings_Event { get; set; }
+
         private IMomentumContext _c;
 
         public void Init(IMomentumContext context)
@@ -24,6 +57,7 @@ namespace Odyssey
 
     public static class NativeUnityJSAPI
     {
+        private static UnityJSAPI _apiInstance;
         private static IMomentumContext _c;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -62,6 +96,7 @@ namespace Odyssey
         public static void Init(IMomentumContext ctx)
         {
             _c = ctx;
+
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             SetCallbacks(
@@ -109,45 +144,53 @@ namespace Odyssey
         public static void SetToken(IntPtr token)
         {
             string tokenStr = Marshal.PtrToStringAuto(token);
-            _c.Get<IReactBridge>().Token_Event?.Invoke(tokenStr);
+            _c.Get<IUnityJSAPI>().Token_Event?.Invoke(tokenStr);
         }
 
         [MonoPInvokeCallback(typeof(PauseUnityCallback))]
         public static void PauseUnity(int isPaused)
         {
-            
+            if(isPaused) {
+                _c.Get<IUnityJSAPI>().PauseUnity_Event?.Invoke();
+            } else {
+                _c.Get<IUnityJSAPI>().ResumeUnity_Event?.Invoke();
+            }
         }
 
         [MonoPInvokeCallback(typeof(ControlSoundCallback))]
         public static void ControlSound(int isOn)
         {
-
+            if(isOn) {
+                _c.Get<IUnityJSAPI>().TurnAllSoundOn_Event?.Invoke();
+            } else {
+                _c.Get<IUnityJSAPI>().TurnAllSoundOff_Event?.Invoke();
+            }
         }
 
         [MonoPInvokeCallback(typeof(ControlVolumeCallback))]
         public static void ControlVolume(IntPtr gain)
         {
             string gainStr = Marshal.PtrToStringAuto(gain);
-            _c.Get<IReactBridge>().OnSetVolume_Event?.Invoke(gainStr);
+            _c.Get<IUnityJSAPI>().OnSetVolume_Event?.Invoke(gainStr);
         }
 
         [MonoPInvokeCallback(typeof(ControlKeyboardCallback))]
         public static void ControlKeyboard(int unityIsInControl)
         {
-
+            _c.Get<IUnityJSAPI>().ControlKeyboard_Event?.Invoke(unityIsInControl > 0);
         }
 
         [MonoPInvokeCallback(typeof(LookAtWispCallback))]
         public static void LookAtWisp(IntPtr userGuid)
         {
             string userGuidStr = Marshal.PtrToStringAuto(userGuid);
-            _c.Get<IReactBridge>().LookAtWisp_Event?.Invoke(userGuidStr);
+            _c.Get<IUnityJSAPI>().LookAtWisp_Event?.Invoke(userGuidStr);
         }
 
         [MonoPInvokeCallback(typeof(ToggleMinimapCallback))]
         public static void ToggleMinimap()
         {
-            _c.Get<IReactBridge>().ToggleMinimap_Event?.Invoke();
+            _c.Get<IUnityJSAPI>().ToggleMinimap_Event?.Invoke();
         }
 
         [MonoPInvokeCallback(typeof(TeleportToSpaceCallback))]
@@ -155,7 +198,7 @@ namespace Odyssey
         {
             string spaceGuidStr = Marshal.PtrToStringAuto(spaceGuid);
             Debug.Log("Teleporting to space: " + spaceGuidStr);
-            _c.Get<IReactBridge>().TeleportToSpace_Event?.Invoke(spaceGuidStr);
+            _c.Get<IUnityJSAPI>().TeleportToSpace_Event?.Invoke(spaceGuidStr);
         }
 
         [MonoPInvokeCallback(typeof(TeleportToUserCallback))]
@@ -163,14 +206,14 @@ namespace Odyssey
         {
             string userGuidStr = Marshal.PtrToStringAuto(userGuid);
             Debug.Log("Teleporting to user: " + userGuidStr);
-            _c.Get<IReactBridge>().TeleportToUser_Event?.Invoke(userGuidStr);
+            _c.Get<IUnityJSAPI>().TeleportToUser_Event?.Invoke(userGuidStr);
         }
 
         [MonoPInvokeCallback(typeof(TeleportToVector3Callback))]
         public static void TeleportToVector3(float x, float y, float z)
         {
             Debug.Log("Teleporting to position: " + new Vector3(x,y,z));
-            _c.Get<IReactBridge>().TeleportToPosition_Event?.Invoke(new Vector3(x,y,z));
+            _c.Get<IUnityJSAPI>().TeleportToPosition_Event?.Invoke(new Vector3(x,y,z));
         }
 #endif
     }
