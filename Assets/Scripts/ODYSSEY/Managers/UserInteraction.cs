@@ -53,13 +53,6 @@ public class UserInteraction : IRequiresContext, IUserInteraction
             {
                 string guid = HS.Clickable.Selection.Driver.guid.ToString();
 
-                bool isStructurePrivate = _c.Get<IWorldDataService>().CanAccessObject(Guid.Parse(guid));
-                bool processClick = false;
-
-                processClick = !isStructurePrivate || (isStructurePrivate);
-
-                if (!processClick) return;
-
                 if (HS.Clickable.Selection is IClickable && HS.Clickable.Selection.GetLabel().Length > 0)
                 {
                     _c.Get<IUnityToReact>().SendClick(guid, ((IClickable)HS.Clickable.Selection).GetLabel());

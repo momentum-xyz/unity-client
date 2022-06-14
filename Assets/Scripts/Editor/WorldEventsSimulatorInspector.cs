@@ -40,6 +40,9 @@ public class WorldEventsSimulatorInspector : Editor
     private string _interactionMsgGuid = "";
     private string _interactionMsgString = "";
 
+    private string _privacyGuid = "";
+    private int _privacyMode = 0;
+
     private float _relayChainRadius = 300.0f;
 
     private string stageModeGUID = "";
@@ -278,6 +281,31 @@ public class WorldEventsSimulatorInspector : Editor
             worldEventsSimulator.SetStageMode(stageModeGUID, false);
         }
         EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space();
+        GUILayout.Label("Privacy Mode", EditorStyles.boldLabel);
+        EditorGUILayout.Space();
+
+        EditorGUILayout.BeginHorizontal();
+        _privacyGuid = EditorGUILayout.TextField("GUID", _privacyGuid);
+
+        if (GUILayout.Button("0"))
+        {
+            worldEventsSimulator.UpdatePrivacy(Guid.Parse(_privacyGuid), 0);
+        }
+
+        if (GUILayout.Button("1"))
+        {
+            worldEventsSimulator.UpdatePrivacy(Guid.Parse(_privacyGuid), 1);
+        }
+
+        if (GUILayout.Button("2"))
+        {
+            worldEventsSimulator.UpdatePrivacy(Guid.Parse(_privacyGuid), 2);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
 
         EditorGUILayout.BeginHorizontal();
 
