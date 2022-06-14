@@ -26,7 +26,6 @@ namespace Odyssey
 
     public class NetworkingSerivce : INetworkingService, IRequiresContext
     {
-        private const float RECONNECT_TIMEOUT_SEC = 3.0f;
         public Action<string> OnConnectedToWorld_Event { get; set; }
         public Action OnDisconnected_Event { get; set; }
 
@@ -40,8 +39,6 @@ namespace Odyssey
         bool _afterReconnect = false;
         bool _ignorePositionMessages = false;
         bool _isConnected = false;
-        float _reconnectTimer = 0.0f;
-
 
         public void Init(IMomentumContext context)
         {
@@ -80,9 +77,7 @@ namespace Odyssey
 
         public void SetupEventHandling()
         {
-#if !UNITY_EDITOR && UNITY_WEBGL
             _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
-#endif
         }
 
         public void InitNetworkingServices()
@@ -100,9 +95,9 @@ namespace Odyssey
         }
         public void Dispose()
         {
-#if !UNITY_EDITOR && UNITY_WEBGL
+
             _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
-#endif
+
             _posBus.OnPosBusConnected -= OnPosBusConnected;
             _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
             _posBus.OnPosBusMessage -= OnPosBusMessage;
@@ -193,8 +188,7 @@ namespace Odyssey
             if (errorCode == PosBusDisconnectError.UNKNOWN)
             {
                 Logging.Log("[NetworkingManager] PosBus disconnected due to unknown reason, trying to re-connect", LogMsgType.NETWORKING);
-
-                DoReconnectAfterTime();
+                DoReconnect();
             }
         }
 
@@ -273,18 +267,20 @@ namespace Odyssey
         }
 
         /// <summary>
-        /// This function will force a reconnect, but after RECONNECT_TIMEOUT_SEC time seconds
+        /// This function will force a reconnect
         /// </summary>
-        void DoReconnectAfterTime()
+        void DoReconnect()
         {
             _resendHandshakeOnConnect = true;
             _afterReconnect = true;
             _doReconnect = true;
-            _reconnectTimer = 0.0f;
         }
+
+
 
         public void Update()
         {
+
             if (_isConnected)
             {
                 _posBus.ProcessReceivedMessagesFromMainThread();
@@ -292,14 +288,9 @@ namespace Odyssey
 
             if (_doReconnect)
             {
-                _reconnectTimer += Time.deltaTime;
-
-                if (_reconnectTimer >= RECONNECT_TIMEOUT_SEC)
-                {
-                    _doReconnect = false;
-                    _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
-                    _posBus.Connect();
-                }
+                _doReconnect = false;
+                _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
+                _posBus.Connect();
             }
 
         }

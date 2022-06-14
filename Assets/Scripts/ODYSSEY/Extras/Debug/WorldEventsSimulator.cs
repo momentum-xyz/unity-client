@@ -180,5 +180,10 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
         }
     }
 
+    public void TriggerDisconnectError()
+    {
+        _c.Get<IPosBus>().OnPosBusDisconnected?.Invoke(PosBusDisconnectError.UNKNOWN);
+    }
+
 
 }
