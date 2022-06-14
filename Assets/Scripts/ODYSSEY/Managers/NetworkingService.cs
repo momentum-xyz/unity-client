@@ -80,9 +80,7 @@ namespace Odyssey
 
         public void SetupEventHandling()
         {
-#if !UNITY_EDITOR && UNITY_WEBGL
             _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
-#endif
         }
 
         public void InitNetworkingServices()
@@ -100,9 +98,9 @@ namespace Odyssey
         }
         public void Dispose()
         {
-#if !UNITY_EDITOR && UNITY_WEBGL
+
             _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
-#endif
+
             _posBus.OnPosBusConnected -= OnPosBusConnected;
             _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
             _posBus.OnPosBusMessage -= OnPosBusMessage;
