@@ -70,12 +70,11 @@ namespace Odyssey
             _c.Get<INetworkingService>().SetupEventHandling();
             _c.Get<INetworkingService>().SetupFromConfig(_networkConfigData);
 
-#if UNITY_WEBGL && !UNITY_EDITOR
             // Call Momentum Loaded event in Start, because
             // at that point in time React has access to the unityInstance
             // if we call it in Awake, unityInstance is not yet available
             _c.Get<IUnityToReact>().SendMomentumLoadedToReact();
-#endif
+
             _c.Get<ILoadingScreenManager>().SetLoading(true, true);
 
             // Add local mock addressables as they are already downloaded addressables
