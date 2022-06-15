@@ -35,7 +35,7 @@ public class TourManager : ITourManager, IRequiresContext
         _teleportID = teleportSystem.TeleportToPosition(position, onDone: () =>
             {
                 _teleportID = null;
-                _c.Get<IUnityToReact>().SendWaypointReached(waypointIndex);
+                _c.Get<IReactAPI>().SendWaypointReached(waypointIndex);
             });
     }
     private void OnCancelGoToWaypoint()

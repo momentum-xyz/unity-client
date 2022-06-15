@@ -60,7 +60,7 @@ public class MomentumContextInit : MonoBehaviour
 
         context.RegisterService<IBackendService>(new BackendService());
         context.RegisterService<IRendermanService>(new RendermanService());
-        context.RegisterService<IUnityToReact>(new UnityToReact());
+        context.RegisterService<IReactAPI>(new ReactAPI());
         context.RegisterService<IEffectsService>(new EffectsService());
 
         context.RegisterService<IWorldPrefabHolder>(GetComponentInChildren<IWorldPrefabHolder>(true));
