@@ -130,7 +130,6 @@ namespace Odyssey
         public static string GetUserPosition()
         {
             Vector3 playerPosition = _c.Get<ISessionData>().WorldAvatarController.transform.position;
-            Debug.Log("Getting player position: "+playerPosition);
             return playerPosition.ToString();
         }
 
@@ -150,7 +149,7 @@ namespace Odyssey
         [MonoPInvokeCallback(typeof(PauseUnityCallback))]
         public static void PauseUnity(int isPaused)
         {
-            if(isPaused) {
+            if(isPaused > 0) {
                 _c.Get<IUnityJSAPI>().PauseUnity_Event?.Invoke();
             } else {
                 _c.Get<IUnityJSAPI>().ResumeUnity_Event?.Invoke();
@@ -160,7 +159,7 @@ namespace Odyssey
         [MonoPInvokeCallback(typeof(ControlSoundCallback))]
         public static void ControlSound(int isOn)
         {
-            if(isOn) {
+            if(isOn > 0) {
                 _c.Get<IUnityJSAPI>().TurnAllSoundOn_Event?.Invoke();
             } else {
                 _c.Get<IUnityJSAPI>().TurnAllSoundOff_Event?.Invoke();

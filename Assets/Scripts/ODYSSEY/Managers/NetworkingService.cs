@@ -77,7 +77,7 @@ namespace Odyssey
 
         public void SetupEventHandling()
         {
-            _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
+            _c.Get<IUnityJSAPI>().Token_Event += OnReceivedToken;
         }
 
         public void InitNetworkingServices()
@@ -96,7 +96,7 @@ namespace Odyssey
         public void Dispose()
         {
 
-            _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
+            _c.Get<IUnityJSAPI>().Token_Event -= OnReceivedToken;
 
             _posBus.OnPosBusConnected -= OnPosBusConnected;
             _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
