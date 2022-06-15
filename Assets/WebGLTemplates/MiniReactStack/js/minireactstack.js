@@ -35,5 +35,8 @@ ReactUnityWebGL = {
     },
     HideLogo: function() {
 
+    },
+    RelayMessage: function(target, msg) {
+        console.log('Got relay msg: '+target+','+msg);
     }
 }

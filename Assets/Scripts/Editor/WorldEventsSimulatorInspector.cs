@@ -323,6 +323,15 @@ public class WorldEventsSimulatorInspector : Editor
 
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Connection");
+
+        if(GUILayout.Button("Disconnect"))
+        {
+            worldEventsSimulator.TriggerDisconnectError();
+        }
+        EditorGUILayout.EndHorizontal();
+
         serializedObject.Update();
 
         EditorUtility.SetDirty(target);
