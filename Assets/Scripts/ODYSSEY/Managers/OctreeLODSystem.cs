@@ -84,20 +84,22 @@ namespace Odyssey
 
                 int lod = GetLODLevelForDistance(distance);
 
+                int texturesLod = GetTextureLODForDistance(distance);
+
+                // use the highest texture quality, if onlyHighQualitytextures is set to true in the StructureOption behaviour
+                if (nearby[i].onlyHighQualityTextures) texturesLod = 0;
+
                 // object lod
                 nearby[i].LOD = lod;
 
                 // textures lod (load different size of textures based on distance)
-                if (nearby[i].texturesLOD != lod) nearby[i].texturesDirty = true;
+                if (nearby[i].texturesLOD != texturesLod)
+                {
+                    Debug.Log(nearby[i].name + " " + lod + " vs " + nearby[i].texturesLOD);
+                    nearby[i].texturesDirty = true;
+                    nearby[i].texturesLOD = texturesLod;
+                }
 
-                if (nearby[i].onlyHighQualityTextures)
-                {
-                    nearby[i].texturesLOD = 0; // use the highest texture quality, if onlyHighQualitytextures is set to true in the StructureOption behaviour
-                }
-                else
-                {
-                    nearby[i].texturesLOD = GetTextureLODForDistance(distance);
-                }
 
                 AlphaStructureDriver structureDriver = nearby[i].GetStructureDriver();
 
