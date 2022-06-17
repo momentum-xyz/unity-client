@@ -39,6 +39,7 @@ namespace Odyssey
         bool _afterReconnect = false;
         bool _ignorePositionMessages = false;
         bool _isConnected = false;
+        bool _tokenIsInvalid = false;
 
         public void Init(IMomentumContext context)
         {
@@ -77,6 +78,7 @@ namespace Odyssey
 
         public void SetupEventHandling()
         {
+            _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
             _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
         }
 
@@ -86,21 +88,20 @@ namespace Odyssey
 
             _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
 
+            _posBus.OnPosBusConnected -= OnPosBusConnected;
+            _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
+            _posBus.OnPosBusMessage -= OnPosBusMessage;
+
             _posBus.OnPosBusConnected += OnPosBusConnected;
             _posBus.OnPosBusDisconnected += OnPosBusDisconnected;
             _posBus.OnPosBusMessage += OnPosBusMessage;
 
             _afterReconnect = false;
             _doReconnect = false;
+
         }
         public void Dispose()
         {
-
-            _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
-
-            _posBus.OnPosBusConnected -= OnPosBusConnected;
-            _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
-            _posBus.OnPosBusMessage -= OnPosBusMessage;
 
 #if UNITY_EDITOR
             GameObject.DestroyImmediate(_configData, true);
@@ -126,7 +127,7 @@ namespace Odyssey
             //Logging.Log("[NetworkingService] Sending handshake to posbus...");
 
             _posBus.SendHandshake
-                (_c.Get<ISessionData>().Token,
+                (_c.Get<ISessionData>().Token + "a",
                 _c.Get<ISessionData>().UserID.ToString(),
                 _c.Get<ISessionData>().SessionID,
                 sendDomain ? _c.Get<ISessionData>().NetworkingConfig.domain : ""
@@ -155,6 +156,8 @@ namespace Odyssey
             //Logging.Log("Got token: " + token, LogMsgType.USER);
             Logging.Log("Got userID:" + _c.Get<ISessionData>().UserID, LogMsgType.USER);
             Logging.Log("Got name: " + tokenData.name);
+
+            _tokenIsInvalid = false;
         }
 
 
@@ -178,6 +181,12 @@ namespace Odyssey
         {
             _isConnected = false;
 
+            if (errorCode == PosBusDisconnectError.UNKNOWN && _tokenIsInvalid)
+            {
+                Logging.Log("[NetworkingManager] Our token is invalid, so do not re-connect until we receive a new token.");
+                return;
+            }
+
             if (_c.Get<ISessionData>().IsUnityTerminatedExternaly)
             {
                 Logging.Log("[NetworkingManager] PosBus Disconnected from an External Force!");
@@ -188,7 +197,9 @@ namespace Odyssey
             if (errorCode == PosBusDisconnectError.UNKNOWN)
             {
                 Logging.Log("[NetworkingManager] PosBus disconnected due to unknown reason, trying to re-connect", LogMsgType.NETWORKING);
+
                 DoReconnect();
+                return;
             }
         }
 
@@ -262,6 +273,14 @@ namespace Odyssey
 
                     _c.Get<ISessionData>().GotSelfPositionMsg = true;
                     _c.Get<ISessionData>().SelfPosition = m.position;
+                    break;
+
+                case PosBusSignalMsg m:
+                    if (m.signal == PosBusSignalType.InvalidToken)
+                    {
+                        Logging.Log("[NetworkingServicer] Got PosBus Signal: Invalid Token");
+                        _tokenIsInvalid = true;
+                    }
                     break;
             }
         }

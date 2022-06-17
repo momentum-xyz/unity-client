@@ -29,11 +29,6 @@ namespace Odyssey.Networking
         public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "");
     }
 
-    public enum SignalType : UInt32
-    {
-        DualConnection = 1
-    }
-
     public interface IPosBusMessage { }
 
     public class PosBusPosMsg : IPosBusMessage
@@ -127,7 +122,7 @@ namespace Odyssey.Networking
 
     public class PosBusSignalMsg : IPosBusMessage
     {
-        public SignalType signal;
+        public PosBusSignalType signal;
     }
 
     public struct DecorationMetadata
@@ -214,6 +209,15 @@ namespace Odyssey.Networking
             position = pos;
 
         }
+    }
+
+    public enum PosBusSignalType
+    {
+        None = 0,
+        DualConnection = 1, // Send from PosBus when we have another user connected with the same token
+        Ready = 2, // Send from Unity when we spawned the world
+        InvalidToken = 3, // Invald Token send on handshake
+        Spawn = 4 // Send from PosBus, when the initial batch of World data is sent
     }
 
     public class PosBusRemoveStaticObjectsMsg : IPosBusMessage
@@ -506,7 +510,7 @@ namespace Odyssey.Networking
                 case PosBusAPI.Msg.Signal:
                     {
                         var m = new PosBusAPI.SignalMsg(message);
-                        var signalType = (SignalType)m.Signal();
+                        var signalType = (PosBusSignalType)m.Signal();
                         EnqueueMessage(new PosBusSignalMsg()
                         {
                             signal = signalType,

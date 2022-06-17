@@ -140,9 +140,9 @@ namespace Odyssey
             }
         }
 
-        void OnPosBusSignal(SignalType signal)
+        void OnPosBusSignal(PosBusSignalType signal)
         {
-            if (signal == SignalType.DualConnection)
+            if (signal == PosBusSignalType.DualConnection)
             {
                 Logging.Log("[WorldTickingState] Received Disconnect Signal from PosBus! Exterminating Unity Client!");
 
