@@ -22,7 +22,7 @@ namespace PosBusAPI
         TriggerTransitionalBridgingEffectsOnPosition = 0xF6AB754D,
         TriggerInteraction = 0x2C0A16A0,
         SimpleNotification = 0x3CADFD52,
-        RelayToReact   = 0xB5BBCFA2,
+        RelayToReact = 0xB5BBCFA2,
         Signal = 0x6A8634A3,
         SwitchWorld = 0x7D40FD67
 
@@ -50,7 +50,7 @@ namespace PosBusAPI
         Wow = 1,
         HighFive = 2,
         EnteredSpace = 3,
-        LeftSpace = 4, 
+        LeftSpace = 4,
         TriggerStake = 5
     }
 
@@ -58,10 +58,12 @@ namespace PosBusAPI
     {
         SignalNone = 0,
         SignalDualConnection = 1,
-        SignalReady = 2
+        SignalReady = 2,
+        SignalTokenInvalid = 3,
+        SignalSpawn = 4
     }
 
-public struct Decoder
+    public struct Decoder
     {
         public static Guid getUUID(byte[] buf, int offset)
         {
@@ -220,13 +222,14 @@ public struct Decoder
     public class SimpleNotificationMsg : PosBusMsg
     {
         public SimpleNotificationMsg(PosBusMsg b) { __b = b.Buffer; }
-        public PosBusSimpleNotificationMsg Get(){
+        public PosBusSimpleNotificationMsg Get()
+        {
             var obj = new PosBusSimpleNotificationMsg();
-            obj.Destination =(PosBusAPI.Destination)__b[4];
+            obj.Destination = (PosBusAPI.Destination)__b[4];
             obj.Kind = BitConverter.ToUInt32(__b, 5);
-            obj.Flag=BitConverter.ToInt32(__b, 9);
+            obj.Flag = BitConverter.ToInt32(__b, 9);
             var slen = (Int32)BitConverter.ToUInt32(__b, 13);
-            obj.Message=System.Text.Encoding.ASCII.GetString(__b, 17,slen);
+            obj.Message = System.Text.Encoding.ASCII.GetString(__b, 17, slen);
             return obj;
         }
 
@@ -234,14 +237,15 @@ public struct Decoder
     public class RelayToReactMsg : PosBusMsg
     {
         public RelayToReactMsg(PosBusMsg b) { __b = b.Buffer; }
-        public PosBusRelayToReactMsg Get(){
+        public PosBusRelayToReactMsg Get()
+        {
             var obj = new PosBusRelayToReactMsg();
             var toffs = 4;
             var tlen = (Int32)BitConverter.ToUInt32(__b, toffs);
-            obj.Target=System.Text.Encoding.ASCII.GetString(__b, toffs+4,tlen);
-            var moffs = toffs +4+ tlen;
+            obj.Target = System.Text.Encoding.ASCII.GetString(__b, toffs + 4, tlen);
+            var moffs = toffs + 4 + tlen;
             var mlen = (Int32)BitConverter.ToUInt32(__b, moffs);
-            obj.Message=System.Text.Encoding.ASCII.GetString(__b, moffs+4,mlen);
+            obj.Message = System.Text.Encoding.ASCII.GetString(__b, moffs + 4, mlen);
             return obj;
         }
     }
