@@ -95,7 +95,6 @@ namespace Odyssey
                 // textures lod (load different size of textures based on distance)
                 if (nearby[i].texturesLOD != texturesLod)
                 {
-                    Debug.Log(nearby[i].name + " " + lod + " vs " + nearby[i].texturesLOD);
                     nearby[i].texturesDirty = true;
                     nearby[i].texturesLOD = texturesLod;
                 }
