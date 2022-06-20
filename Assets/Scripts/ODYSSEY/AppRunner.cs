@@ -38,7 +38,7 @@ public class AppRunner : MonoBehaviour, IRequiresContext
     void OnNetworkConnectionLost()
     {
         Logging.Log("[AppRunner] App has lost networking connection.. Shutting down..");
-        _c.Get<IUnityToReact>().ExterminateUnity();
+        _c.Get<IReactAPI>().ExterminateUnity();
         _c.Get<ISessionData>().IsUnityTerminatedExternaly = true;
         _c.Get<IStateMachine>().SwitchState(typeof(ShutdownState));
     }

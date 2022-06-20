@@ -46,6 +46,7 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<ILODSystem>(new OctreeLODSystem());
         context.RegisterService<IFollowUserController>(new FollowUserController());
         context.RegisterService<IUserInteraction>(new UserInteraction());
+        context.RegisterService<IUnityJSAPI>(new UnityJSAPI());
 
         if (networkingConfigData.useMockData)
         {
@@ -59,14 +60,13 @@ public class MomentumContextInit : MonoBehaviour
 
         context.RegisterService<IBackendService>(new BackendService());
         context.RegisterService<IRendermanService>(new RendermanService());
-        context.RegisterService<IUnityToReact>(new UnityToReact());
+        context.RegisterService<IReactAPI>(new ReactAPI());
         context.RegisterService<IEffectsService>(new EffectsService());
 
         context.RegisterService<IWorldPrefabHolder>(GetComponentInChildren<IWorldPrefabHolder>(true));
         context.RegisterService<IWispManager>(GetComponentInChildren<IWispManager>(true));
         context.RegisterService<ITeleportSystem>(GetComponentInChildren<ITeleportSystem>(true));
         context.RegisterService<ISpawner>(GetComponentInChildren<ISpawner>(true));
-        context.RegisterService<IReactBridge>(GetComponentInChildren<IReactBridge>(true));
         context.RegisterService<IMinimapDriver>(GetComponentInChildren<IMinimapDriver>(true));
         context.RegisterService<IInfoUIDriver>(GetComponentInChildren<IInfoUIDriver>(true));
         context.RegisterService<IResolutionManager>(GetComponentInChildren<IResolutionManager>(true));

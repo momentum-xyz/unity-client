@@ -54,10 +54,10 @@ namespace Odyssey
             Debug.Log("Client running from Git " + GitCommit.Description + " version: " + GitCommit.Version);
 
             // Graphic Card
-            Debug.Log("Graphic Card: " + _c.Get<IUnityToReact>().GetGraphicCardFromBrowser());
+            Debug.Log("Graphic Card: " + _c.Get<IReactAPI>().GetGraphicCardFromBrowser());
 
             // Browser Name
-            Debug.Log("Browser: " + _c.Get<IUnityToReact>().GetBrowser());
+            Debug.Log("Browser: " + _c.Get<IReactAPI>().GetBrowser());
 
             // Default Controller Settings
             var controllerSettingsScriptableObj = Resources.LoadAll<ThirdPersonControllerSettings>("").FirstOrDefault();
@@ -69,13 +69,13 @@ namespace Odyssey
             // Setup NetworkingService from configuration
             _c.Get<INetworkingService>().SetupEventHandling();
             _c.Get<INetworkingService>().SetupFromConfig(_networkConfigData);
+            _c.Get<INetworkingService>().InitNetworkingServices();
 
-#if UNITY_WEBGL && !UNITY_EDITOR
             // Call Momentum Loaded event in Start, because
             // at that point in time React has access to the unityInstance
             // if we call it in Awake, unityInstance is not yet available
-            _c.Get<IUnityToReact>().SendMomentumLoadedToReact();
-#endif
+            _c.Get<IReactAPI>().SendMomentumLoadedToReact();
+
             _c.Get<ILoadingScreenManager>().SetLoading(true, true);
 
             // Add local mock addressables as they are already downloaded addressables

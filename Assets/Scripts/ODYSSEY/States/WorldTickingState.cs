@@ -100,7 +100,7 @@ namespace Odyssey
             _c.Get<ILoadingScreenManager>().SetLoading(false);
 
             // Send Events to React and PosBus that the World is spawned and ready
-            _c.Get<IUnityToReact>().SendReadyToTeleportToReact();
+            _c.Get<IReactAPI>().SendReadyToTeleportToReact();
             _c.Get<IPosBus>().UnityReady();
 
 
@@ -117,7 +117,7 @@ namespace Odyssey
 
             if (label == "dashboard")
             {
-                _c.Get<IUnityToReact>().SendClick(guid.ToString(), label);
+                _c.Get<IReactAPI>().SendClick(guid.ToString(), label);
             }
             else if (label == "flyto")
             {
@@ -125,7 +125,7 @@ namespace Odyssey
             }
             else
             {
-                _c.Get<IUnityToReact>().SendClick(guid.ToString(), label);
+                _c.Get<IReactAPI>().SendClick(guid.ToString(), label);
             }
 
         }
@@ -140,13 +140,13 @@ namespace Odyssey
             }
         }
 
-        void OnPosBusSignal(SignalType signal)
+        void OnPosBusSignal(PosBusSignalType signal)
         {
-            if (signal == SignalType.DualConnection)
+            if (signal == PosBusSignalType.DualConnection)
             {
                 Logging.Log("[WorldTickingState] Received Disconnect Signal from PosBus! Exterminating Unity Client!");
 
-                _c.Get<IUnityToReact>().ExterminateUnity();
+                _c.Get<IReactAPI>().ExterminateUnity();
 
                 _c.Get<ISessionData>().IsUnityTerminatedExternaly = true;
                 _c.Get<IStateMachine>().SwitchState(typeof(ShutdownState));

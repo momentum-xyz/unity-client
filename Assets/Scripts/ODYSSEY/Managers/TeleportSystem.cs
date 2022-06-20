@@ -33,16 +33,16 @@ public class TeleportSystem : MonoBehaviour, ITeleportSystem, IRequiresContext
 
     void OnEnable()
     {
-        _c.Get<IReactBridge>().TeleportToSpace_Event += OnTeleportToSpace;
-        _c.Get<IReactBridge>().TeleportToPosition_Event += OnTeleportToPosition;
-        _c.Get<IReactBridge>().TeleportToUser_Event += OnTeleportToUser;
+        _c.Get<IUnityJSAPI>().TeleportToSpace_Event += OnTeleportToSpace;
+        _c.Get<IUnityJSAPI>().TeleportToPosition_Event += OnTeleportToPosition;
+        _c.Get<IUnityJSAPI>().TeleportToUser_Event += OnTeleportToUser;
     }
 
     public void OnDisable()
     {
-        _c.Get<IReactBridge>().TeleportToSpace_Event -= OnTeleportToSpace;
-        _c.Get<IReactBridge>().TeleportToPosition_Event -= OnTeleportToPosition;
-        _c.Get<IReactBridge>().TeleportToUser_Event -= OnTeleportToUser;
+        _c.Get<IUnityJSAPI>().TeleportToSpace_Event -= OnTeleportToSpace;
+        _c.Get<IUnityJSAPI>().TeleportToPosition_Event -= OnTeleportToPosition;
+        _c.Get<IUnityJSAPI>().TeleportToUser_Event -= OnTeleportToUser;
     }
 
     public void OnTeleportToUser(string guid)
