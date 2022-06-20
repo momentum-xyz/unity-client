@@ -133,7 +133,7 @@ namespace Odyssey
             //Logging.Log("[NetworkingService] Sending handshake to posbus...");
 
             _posBus.SendHandshake
-                (_c.Get<ISessionData>().Token + "a",
+                (_c.Get<ISessionData>().Token,
                 _c.Get<ISessionData>().UserID.ToString(),
                 _c.Get<ISessionData>().SessionID,
                 sendDomain ? _c.Get<ISessionData>().NetworkingConfig.domain : ""
@@ -211,13 +211,11 @@ namespace Odyssey
 
         void OnReceivedToken(string token)
         {
-
             SetUserToken(token);
             _posBus.SetToken(_c.Get<ISessionData>().Token, _c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID);
 
             if(!_isConnected)
             {
-                InitNetworkingServices();
                 ConnectServices();
             }
 
@@ -284,6 +282,7 @@ namespace Odyssey
                     {
                         Logging.Log("[NetworkingServicer] Got PosBus Signal: Invalid Token");
                         _tokenIsInvalid = true;
+                        _c.Get<IUnityToReact>().SendInvalidTokenError();
                     }
                     break;
             }
