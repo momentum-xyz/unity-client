@@ -69,6 +69,7 @@ namespace Odyssey
             // Setup NetworkingService from configuration
             _c.Get<INetworkingService>().SetupEventHandling();
             _c.Get<INetworkingService>().SetupFromConfig(_networkConfigData);
+            _c.Get<INetworkingService>().InitNetworkingServices();
 
 #if UNITY_WEBGL && !UNITY_EDITOR
             // Call Momentum Loaded event in Start, because
