@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Runtime.InteropServices;
 
-public interface IUnityToReact
+public interface IReactAPI
 {
     public void SendMomentumLoadedToReact();
     public void SendReadyToTeleportToReact();
@@ -15,12 +15,14 @@ public interface IUnityToReact
     public void SendWaypointReached(int waypointIndex);
 
     public void RelayNotificationSimple(int kind, int flag, string message);
-    public void RelayRelayMessage(string target,  string message);
+    public void RelayRelayMessage(string target, string message);
     public void SendPosBusConnected();
+
+    public void SendInvalidTokenError();
 
 }
 
-public class UnityToReact : IUnityToReact
+public class ReactAPI : IReactAPI
 {
 #if !UNITY_EDITOR && UNITY_WEBGL
     [DllImport("__Internal")]
@@ -67,6 +69,9 @@ public class UnityToReact : IUnityToReact
 
     [DllImport("__Internal")]
     private static extern void PosBusConnected();
+
+    [DllImport("__Internal")]
+    private static extern void InvalidTokenError();
 
 
 #endif
@@ -152,8 +157,8 @@ public class UnityToReact : IUnityToReact
         SimpleNotification(kind, flag, message);
 #endif
     }
-    
-    public void RelayRelayMessage(string target,  string message)
+
+    public void RelayRelayMessage(string target, string message)
     {
         Debug.Log("Relaying: " + target + " / " + message);
 #if !UNITY_EDITOR && UNITY_WEBGL
@@ -166,6 +171,13 @@ public class UnityToReact : IUnityToReact
         Debug.Log("[UnityToReact] PosBusConnected");
 #if !UNITY_EDITOR && UNITY_WEBGL
         PosBusConnected();
+#endif
+    }
+
+    public void SendInvalidTokenError()
+    {
+#if !UNITY_EDITOR && UNITY_WEBGL
+        InvalidTokenError();
 #endif
     }
 }

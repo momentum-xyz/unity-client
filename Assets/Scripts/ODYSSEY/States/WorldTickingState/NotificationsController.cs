@@ -28,12 +28,12 @@ namespace Odyssey
             switch (msg)
             {
                 case PosBusRelayToReactMsg m:
-                    _c.Get<IUnityToReact>().RelayRelayMessage(m.Target, m.Message);
+                    _c.Get<IReactAPI>().RelayRelayMessage(m.Target, m.Message);
                         break;
                 case PosBusSimpleNotificationMsg m:
                     if (m.Destination == Destination.Both || m.Destination == Destination.React)
                     {
-                        _c.Get<IUnityToReact>().RelayNotificationSimple((int)m.Kind, m.Flag, m.Message);
+                        _c.Get<IReactAPI>().RelayNotificationSimple((int)m.Kind, m.Flag, m.Message);
                     }
                     break;
 

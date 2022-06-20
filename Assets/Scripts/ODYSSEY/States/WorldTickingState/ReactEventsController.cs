@@ -9,7 +9,7 @@ namespace Odyssey
 {
     public class ReactEventsController : StateController
     {
-        IReactBridge _reactBridge;
+        IUnityJSAPI _reactBridge;
         public ReactEventsController(IMomentumContext context) : base(context)
         {
         }
@@ -17,7 +17,7 @@ namespace Odyssey
         public override void OnEnter()
         {
             // React Bridge
-            _reactBridge = _c.Get<IReactBridge>();
+            _reactBridge = _c.Get<IUnityJSAPI>();
 
             _reactBridge.PauseUnity_Event += OnUnityClientPaused;
             _reactBridge.ResumeUnity_Event += OnUnityClientResumed;
