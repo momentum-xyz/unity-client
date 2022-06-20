@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Runtime.InteropServices;
 
-public interface IUnityToReact
+public interface IReactAPI
 {
     public void SendMomentumLoadedToReact();
     public void SendReadyToTeleportToReact();
@@ -22,7 +22,7 @@ public interface IUnityToReact
 
 }
 
-public class UnityToReact : IUnityToReact
+public class ReactAPI : IReactAPI
 {
 #if !UNITY_EDITOR && UNITY_WEBGL
     [DllImport("__Internal")]

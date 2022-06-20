@@ -14,12 +14,12 @@ namespace Odyssey
 
         public override void OnEnter()
         {
-            _c.Get<IReactBridge>().LookAtWisp_Event += OnLookAtWisp;
+            _c.Get<IUnityJSAPI>().LookAtWisp_Event += OnLookAtWisp;
         }
 
         public override void OnExit()
         {
-            _c.Get<IReactBridge>().LookAtWisp_Event -= OnLookAtWisp;
+            _c.Get<IUnityJSAPI>().LookAtWisp_Event -= OnLookAtWisp;
         }
 
 

@@ -72,14 +72,14 @@ public class MemoryManager : MonoBehaviour, IRequiresContext, IMemoryManager
 
         LowMemory_Event += OnLowMemory;
 
-        _c.Get<IReactBridge>().PauseUnity_Event += OnUnityClientPaused;
+        _c.Get<IUnityJSAPI>().PauseUnity_Event += OnUnityClientPaused;
     }
 
     private void OnDestroy()
     {
         LowMemory_Event -= OnLowMemory;
 
-        _c.Get<IReactBridge>().PauseUnity_Event -= OnUnityClientPaused;
+        _c.Get<IUnityJSAPI>().PauseUnity_Event -= OnUnityClientPaused;
     }
 
     /// <summary>

@@ -17,14 +17,14 @@ public class TourManager : ITourManager, IRequiresContext
 
     public void Start()
     {
-        var reactBridge = _c.Get<IReactBridge>();
+        var reactBridge = _c.Get<IUnityJSAPI>();
         reactBridge.GoToWaypoint_Event += OnGoToWaypoint;
         reactBridge.CancelGoToWaypoint_Event += OnCancelGoToWaypoint;
     }
 
     public void Stop()
     {
-        var reactBridge = _c.Get<IReactBridge>();
+        var reactBridge = _c.Get<IUnityJSAPI>();
         reactBridge.GoToWaypoint_Event += OnGoToWaypoint;
         reactBridge.CancelGoToWaypoint_Event -= OnCancelGoToWaypoint;
     }
@@ -35,7 +35,7 @@ public class TourManager : ITourManager, IRequiresContext
         _teleportID = teleportSystem.TeleportToPosition(position, onDone: () =>
             {
                 _teleportID = null;
-                _c.Get<IUnityToReact>().SendWaypointReached(waypointIndex);
+                _c.Get<IReactAPI>().SendWaypointReached(waypointIndex);
             });
     }
     private void OnCancelGoToWaypoint()

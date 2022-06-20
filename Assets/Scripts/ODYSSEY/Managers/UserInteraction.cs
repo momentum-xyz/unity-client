@@ -46,7 +46,7 @@ public class UserInteraction : IRequiresContext, IUserInteraction
             {
                 FullWispManager fullWispManager = HS.Clickable.SelectedAvatar.GetComponentInParent<FullWispManager>();
                 if (fullWispManager != null)
-                    _c.Get<IUnityToReact>().SendProfileClickEvent(fullWispManager.userID, _c.Get<ISessionData>().WorldAvatarController.transform.position.ToString());
+                    _c.Get<IReactAPI>().SendProfileClickEvent(fullWispManager.userID, _c.Get<ISessionData>().WorldAvatarController.transform.position.ToString());
 
             }
             else if (HS.Clickable.SelectedIsPlatformElement)
@@ -55,7 +55,7 @@ public class UserInteraction : IRequiresContext, IUserInteraction
 
                 if (HS.Clickable.Selection is IClickable && HS.Clickable.Selection.GetLabel().Length > 0)
                 {
-                    _c.Get<IUnityToReact>().SendClick(guid, ((IClickable)HS.Clickable.Selection).GetLabel());
+                    _c.Get<IReactAPI>().SendClick(guid, ((IClickable)HS.Clickable.Selection).GetLabel());
                 }
                 else
                 {
