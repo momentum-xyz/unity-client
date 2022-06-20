@@ -154,5 +154,8 @@ mergeInto(LibraryManager.library, {
     }, 
    	PosBusConnected: function()	{
     	ReactUnityWebGL.PosBusConnected()
+    },
+    InvalidTokenError: function() {
+        ReactUnityWebGL.InvalidToken();
     }
 });

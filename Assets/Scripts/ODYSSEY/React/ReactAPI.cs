@@ -18,6 +18,8 @@ public interface IReactAPI
     public void RelayRelayMessage(string target, string message);
     public void SendPosBusConnected();
 
+    public void SendInvalidTokenError();
+
 }
 
 public class ReactAPI : IReactAPI
@@ -67,6 +69,9 @@ public class ReactAPI : IReactAPI
 
     [DllImport("__Internal")]
     private static extern void PosBusConnected();
+
+    [DllImport("__Internal")]
+    private static extern void InvalidTokenError();
 
 
 #endif
@@ -166,6 +171,13 @@ public class ReactAPI : IReactAPI
         Debug.Log("[UnityToReact] PosBusConnected");
 #if !UNITY_EDITOR && UNITY_WEBGL
         PosBusConnected();
+#endif
+    }
+
+    public void SendInvalidTokenError()
+    {
+#if !UNITY_EDITOR && UNITY_WEBGL
+        InvalidTokenError();
 #endif
     }
 }

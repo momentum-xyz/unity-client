@@ -82,29 +82,31 @@ namespace Odyssey
             {
                 float distance = (nearby[i].position - cameraPosition).sqrMagnitude;
 
+                // Object LOD 
                 int lod = GetLODLevelForDistance(distance);
-
-                // object lod
                 nearby[i].LOD = lod;
 
+                // Textures LOD
+                // Currently we have only two depths - 0 (distance less than 100) and 1
+
+                int texturesLod = GetTextureLODForDistance(distance);
+
+                // use the highest texture quality, if onlyHighQualitytextures is set to true in the StructureOption behaviour
+                if (nearby[i].onlyHighQualityTextures) texturesLod = 0;
+
                 // textures lod (load different size of textures based on distance)
-                if (nearby[i].texturesLOD != lod) nearby[i].texturesDirty = true;
-
-                if (nearby[i].onlyHighQualityTextures)
+                if (nearby[i].texturesLOD != texturesLod)
                 {
-                    nearby[i].texturesLOD = 0; // use the highest texture quality, if onlyHighQualitytextures is set to true in the StructureOption behaviour
-                }
-                else
-                {
-                    nearby[i].texturesLOD = GetTextureLODForDistance(distance);
+                    nearby[i].texturesDirty = true;
+                    nearby[i].texturesLOD = texturesLod;
                 }
 
+                // Update object's behaviours
                 AlphaStructureDriver structureDriver = nearby[i].GetStructureDriver();
 
                 if (!structureDriver) continue;
 
                 structureDriver.SetLOD(nearby[i].LOD);
-
             }
         }
 

@@ -69,6 +69,7 @@ namespace Odyssey
             // Setup NetworkingService from configuration
             _c.Get<INetworkingService>().SetupEventHandling();
             _c.Get<INetworkingService>().SetupFromConfig(_networkConfigData);
+            _c.Get<INetworkingService>().InitNetworkingServices();
 
             // Call Momentum Loaded event in Start, because
             // at that point in time React has access to the unityInstance
