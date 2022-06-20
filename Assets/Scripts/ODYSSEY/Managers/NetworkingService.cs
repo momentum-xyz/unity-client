@@ -41,6 +41,8 @@ namespace Odyssey
         bool _isConnected = false;
         bool _tokenIsInvalid = false;
 
+        bool _isInit = false;
+
         public void Init(IMomentumContext context)
         {
             _c = context;
@@ -84,6 +86,9 @@ namespace Odyssey
 
         public void InitNetworkingServices()
         {
+
+            if (_isInit) return;
+
             _posBus = _c.Get<IPosBus>();
 
             _posBus.Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
@@ -98,6 +103,7 @@ namespace Odyssey
 
             _afterReconnect = false;
             _doReconnect = false;
+            _isInit = true;
 
         }
         public void Dispose()
@@ -205,18 +211,16 @@ namespace Odyssey
 
         void OnReceivedToken(string token)
         {
-            if (_isConnected)
+
+            SetUserToken(token);
+            _posBus.SetToken(_c.Get<ISessionData>().Token, _c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID);
+
+            if(!_isConnected)
             {
-                // if we are connected, just update the token we are using
-                SetUserToken(token);
-                _posBus.SetToken(_c.Get<ISessionData>().Token, _c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID);
-            }
-            else
-            {
-                SetUserToken(token);
                 InitNetworkingServices();
                 ConnectServices();
             }
+
         }
 
         void OnPosBusMessage(IPosBusMessage msg)
