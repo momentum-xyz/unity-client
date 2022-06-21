@@ -28,10 +28,13 @@ namespace Odyssey
             switch (msg)
             {
                 case PosBusAddStaticObjectsMsg m:
-                    AddStaticObjects(m.objects).Forget();
+                //    AddStaticObjects(m.objects).Forget();
                     break;
                 case PosBusRemoveStaticObjectsMsg m:
                     RemoveStaticObjects(m.objectIds);
+                    break;
+                case PosBusObjectDefinition m:
+                    NewObjectDefinition(m.metadata).Forget();
                     break;
                 case PosBusAddActiveObjectsMsg m:
                     break;
@@ -53,6 +56,16 @@ namespace Odyssey
                 {
                     await _c.Get<ISpawner>().SpawnWorldObject(newWorldObject, false);
                 }
+            }
+        }
+
+        async UniTask NewObjectDefinition(ObjectMetadata metadata)
+        {
+            WorldObject newWorldObject = _c.Get<IWorldDataService>().AddOrUpdateWorldObject(metadata);
+
+            if (newWorldObject != null)
+            {
+                await _c.Get<ISpawner>().SpawnWorldObject(newWorldObject, false);
             }
         }
 
