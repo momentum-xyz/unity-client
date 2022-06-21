@@ -1,21 +1,26 @@
+/*
+This file defines functions that will be available on the managed Unity side via DllImport.
+Most of them function as a bridge between Unity's Emscripten side and the React layer of Momentum via ReactUnityWebGL object.
+*/
+
 mergeInto(LibraryManager.library, {
 	SendReadyForTeleport: function() {
 		ReactUnityWebGL.TeleportReady();
 	},
     ProfileClickEvent: function(userID) {
-        ReactUnityWebGL.ProfileHasBeenClicked(Pointer_stringify(userID));
+        ReactUnityWebGL.ProfileHasBeenClicked(UTF8ToString(userID));
     },
 	SendExterminateUnityRequest: function()	{
 		ReactUnityWebGL.ExterminateUnity()
 	},
     SendClickEvent: function(combinedMessage) {        
-        ReactUnityWebGL.ClickEvent(Pointer_stringify(combinedMessage));
+        ReactUnityWebGL.ClickEvent(UTF8ToString(combinedMessage));
     },
     MomentumLoaded: function() {
         ReactUnityWebGL.MomentumLoaded();
     },
     TeamPlasmaClickEvent: function(trackID) {
-        ReactUnityWebGL.TeamPlasmaClickEvent(Pointer_stringify(trackID));
+        ReactUnityWebGL.TeamPlasmaClickEvent(UTF8ToString(trackID));
     },
     DownloadFile: function(textString, fileNamePtr) {
         var fileName = UTF8ToString(fileNamePtr);
@@ -142,10 +147,10 @@ mergeInto(LibraryManager.library, {
         //TODO: implement
     },
     SimpleNotification: function(kind, flag, message) {
-        ReactUnityWebGL.SimpleNotification(kind, flag, Pointer_stringify(message));
+        ReactUnityWebGL.SimpleNotification(kind, flag, UTF8ToString(message));
     },
     RelayMessage: function(target, message) {
-        ReactUnityWebGL.RelayMessage(Pointer_stringify(target), Pointer_stringify(message));
+        ReactUnityWebGL.RelayMessage(UTF8ToString(target), UTF8ToString(message));
     }, 
    	PosBusConnected: function()	{
     	ReactUnityWebGL.PosBusConnected()

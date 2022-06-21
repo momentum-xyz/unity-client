@@ -80,8 +80,9 @@ namespace Odyssey
 
         public void SetupEventHandling()
         {
-            _c.Get<IReactBridge>().Token_Event -= OnReceivedToken;
-            _c.Get<IReactBridge>().Token_Event += OnReceivedToken;
+            _c.Get<IUnityJSAPI>().Token_Event -= OnReceivedToken;
+            _c.Get<IUnityJSAPI>().Token_Event += OnReceivedToken;
+
         }
 
         public void InitNetworkingServices()
@@ -282,7 +283,7 @@ namespace Odyssey
                     {
                         Logging.Log("[NetworkingServicer] Got PosBus Signal: Invalid Token");
                         _tokenIsInvalid = true;
-                        _c.Get<IUnityToReact>().SendInvalidTokenError();
+                        _c.Get<IReactAPI>().SendInvalidTokenError();
                     }
                     break;
             }

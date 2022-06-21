@@ -14,18 +14,18 @@ public class SoundManager : MonoBehaviour, IRequiresContext
 
     void OnEnable()
     {
-        _c.Get<IReactBridge>().ToggleAllSound_Event += OnToggleAllSound;
-        _c.Get<IReactBridge>().TurnAllSoundOn_Event += OnTurnSoundOn;
-        _c.Get<IReactBridge>().TurnAllSoundOff_Event += OnTurnSoundOff;
-        _c.Get<IReactBridge>().OnSetVolume_Event += OnSetVolume;
+        _c.Get<IUnityJSAPI>().ToggleAllSound_Event += OnToggleAllSound;
+        _c.Get<IUnityJSAPI>().TurnAllSoundOn_Event += OnTurnSoundOn;
+        _c.Get<IUnityJSAPI>().TurnAllSoundOff_Event += OnTurnSoundOff;
+        _c.Get<IUnityJSAPI>().OnSetVolume_Event += OnSetVolume;
     }
 
     public void OnDisable()
     {
-        _c.Get<IReactBridge>().ToggleAllSound_Event -= OnToggleAllSound;
-        _c.Get<IReactBridge>().TurnAllSoundOn_Event -= OnTurnSoundOn;
-        _c.Get<IReactBridge>().TurnAllSoundOff_Event -= OnTurnSoundOff;
-        _c.Get<IReactBridge>().OnSetVolume_Event -= OnSetVolume;
+        _c.Get<IUnityJSAPI>().ToggleAllSound_Event -= OnToggleAllSound;
+        _c.Get<IUnityJSAPI>().TurnAllSoundOn_Event -= OnTurnSoundOn;
+        _c.Get<IUnityJSAPI>().TurnAllSoundOff_Event -= OnTurnSoundOff;
+        _c.Get<IUnityJSAPI>().OnSetVolume_Event -= OnSetVolume;
     }
 
     void OnTurnSoundOff()
@@ -46,10 +46,10 @@ public class SoundManager : MonoBehaviour, IRequiresContext
     {
         Logging.Log("[Sound Manager] - got toggle sound event");
         _c.Get<ISessionData>().MutedSound = !_c.Get<ISessionData>().MutedSound;
-        AudioListener.pause = _c.Get<ISessionData>().MutedSound;        
+        AudioListener.pause = _c.Get<ISessionData>().MutedSound;
     }
 
-    void OnSetVolume( string volumeString )
+    void OnSetVolume(string volumeString)
     {
         float volume = float.Parse(volumeString);
 
