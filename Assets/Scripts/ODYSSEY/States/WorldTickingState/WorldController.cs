@@ -47,7 +47,7 @@ namespace Odyssey
         {
             for (var i = 0; i < newObjects.Length; ++i)
             {
-                WorldObject newWorldObject = _c.Get<IWorldDataService>().AddWorldObject(newObjects[i]);
+                WorldObject newWorldObject = _c.Get<IWorldDataService>().AddOrUpdateWorldObject(newObjects[i]);
 
                 if (newWorldObject != null)
                 {
