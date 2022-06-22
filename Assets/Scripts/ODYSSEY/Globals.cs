@@ -6,5 +6,5 @@ using System;
 
 public static class Globals
 {
-    public static readonly string UNITYCLIENTVERSION = "0.9.6"; // unity client version
+    public static readonly string UNITYCLIENTVERSION = "0.9.7"; // unity client version
 }
