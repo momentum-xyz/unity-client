@@ -276,6 +276,11 @@ namespace Odyssey.Networking
         public StringMetadata[] strings;
     }
 
+    public class PosBusObjectDefinition : IPosBusMessage
+    {
+        public ObjectMetadata metadata;
+    }
+
     public enum PosBusDisconnectError
     {
         WRONG_TOKEN,
@@ -842,6 +847,27 @@ namespace Odyssey.Networking
                         });
                         break;
                     }
+                case API.Msg.ObjectDefinition:
+
+                    var objectDefinition = flatBuffMsg.Msg<API.ObjectDefinition>().Value;
+
+                    var objectMetadata = new ObjectMetadata();
+
+                    objectMetadata.name = objectDefinition.Name;
+                    objectMetadata.assetType = DeserializeID(objectDefinition.AssetType);
+                    objectMetadata.objectId = DeserializeID(objectDefinition.ObjectId);
+                    objectMetadata.parentId = DeserializeID(objectDefinition.ParentId);
+                    objectMetadata.position = new Vector3(objectDefinition.Position.Value.X, objectDefinition.Position.Value.Y, objectDefinition.Position.Value.Z);
+                    objectMetadata.isMinimap = objectDefinition.Minimap;
+                    objectMetadata.infoUIType = DeserializeID(objectDefinition.InfouiType);
+                    objectMetadata.tetheredToParent = objectDefinition.TetheredToParent;
+
+                    EnqueueMessage(new PosBusObjectDefinition()
+                    {
+                        metadata = objectMetadata
+                    });
+
+                    break;
                 default:
                     throw new UnityException("Received unknown flatbuffer message!");
             }

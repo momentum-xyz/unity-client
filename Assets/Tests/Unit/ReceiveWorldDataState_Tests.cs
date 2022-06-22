@@ -66,7 +66,7 @@ namespace UnitTests
                 objects = new ObjectMetadata[] { metadata }
             });
 
-            _worldDataServiceMock.Received().AddWorldObject(metadata);
+            _worldDataServiceMock.Received().AddOrUpdateWorldObject(metadata);
         }
 
 
