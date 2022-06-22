@@ -11,7 +11,7 @@ namespace Odyssey
         public Action<Guid, string, string> StructureTextureUpdated { get; set; }
         public void Init(IMomentumContext context);
         public WorldDefinition CreateWorldDefinitionFromMsg(PosBusSetWorldMsg m);
-        public WorldObject AddWorldObject(ObjectMetadata metaData);
+        public WorldObject AddOrUpdateWorldObject(ObjectMetadata metaData);
         public void UpdatePositionForObject(Guid objectId, Vector3 position);
         public void RemoveWorldObject(Guid guid);
         public void UpdateObjectTexture(WorldObject wo, string textureLabel, string newTextureHash);
@@ -62,15 +62,11 @@ namespace Odyssey
             return worldDefinition;
         }
 
-        public WorldObject AddWorldObject(ObjectMetadata metaData)
+        public WorldObject AddOrUpdateWorldObject(ObjectMetadata metaData)
         {
-            if (_c.Get<IWorldData>().WorldHierarchy.ContainsKey(metaData.objectId))
-            {
-                //Logging.Log("[WorldDataService] Trying to add an object twice: " + metaData.objectId.ToString());
-                return null;
-            }
+            bool doesExists = _c.Get<IWorldData>().WorldHierarchy.ContainsKey(metaData.objectId);
 
-            WorldObject newObject = new WorldObject();
+            WorldObject newObject = doesExists ? _c.Get<IWorldData>().WorldHierarchy[metaData.objectId] : new WorldObject();
 
             newObject.guid = metaData.objectId;
             newObject.position = metaData.position;
@@ -87,10 +83,11 @@ namespace Odyssey
                 text = newObject.name
             };
 
-            //AddDefaultTexturesToObject(newObject);
-
-            _c.Get<IWorldData>().WorldHierarchy.Add(newObject.guid, newObject);
-            _c.Get<ILODSystem>().AddToLODCalculation(newObject);
+            if(!doesExists)
+            {
+                _c.Get<IWorldData>().WorldHierarchy.Add(newObject.guid, newObject);
+                _c.Get<ILODSystem>().AddToLODCalculation(newObject);
+            }
 
             return newObject;
         }

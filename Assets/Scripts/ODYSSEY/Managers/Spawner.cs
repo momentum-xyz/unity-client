@@ -275,10 +275,18 @@ namespace Odyssey
 
             structureDriver.guid = worldObject.guid;
 
-            if (worldObject.parentGuid != null)
+            if (worldObject.parentGuid != null && worldObject.parentGuid != Guid.Empty)
             {
                 var parentWorldObject = _c.Get<IWorldData>().Get(worldObject.parentGuid);
-                structureDriver.parentTransform = parentWorldObject != null ? parentWorldObject.GO.transform : null;
+
+                if(parentWorldObject != null && parentWorldObject.GO != null)
+                {
+                    structureDriver.parentTransform = parentWorldObject != null ? parentWorldObject.GO.transform : null;
+                } else
+                {
+                    Logging.Log("[Spawner] Parent " + worldObject.parentGuid + " not found or not spawned for object: " + worldObject.guid);
+                }
+             
             }
 
             structureDriver.InitBehaviours();
