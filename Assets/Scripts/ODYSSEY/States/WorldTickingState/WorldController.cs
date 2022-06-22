@@ -28,7 +28,7 @@ namespace Odyssey
             switch (msg)
             {
                 case PosBusAddStaticObjectsMsg m:
-                //    AddStaticObjects(m.objects).Forget();
+                    AddStaticObjects(m.objects).Forget();
                     break;
                 case PosBusRemoveStaticObjectsMsg m:
                     RemoveStaticObjects(m.objectIds);
