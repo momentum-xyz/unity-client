@@ -202,6 +202,16 @@ public class PosBusLoggerWindow : EditorWindow
                     idx++;
                 }
 
+            } else if(f.GetValue(o).GetType() == typeof(ObjectMetadata))
+            {
+                ObjectMetadata data = (ObjectMetadata)f.GetValue(o);
+                FieldInfo[] metaFields = typeof(ObjectMetadata).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+                for(var i=0; i < metaFields.Length; ++i)
+                {
+                    s += metaFields[i].Name + " = " +metaFields[i].GetValue(data).ToString()+ "\n";
+                }
+
             }
         }
 

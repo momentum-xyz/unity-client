@@ -47,25 +47,25 @@ namespace Odyssey
         {
             switch (msg)
             {
-                case PosBusAddStaticObjectsMsg m:
+                case PosBusObjectDefinition m:
 
-                    for (var i = 0; i < m.objects.Length; ++i)
+                    ObjectMetadata metaData = m.metadata;
+
+                    _worldDataService.AddOrUpdateWorldObject(metaData);
+
+                    if (metaData.infoUIType != Guid.Empty)
                     {
-                        ObjectMetadata metaData = m.objects[i];
-                        _worldDataService.AddWorldObject(metaData);
-
-                        if (metaData.infoUIType != Guid.Empty)
-                        {
-                            _c.Get<IWorldPrefabHolder>().AddForPreload(metaData.infoUIType);
-                        }
+                        _c.Get<IWorldPrefabHolder>().AddForPreload(metaData.infoUIType);
                     }
 
-                    // Stop processing PosBus message, until we spawn all object
-                    // Because we might receive some attributes,textures,strings updates and the objects are not yet spawned
+                    break;
 
-                    _c.Get<IPosBus>().ProcessMessageQueue = false;
-
-                    _c.Get<IStateMachine>().SwitchState(typeof(SpawnWorldState));
+                case PosBusSignalMsg m:
+                    if(m.signal == PosBusSignalType.Spawn)
+                    {
+                        _c.Get<IPosBus>().ProcessMessageQueue = false;
+                        _c.Get<IStateMachine>().SwitchState(typeof(SpawnWorldState));
+                    }
                     break;
             }
         }
