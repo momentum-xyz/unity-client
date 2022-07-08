@@ -70,7 +70,7 @@ jobs:
       - name: Build Unity Project
         uses: game-ci/unity-builder@v2
         with:
-          unityVersion: 2020.3.34f1
+          unityVersion: 2021.3.3f1
           targetPlatform: WebGL
           buildMethod: Odyssey.CI.OdysseyBuild.Build
           customParameters: -useAddressables true -buildScenes MainScene,Loading -stackTrace true
