@@ -257,12 +257,18 @@ MonoBehaviour:
   - address: WorldCenter
     guid: b2ef3600-9595-2743-ac9d-0a86c1a327a2
     prefabPath: Assets/Prefabs/Legacy/System/WorldObject.prefab
-  - address: InfoUI_Red
-    guid: 9c0aac3e-76ea-43ac-ad2a-a481fd43cc51
-    prefabPath: Assets/Prefabs/UI/PlatforumUIRed.prefab
-  - address: InfoUI_Blue
-    guid: 9c0aac3e-76ea-43ac-ad2a-a481fd43cc52
-    prefabPath: Assets/Prefabs/UI/PlatforumUIBlue.prefab
   - address: WorldEffects
     guid: 6846dba3-38b1-4540-a80d-4ba04af4111e
     prefabPath: Assets/Prefabs/Momentum4/Global/WorldEffects.prefab
+  - address: PinkCube
+    guid: 3ca55340-aae0-46de-b773-0982e6bf66e1
+    prefabPath: Assets/Prefabs/Kusama/Objects/Cubes/PinkCube.prefab
+  - address: BlackCube
+    guid: 4c4d0e00-2989-4473-a663-7fe816973b73
+    prefabPath: Assets/Prefabs/Kusama/Objects/Cubes/BlackCube.prefab
+  - address: WhiteCube
+    guid: 98e612c9-ac11-43f6-8dd0-86f0e69d104e
+    prefabPath: Assets/Prefabs/Kusama/Objects/Cubes/WhiteCube.prefab
+  - address: BlueCube
+    guid: 23dbd898-b20d-4740-994c-dbe8f8a4e4a1
+    prefabPath: Assets/Prefabs/Kusama/Objects/Cubes/BlueCube.prefab
