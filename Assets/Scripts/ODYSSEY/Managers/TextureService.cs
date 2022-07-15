@@ -180,7 +180,9 @@ namespace Odyssey
 
                 if (!alreadyExisting.downloaded)
                 {
+#if UNITY_2020
                     texture.Compress(false);
+#endif
                     texture.name = td.lodHash;
 
                     // After the compression, set the texture to nonReadable

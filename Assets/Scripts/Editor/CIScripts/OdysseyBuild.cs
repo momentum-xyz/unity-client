@@ -65,6 +65,9 @@ namespace Odyssey.CI
 
             PlayerSettings.SetGraphicsAPIs(BuildTarget.WebGL, new UnityEngine.Rendering.GraphicsDeviceType[] { UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3 });
 
+            // Needed in Unity 2021 to handle Generics
+            PlayerSettings.SetAdditionalIl2CppArgs("--generic-virtual-method-iterations=2");
+
             AddressableAssetSettings.CleanPlayerContent();
             AddressableAssetSettings.BuildPlayerContent();
 
