@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Odyssey;
+using System;
 
 public class SoundManager : MonoBehaviour, IRequiresContext
 {
@@ -51,18 +52,25 @@ public class SoundManager : MonoBehaviour, IRequiresContext
 
     void OnSetVolume(string volumeString)
     {
-        float volume = float.Parse(volumeString);
+        try
+        {
+            float volume = float.Parse(volumeString);
 
-        if (volume < 0 || volume > 1)
+            if (volume < 0 || volume > 1)
+            {
+                Logging.Log("[Sound Manager] - got an invalid set volume event, volume = " + volume);
+            }
+            else
+            {
+                Logging.Log("[Sound Manager] - got set volume event, volume = " + volume);
+                _c.Get<ISessionData>().SoundVolume = volumeString;
+                AudioListener.volume = volume;
+                HS.AudioManager.SetGlobalVolume(volume);
+            }
+        } catch(Exception ex)
         {
-            Logging.Log("[Sound Manager] - got an invalid set volume event, volume = " + volume);
-        }
-        else
-        {
-            Logging.Log("[Sound Manager] - got set volume event, volume = " + volume);
-            _c.Get<ISessionData>().SoundVolume = volumeString;
-            AudioListener.volume = volume;
-            HS.AudioManager.SetGlobalVolume(volume);
+            Debug.Log("Could not convert: " + volumeString + " to float.");
+            Debug.Log(ex.Message);
         }
     }
 }
