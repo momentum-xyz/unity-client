@@ -12,9 +12,15 @@ public class AppRunner : MonoBehaviour, IRequiresContext
     ITextureCache textureCache;
     IPosBus posBus;
 
+    void Awake()
+    {
+        Application.targetFrameRate = -1;
+    }
+
     public void Init(IMomentumContext context)
     {
         _c = context;
+
     }
 
     void OnEnable()

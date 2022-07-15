@@ -43,8 +43,6 @@ namespace Odyssey
 
             SceneManager.SetActiveScene(mainScene);
 
-            // keep framerate stable
-            Application.targetFrameRate = 30;
 
             // create a sessionID
             Guid sessionID = Guid.NewGuid();
