@@ -53,31 +53,26 @@ public class SoundManager : MonoBehaviour, IRequiresContext
 
     void OnSetVolume(string volumeString)
     {
-        try
+
+        float volume = 0.0f;
+
+        if (!float.TryParse(volumeString, NumberStyles.Any,CultureInfo.InvariantCulture, out volume))
         {
-            // set the culture info explicitly, because some platforms
-            // throw an exception when float is using "." as a separator
-
-            CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            ci.NumberFormat.CurrencyDecimalSeparator = ".";
-
-            float volume = float.Parse(volumeString, NumberStyles.Any, ci);
-
-            if (volume < 0 || volume > 1)
-            {
-                Logging.Log("[Sound Manager] - got an invalid set volume event, volume = " + volume);
-            }
-            else
-            {
-                Logging.Log("[Sound Manager] - got set volume event, volume = " + volume);
-                _c.Get<ISessionData>().SoundVolume = volumeString;
-                AudioListener.volume = volume;
-                HS.AudioManager.SetGlobalVolume(volume);
-            }
-        } catch(Exception ex)
-        {
-            Debug.Log("Could not convert: " + volumeString + " to float.");
-            Debug.Log(ex.Message);
+            Logging.Log("[Sound Manager] Error parsing volume from: " + volumeString);
+            return;
         }
+
+        if (volume < 0 || volume > 1)
+        {
+            Logging.Log("[Sound Manager] - got an invalid set volume event, volume = " + volume);
+        }
+        else
+        {
+            Logging.Log("[Sound Manager] - got set volume event, volume = " + volume);
+            _c.Get<ISessionData>().SoundVolume = volumeString;
+            AudioListener.volume = volume;
+            HS.AudioManager.SetGlobalVolume(volume);
+        }
+
     }
 }
