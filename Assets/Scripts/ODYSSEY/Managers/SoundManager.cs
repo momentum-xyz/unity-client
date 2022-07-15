@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Odyssey;
 using System;
+using System.Globalization;
 
 public class SoundManager : MonoBehaviour, IRequiresContext
 {
@@ -54,7 +55,11 @@ public class SoundManager : MonoBehaviour, IRequiresContext
     {
         try
         {
-            float volume = float.Parse(volumeString);
+
+            CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            ci.NumberFormat.CurrencyDecimalSeparator = ".";
+
+            float volume = float.Parse(volumeString, NumberStyles.Any, ci);
 
             if (volume < 0 || volume > 1)
             {
