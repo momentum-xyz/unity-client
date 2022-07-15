@@ -170,7 +170,6 @@ namespace Odyssey
         public static void ControlVolume(IntPtr gain)
         {
             string gainStr = Marshal.PtrToStringAuto(gain);
-            Debug.Log("Got Control Volume: " + gainStr);
             _c.Get<IUnityJSAPI>().OnSetVolume_Event?.Invoke(gainStr);
         }
 

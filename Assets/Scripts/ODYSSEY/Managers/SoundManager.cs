@@ -55,6 +55,8 @@ public class SoundManager : MonoBehaviour, IRequiresContext
     {
         try
         {
+            // set the culture info explicitly, because some platforms
+            // throw an exception when float is using "." as a separator
 
             CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
             ci.NumberFormat.CurrencyDecimalSeparator = ".";
