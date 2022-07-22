@@ -20,7 +20,8 @@ mergeInto(LibraryManager.library, {
         ReactUnityWebGL.MomentumLoaded();
     },
     MomentumLoadingProgress: function(progress) {
-        ReactUnityWebGL.MomentumLoadingProgress(progress);
+    // disabled until implemented on React side
+    //    ReactUnityWebGL.MomentumLoadingProgress(progress);
     },
     TeamPlasmaClickEvent: function(trackID) {
         ReactUnityWebGL.TeamPlasmaClickEvent(UTF8ToString(trackID));
