@@ -101,6 +101,7 @@ namespace Odyssey
 
             // Send Events to React and PosBus that the World is spawned and ready
             _c.Get<IReactAPI>().SendReadyToTeleportToReact();
+            _c.Get<IReactAPI>().SendLoadingProgress(100);
             _c.Get<IPosBus>().UnityReady();
 
 

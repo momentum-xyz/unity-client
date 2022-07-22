@@ -47,6 +47,7 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IFollowUserController>(new FollowUserController());
         context.RegisterService<IUserInteraction>(new UserInteraction());
         context.RegisterService<IUnityJSAPI>(new UnityJSAPI());
+        context.RegisterService<ISessionStats>(new SessionStats());
 
         if (networkingConfigData.useMockData)
         {

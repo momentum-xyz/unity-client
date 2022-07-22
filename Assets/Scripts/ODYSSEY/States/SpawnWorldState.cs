@@ -35,11 +35,13 @@ namespace Odyssey
 
         async UniTask SpawnWorld()
         {
-            await _c.Get<ISpawner>().SpawnWholeWorld();
+            await _c.Get<ISpawner>().SpawnWorld();
+            _c.Get<IReactAPI>().SendLoadingProgress(80);
 
             await _c.Get<IWorldPrefabHolder>().PreloadAssets();
+            _c.Get<IReactAPI>().SendLoadingProgress(90);
 
-            SessionStats.FlushSession(_c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID, _c.Get<ISessionData>().WorldID);
+            _c.Get<ISessionStats>().FlushSession(_c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID, _c.Get<ISessionData>().WorldID);
 
             // Restoring PosBus message processing
             _c.Get<IPosBus>().ProcessMessageQueue = true;

@@ -19,6 +19,9 @@ mergeInto(LibraryManager.library, {
     MomentumLoaded: function() {
         ReactUnityWebGL.MomentumLoaded();
     },
+    MomentumLoadingProgress: function(progress) {
+        ReactUnityWebGL.MomentumLoadingProgress(progress);
+    },
     TeamPlasmaClickEvent: function(trackID) {
         ReactUnityWebGL.TeamPlasmaClickEvent(UTF8ToString(trackID));
     },

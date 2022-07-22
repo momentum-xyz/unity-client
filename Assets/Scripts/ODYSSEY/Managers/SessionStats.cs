@@ -7,16 +7,27 @@ using Debug = UnityEngine.Debug;
 using Odyssey;
 using Odyssey.Networking;
 
-public class SessionStats : MonoBehaviour
+
+public interface ISessionStats
 {
-    public static Stopwatch stopWatch;
+    public void AddTime(string label);
+    public void StartSession();
 
-    public static StringBuilder fullStats;
+    public void FlushSession(string userId, string sessionId, string worldId);
+    public void StopDebugAndStart(string label, Stopwatch watch);
+}
 
-    private static bool firstRow = true;
+public class SessionStats : ISessionStats
+{
+    public Stopwatch stopWatch;
 
-    private static StringBuilder tempSB;
-    public static void StartSession()
+    public StringBuilder fullStats;
+
+    private bool firstRow = true;
+
+    private StringBuilder tempSB;
+
+    public void StartSession()
     {
         stopWatch = new Stopwatch();
         tempSB = new StringBuilder();
@@ -24,7 +35,7 @@ public class SessionStats : MonoBehaviour
         fullStats.Append("{\"events\":[");
     }
 
-    public static void AddTime(string label)
+    public void AddTime(string label)
     {
         stopWatch.Stop();
 
@@ -49,7 +60,7 @@ public class SessionStats : MonoBehaviour
         firstRow = false;
     }
 
-    public static void FlushSession(string userId, string sessionId, string worldId)
+    public void FlushSession(string userId, string sessionId, string worldId)
     {
         fullStats.Append("],\"world\":\"");
         fullStats.Append(worldId);
@@ -59,7 +70,7 @@ public class SessionStats : MonoBehaviour
         stopWatch.Stop();
     }
 
-    public static void StopDebugAndStart(string label, Stopwatch watch)
+    public void StopDebugAndStart(string label, Stopwatch watch)
     {
         watch.Stop();
         Debug.Log("[" + label + "] took " + ((float)watch.ElapsedMilliseconds / 1000.0f));

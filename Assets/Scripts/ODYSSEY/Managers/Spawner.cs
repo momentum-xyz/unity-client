@@ -14,7 +14,7 @@ namespace Odyssey
         public void Init(IMomentumContext context);
         public void UnloadWorld();
         public UniTask SpawnWorldObject(WorldObject wo, bool animateAppear = false);
-        public UniTask SpawnWholeWorld();
+        public UniTask SpawnWorld();
         public UniTask SpawnEffect(Guid assetID, Vector3 position);
         public void DestoryWorldObject(WorldObject wo);
 
@@ -116,9 +116,10 @@ namespace Odyssey
         /// Spawn the full World including avatar,skybox,decorations and WorldObjects
         /// </summary>
         /// <returns></returns>
-        public async UniTask SpawnWholeWorld()
+        public async UniTask SpawnWorld()
         {
             await SpawnWorldDecorations(_c.Get<ISessionData>().worldDefinition);
+            _c.Get<IReactAPI>().SendLoadingProgress(40);
             await SpawnWorldObjects();
         }
 
@@ -128,14 +129,33 @@ namespace Odyssey
         /// <returns></returns>
         async UniTask SpawnWorldObjects()
         {
-            Logging.Log("[Spawner] World Objects Count: " + _c.Get<IWorldData>().WorldHierarchy.Count);
+            int numObjects = _c.Get<IWorldData>().WorldHierarchy.Count;
+
+            Logging.Log("[Spawner] World Objects Count: " + numObjects);
+
+            // calculate how much we should move the loading progress for every spawn object
+            float startProgress = 40.0f;
+            float endProgress = 80.0f;
+
+            float progressOffset = (endProgress - startProgress) / (float)numObjects;
+
+            float p = 0.0f;
 
             foreach (var wo in _c.Get<IWorldData>().WorldHierarchy.Values)
             {
                 await SpawnWorldObject(wo, false);
+                p += progressOffset;
+
+                if (p > 2.0f)
+                {
+                    startProgress += p;
+                    _c.Get<IReactAPI>().SendLoadingProgress(Mathf.RoundToInt(Mathf.Clamp(startProgress, 0.0f, endProgress)));
+                    p = 0.0f;
+                }
+
             }
 
-            SessionStats.AddTime("WorldSpawn");
+            _c.Get<ISessionStats>().AddTime("WorldSpawn");
 
         }
 
@@ -279,14 +299,15 @@ namespace Odyssey
             {
                 var parentWorldObject = _c.Get<IWorldData>().Get(worldObject.parentGuid);
 
-                if(parentWorldObject != null && parentWorldObject.GO != null)
+                if (parentWorldObject != null && parentWorldObject.GO != null)
                 {
                     structureDriver.parentTransform = parentWorldObject != null ? parentWorldObject.GO.transform : null;
-                } else
+                }
+                else
                 {
                     Logging.Log("[Spawner] Parent " + worldObject.parentGuid + " not found or not spawned for object: " + worldObject.guid);
                 }
-             
+
             }
 
             structureDriver.InitBehaviours();

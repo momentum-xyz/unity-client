@@ -34,8 +34,8 @@ namespace Odyssey
             if (_networkConfigData.AuthenticationToken == null) return;
 #endif
 
-            SessionStats.StartSession();
-            SessionStats.AddTime("start");
+            _c.Get<ISessionStats>().StartSession();
+            _c.Get<ISessionStats>().AddTime("start");
 
             // Set the main scene as Active, because
             // if not all the instantiated stuff will be added to Loading and then destroyed
@@ -73,6 +73,7 @@ namespace Odyssey
             // at that point in time React has access to the unityInstance
             // if we call it in Awake, unityInstance is not yet available
             _c.Get<IReactAPI>().SendMomentumLoadedToReact();
+            _c.Get<IReactAPI>().SendLoadingProgress(0);
 
             _c.Get<ILoadingScreenManager>().SetLoading(true, true);
 

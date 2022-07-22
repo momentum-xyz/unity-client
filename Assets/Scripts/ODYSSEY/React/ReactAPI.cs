@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 public interface IReactAPI
 {
     public void SendMomentumLoadedToReact();
+    public void SendLoadingProgress(int progress);
     public void SendReadyToTeleportToReact();
     public void ExterminateUnity();
     public string GetGraphicCardFromBrowser();
@@ -27,15 +28,6 @@ public class ReactAPI : IReactAPI
 #if !UNITY_EDITOR && UNITY_WEBGL
     [DllImport("__Internal")]
     private static extern void ProfileClickEvent(string userID);
-
-    [DllImport("__Internal")]
-    private static extern void Screen1ClickEvent(string teamID);
-
-    [DllImport("__Internal")]
-    private static extern void Screen2ClickEvent(string teamID);
-
-    [DllImport("__Internal")]
-    private static extern void Screen3ClickEvent(string teamID);
 
     [DllImport("__Internal")]
     private static extern void TeamPlasmaClickEvent(string teamID);
@@ -72,6 +64,9 @@ public class ReactAPI : IReactAPI
 
     [DllImport("__Internal")]
     private static extern void InvalidTokenError();
+
+    [DllImport("__Internal")]
+    private static extern void MomentumLoadingProgress(int progress);
 
 
 #endif
@@ -178,6 +173,13 @@ public class ReactAPI : IReactAPI
     {
 #if !UNITY_EDITOR && UNITY_WEBGL
         InvalidTokenError();
+#endif
+    }
+
+    public void SendLoadingProgress(int progress)
+    {
+#if !UNITY_EDITOR && UNITY_WEBGL
+        MomentumLoadingProgress(progress);
 #endif
     }
 }

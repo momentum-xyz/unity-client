@@ -33,5 +33,8 @@ ReactUnityWebGL = {
     },
     RelayMessage: function(target, msg) {
         console.log('Got relay msg: '+target+','+msg);
+    },
+    MomentumLoadingProgress: function(progress) {
+        console.log("Loading progress: "+progress);
     }
 }

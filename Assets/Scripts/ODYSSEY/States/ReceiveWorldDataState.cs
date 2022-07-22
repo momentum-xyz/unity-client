@@ -61,7 +61,10 @@ namespace Odyssey
                     break;
 
                 case PosBusSignalMsg m:
-                    if(m.signal == PosBusSignalType.Spawn)
+
+                    _c.Get<IReactAPI>().SendLoadingProgress(10);
+
+                    if (m.signal == PosBusSignalType.Spawn)
                     {
                         _c.Get<IPosBus>().ProcessMessageQueue = false;
                         _c.Get<IStateMachine>().SwitchState(typeof(SpawnWorldState));
