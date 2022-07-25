@@ -47,6 +47,9 @@ public class WorldEventsSimulatorInspector : Editor
 
     private string stageModeGUID = "";
 
+    private string _eraTime = "1000000000";
+    private string _eventTime = "100000000";
+
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -326,10 +329,35 @@ public class WorldEventsSimulatorInspector : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Connection");
 
-        if(GUILayout.Button("Disconnect"))
+        if (GUILayout.Button("Disconnect"))
         {
             worldEventsSimulator.TriggerDisconnectError();
         }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Era Time");
+
+        _eraTime = EditorGUILayout.TextField(_eraTime);
+
+        if (GUILayout.Button("Send"))
+        {
+            worldEventsSimulator.SendEraTime(_eraTime);
+        }
+
+        EditorGUILayout.EndHorizontal();
+
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Event Time");
+
+        _eventTime = EditorGUILayout.TextField(_eventTime);
+
+        if (GUILayout.Button("Send"))
+        {
+            worldEventsSimulator.SendEventTime(_eventTime);
+        }
+
         EditorGUILayout.EndHorizontal();
 
         serializedObject.Update();

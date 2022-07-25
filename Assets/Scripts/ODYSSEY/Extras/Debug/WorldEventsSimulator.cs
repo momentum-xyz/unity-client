@@ -185,5 +185,43 @@ public class WorldEventsSimulator : MonoBehaviour, IRequiresContext
         _c.Get<IPosBus>().OnPosBusDisconnected?.Invoke(PosBusDisconnectError.UNKNOWN);
     }
 
+    public void SendEraTime(string time)
+    {
+        string label = "kusama_clock_era_time";
+        string guid = "17e130be-f284-4643-aa53-5cc65b1d4807";
+
+        var msg = new PosBusSetStringsMsg()
+        {
+            spaceID = Guid.Parse(guid),
+            strings = new StringMetadata[] {
+                new StringMetadata()
+            {
+                label = label,
+                data = time
+            } }
+        };
+
+        _c.Get<IPosBus>().OnPosBusMessage.Invoke(msg);
+    }
+
+    public void SendEventTime(string time)
+    {
+        string label = "timer";
+        string guid = "da7a79c0-79ae-4abf-b9a2-07f3aec66fa5";
+
+        var msg = new PosBusSetStringsMsg()
+        {
+            spaceID = Guid.Parse(guid),
+            strings = new StringMetadata[] {
+                new StringMetadata()
+            {
+                label = label,
+                data = time
+            } }
+        };
+
+        _c.Get<IPosBus>().OnPosBusMessage.Invoke(msg);
+    }
+
 
 }
