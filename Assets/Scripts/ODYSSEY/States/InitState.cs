@@ -67,6 +67,10 @@ namespace Odyssey
             //setup networkingConfig
             SetupFromConfig(_networkConfigData);
 
+            // Initialize PosBus
+            _c.Get<IPosBus>().Domain = _c.Get<ISessionData>().NetworkingConfig.domain;
+            _c.Get<IPosBus>().Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
+
             // Call Momentum Loaded event in Start, because
             // at that point in time React has access to the unityInstance
             // if we call it in Awake, unityInstance is not yet available
@@ -91,10 +95,6 @@ namespace Odyssey
 
                 }
             }
-
-            // Initialize PosBus
-            _c.Get<IPosBus>().Domain = _c.Get<ISessionData>().NetworkingConfig.domain;
-            _c.Get<IPosBus>().Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
 
 #if UNITY_EDITOR
 
