@@ -402,6 +402,9 @@ namespace Odyssey.Networking
         {
             if (!_connected) return;
 
+            // Assume we will be authenticated, if we send wrong credentials for some reason, this flag will be reset to false in the OnDisconnect handler
+            _isAuthenticated = true;
+
             Logging.Log("[PosBus] Sending handshake: " + SessionID + "/" + UserID + " / " + Domain, LogMsgType.NETWORKING);
 
             var userTokeOffset = _builder.CreateString(AuthenticationToken);

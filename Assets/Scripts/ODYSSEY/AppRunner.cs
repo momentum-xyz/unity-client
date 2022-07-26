@@ -163,7 +163,6 @@ public class AppRunner : MonoBehaviour, IRequiresContext
         if (_posBus.IsAuthenticated) return;
 
         // Authenticate to Controller
-        _posBus.IsAuthenticated = true;
         _posBus.SendHandshake(_isFirstConnect ? _c.Get<ISessionData>().NetworkingConfig.domain : "");
         _isFirstConnect = false;
 
