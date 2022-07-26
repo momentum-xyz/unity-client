@@ -56,7 +56,7 @@ public class MomentumContextInit : MonoBehaviour
             networkingConfigData.mockData.Init(context);
         }
         else
-            context.RegisterService<IPosBus>(new PosBus());
+            context.RegisterService<IPosBus>(new PosBus(new HybridWS()));
 
 
         context.RegisterService<IBackendService>(new BackendService());

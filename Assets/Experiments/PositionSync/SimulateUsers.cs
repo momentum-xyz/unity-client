@@ -53,7 +53,7 @@ public class SimulateUsers : MonoBehaviour
     {
         _c = new MomentumContext();
 
-        IPosBus posBus = new PosBus();
+        IPosBus posBus = new PosBus(new HybridWS());
         ISessionData sessionData = new SessionData();
 
         _c.RegisterService<ISessionData>(sessionData);

@@ -10,6 +10,7 @@ namespace Odyssey.Networking
 {
     public interface IPosBus
     {
+        public IWebsocketsHandler WebsocketHandler { get; set; }
         public Action<IPosBusMessage> OnPosBusMessage { get; set; }
         public Action OnPosBusConnected { get; set; }
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
@@ -291,10 +292,13 @@ namespace Odyssey.Networking
 
     public class PosBus : IPosBus
     {
-        private bool _connected = false;
+        public IWebsocketsHandler WebsocketHandler { get; set; }
+
         public bool IsConnected => _connected;
+        private bool _connected = false;
+
         public bool ProcessMessageQueue { get; set; } = true;
-        private WebSocket websocket;
+
         readonly private PosBusAPI.SendPositionMsg MyPosMsg;
         private ConcurrentQueue<IPosBusMessage> _receivedMessages;
 
@@ -307,8 +311,9 @@ namespace Odyssey.Networking
         private string _userUUID;
         private string _userToken;
 
-        public PosBus()
+        public PosBus(IWebsocketsHandler websocketHandler)
         {
+            WebsocketHandler = websocketHandler;
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
             MyPosMsg = new PosBusAPI.SendPositionMsg();
             _builder = new FlatBufferBuilder(1024);
@@ -316,13 +321,14 @@ namespace Odyssey.Networking
 
         public void Init(string url)
         {
-            if (websocket != null && websocket.GetState() == WebSocketState.Open)
+            if (WebsocketHandler.IsInit && WebsocketHandler.GetState() == WebsocketHandlerState.Open)
             {
                 Logging.Log("PosBus] We already have an open websocket, close first, before Init!", LogMsgType.NETWORKING);
                 return;
             }
 
-            websocket = WebSocketFactory.CreateInstance(url);
+            WebsocketHandler.Init(url);
+
             SubscribeToWebSocketEvents();
         }
 
@@ -335,22 +341,22 @@ namespace Odyssey.Networking
 
         public void Connect()
         {
-            if (websocket.GetState() == WebSocketState.Open)
+            if (WebsocketHandler.GetState() == WebsocketHandlerState.Open)
             {
                 Logging.Log("[PosBus] Connection is already open..", LogMsgType.NETWORKING);
                 return;
             }
 
-            websocket.Connect();
+            WebsocketHandler.Connect();
         }
 
         public void Disconnect()
         {
-            if (websocket == null || websocket.GetState() == WebSocketState.Closed || websocket.GetState() == WebSocketState.Closing) return;
+            if (WebsocketHandler == null || WebsocketHandler.GetState() == WebsocketHandlerState.Closed || WebsocketHandler.GetState() == WebsocketHandlerState.Closing) return;
 
             Logging.Log("[PosBus] Disconnecting...", LogMsgType.NETWORKING);
 
-            websocket.Close();
+            WebsocketHandler.Close();
 
             _connected = false;
             ProcessMessageQueue = false;
@@ -362,26 +368,26 @@ namespace Odyssey.Networking
 
         public bool IsDisconnected()
         {
-            return !(this.websocket.GetState() == WebSocketState.Closing);
+            return !(this.WebsocketHandler.GetState() == WebsocketHandlerState.Closing);
         }
 
         public void TriggerTeleport(in Guid target)
         {
             if (!_connected) return;
-            websocket.Send((new PosBusAPI.SwitchWorldMsg(target)).Buffer);
+            WebsocketHandler.Send((new PosBusAPI.SwitchWorldMsg(target)).Buffer);
         }
 
         public void UnityReady()
         {
             if (!_connected) return;
-            websocket.Send((new PosBusAPI.SignalMsg(PosBusAPI.SignalType.SignalReady)).Buffer);
+            WebsocketHandler.Send((new PosBusAPI.SignalMsg(PosBusAPI.SignalType.SignalReady)).Buffer);
         }
 
         public void TriggerInteractionMsg(uint kind, Guid targetID, int flag, string message)
         {
             Debug.Log("Interaction Msg:" + " " + targetID.ToString() + " / " + kind + " / " + flag + " " + message);
             if (!_connected) return;
-            websocket.Send(new PosBusAPI.TriggerInteractionMsg(kind, targetID, flag, message).Buffer);
+            WebsocketHandler.Send(new PosBusAPI.TriggerInteractionMsg(kind, targetID, flag, message).Buffer);
         }
 
         public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "")
@@ -597,7 +603,7 @@ namespace Odyssey.Networking
             if (!_connected) return;
 
             MyPosMsg.SetPostion(pos);
-            websocket.Send(MyPosMsg.Buffer);
+            WebsocketHandler.Send(MyPosMsg.Buffer);
         }
 
 
@@ -605,18 +611,18 @@ namespace Odyssey.Networking
 
         private void SubscribeToWebSocketEvents()
         {
-            websocket.OnOpen += OnOpen;
-            websocket.OnClose += OnClose;
-            websocket.OnError += OnError;
-            websocket.OnMessage += OnMessage;
+            WebsocketHandler.OnOpen += OnOpen;
+            WebsocketHandler.OnClose += OnClose;
+            WebsocketHandler.OnError += OnError;
+            WebsocketHandler.OnMessage += OnMessage;
         }
 
         private void UnsubscribeWebSocketEvents()
         {
-            websocket.OnOpen -= OnOpen;
-            websocket.OnClose -= OnClose;
-            websocket.OnError -= OnError;
-            websocket.OnMessage -= OnMessage;
+            WebsocketHandler.OnOpen -= OnOpen;
+            WebsocketHandler.OnClose -= OnClose;
+            WebsocketHandler.OnError -= OnError;
+            WebsocketHandler.OnMessage -= OnMessage;
         }
 
         private void OnOpen()
@@ -629,14 +635,14 @@ namespace Odyssey.Networking
         }
 
         // this will be call, if we have a non-voluntary disconnect(we did not call websocket.close() by ourself)
-        private void OnClose(WebSocketCloseCode code)
+        private void OnClose(WebsocketHandlerCloseCode code)
         {
             Logging.Log("[PosBus] Websocket OnClose Event with code: " + code.ToString(), LogMsgType.NETWORKING);
             _connected = false;
 
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
 
-            if (code == WebSocketCloseCode.Normal)
+            if (code == WebsocketHandlerCloseCode.Normal)
             {
                 OnPosBusDisconnected?.Invoke(PosBusDisconnectError.NORMAL);
             }
@@ -883,7 +889,7 @@ namespace Odyssey.Networking
             var m = new PosBusAPI.FlatBufferMessage(_builder.DataBuffer);
             _builder.Clear();
 
-            websocket.Send(m.Buffer);
+            WebsocketHandler.Send(m.Buffer);
         }
 
         private Offset<API.ID> SerializeID(string userUUID)

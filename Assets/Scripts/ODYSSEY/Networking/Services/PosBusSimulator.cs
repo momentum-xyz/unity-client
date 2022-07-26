@@ -7,6 +7,7 @@ using System;
 
 public class PosBusSimulator : IPosBus
 {
+    public IWebsocketsHandler WebsocketHandler { get; set; }
     public bool IsConnected => true;
     public bool ProcessMessageQueue { get; set; } = true;
 
