@@ -10,6 +10,10 @@ namespace Odyssey.Networking
 {
     public interface IPosBus
     {
+        public string AuthenticationToken { get; set; }
+        public string UserID { get; set; }
+        public string SessionID { get; set; }
+        public string Domain { get; set; }
         public bool TokenIsNotValid { get; set; }
         public bool HasReconnected { get; set; }
         public IWebsocketsHandler WebsocketHandler { get; set; }
@@ -18,9 +22,9 @@ namespace Odyssey.Networking
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
 
         public void Init(string url);
-        public void SetToken(string userToken, string userUUID, string sessionId);
         public void Connect();
         public void Disconnect();
+        public bool IsAuthenticated { get; set; }
         public bool IsConnected { get; }
         public bool ProcessMessageQueue { get; set; }
         public void ProcessReceivedMessagesFromMainThread();
@@ -29,7 +33,7 @@ namespace Odyssey.Networking
 
         public void TriggerTeleport(in Guid target);
         public void TriggerInteractionMsg(uint kind, Guid targetID, int flag, string message);
-        public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "");
+        public void SendHandshake(string Domain = "");
     }
 
     public interface IPosBusMessage { }
@@ -294,10 +298,17 @@ namespace Odyssey.Networking
 
     public class PosBus : IPosBus
     {
+        public string AuthenticationToken { get; set; }
+        public string UserID { get; set; }
+        public string SessionID { get; set; }
+        public string Domain { get; set; }
         public bool HasReconnected { get; set; } = false;
         public bool TokenIsNotValid { get; set; } = false;
 
         public IWebsocketsHandler WebsocketHandler { get; set; }
+
+        public bool IsAuthenticated { get { return _isAuthenticated; } set { _isAuthenticated = value; } }
+        private bool _isAuthenticated = false;
 
         public bool IsConnected => _connected;
         private bool _connected = false;
@@ -311,10 +322,6 @@ namespace Odyssey.Networking
         public Action<IPosBusMessage> OnPosBusMessage { get; set; }
         public Action OnPosBusConnected { get; set; }
         public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
-
-        private string _sessionId;
-        private string _userUUID;
-        private string _userToken;
 
         public PosBus(IWebsocketsHandler websocketHandler)
         {
@@ -335,15 +342,6 @@ namespace Odyssey.Networking
             WebsocketHandler.Init(url);
 
             SubscribeToWebSocketEvents();
-        }
-
-        public void SetToken(string userToken, string userUUID, string sessionId)
-        {
-            _sessionId = sessionId;
-            _userToken = userToken;
-            _userUUID = userUUID;
-
-            TokenIsNotValid = false;
         }
 
         public void Connect()
@@ -396,22 +394,26 @@ namespace Odyssey.Networking
             WebsocketHandler.Send(new PosBusAPI.TriggerInteractionMsg(kind, targetID, flag, message).Buffer);
         }
 
-        public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "")
+        /// <summary>
+        /// Sends an authentication handshake to Controller, using the set SEssionId, UserId, Token
+        /// </summary>
+        /// <param name="Domain"></param>
+        public void SendHandshake(string Domain = "")
         {
             if (!_connected) return;
 
-            Logging.Log("[PosBus] Sending handshake: " + sessionID + "/" + userUUID + " / " + URL, LogMsgType.NETWORKING);
+            Logging.Log("[PosBus] Sending handshake: " + SessionID + "/" + UserID + " / " + Domain, LogMsgType.NETWORKING);
 
-            var userTokeOffset = _builder.CreateString(userToken);
-            var urlOffset = _builder.CreateString(URL);
+            var userTokeOffset = _builder.CreateString(AuthenticationToken);
+            var urlOffset = _builder.CreateString(Domain);
 
             API.Handshake.StartHandshake(_builder);
             API.Handshake.AddHandshakeVersion(_builder, API.HandshakeVersion.v1);
             API.Handshake.AddProtocolVersion(_builder, API.ProtocolVersion.v1);
             API.Handshake.AddUserToken(_builder, userTokeOffset);
-            var userIdOffset = SerializeID(userUUID);
+            var userIdOffset = SerializeID(UserID);
             API.Handshake.AddUserId(_builder, userIdOffset);
-            var sessionIdOffset = SerializeID(sessionID);
+            var sessionIdOffset = SerializeID(SessionID);
             API.Handshake.AddSessionId(_builder, sessionIdOffset);
             API.Handshake.AddUrl(_builder, urlOffset);
             var handshakeOffset = API.Handshake.EndHandshake(_builder);
@@ -638,6 +640,16 @@ namespace Odyssey.Networking
             Logging.Log("[PosBus] Connected", LogMsgType.NETWORKING);
 
             OnPosBusConnected?.Invoke();
+
+            /*
+            if (!_isAuthenticated)
+            {
+                _isAuthenticated = true;
+                SendHandshake(AuthenticationToken, UserID, SessionID, _isFirstConnection ? Domain : "");
+
+                _isFirstConnection = false;
+            }*/
+
         }
 
         // this will be call, if we have a non-voluntary disconnect(we did not call websocket.close() by ourself)
@@ -646,6 +658,7 @@ namespace Odyssey.Networking
             Logging.Log("[PosBus] Websocket OnClose Event with code: " + code.ToString(), LogMsgType.NETWORKING);
 
             _connected = false;
+            _isAuthenticated = false;
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
 
             if (code == WebsocketHandlerCloseCode.Normal)

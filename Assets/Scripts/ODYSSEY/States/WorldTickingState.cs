@@ -149,7 +149,6 @@ namespace Odyssey
 
                 _c.Get<IReactAPI>().ExterminateUnity();
 
-                _c.Get<ISessionData>().IsUnityTerminatedExternaly = true;
                 _c.Get<IStateMachine>().SwitchState(typeof(ShutdownState));
             }
         }

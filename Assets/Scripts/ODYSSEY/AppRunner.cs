@@ -8,13 +8,13 @@ using Cysharp.Threading.Tasks;
 public class AppRunner : MonoBehaviour, IRequiresContext
 {
     IMomentumContext _c;
-    IStateMachine stateMachine;
-    INetworkingService networkingService;
-    ITextureCache textureCache;
-    IPosBus posBus;
+    IStateMachine _stateMachine;
+    ITextureCache _textureCache;
+    IPosBus _posBus;
 
     private bool _ignorePositionMessages = false;
-
+    private bool _doPosBusReconnect = false;
+    private bool _isFirstConnect = true;  // keeps track is we connected for the first time
     void Awake()
     {
         Application.targetFrameRate = -1;
@@ -28,17 +28,22 @@ public class AppRunner : MonoBehaviour, IRequiresContext
 
     void OnEnable()
     {
-        stateMachine = _c.Get<IStateMachine>();
-        networkingService = _c.Get<INetworkingService>();
-        textureCache = _c.Get<ITextureCache>();
-        posBus = _c.Get<IPosBus>();
+        _stateMachine = _c.Get<IStateMachine>();
+        _textureCache = _c.Get<ITextureCache>();
+        _posBus = _c.Get<IPosBus>();
 
-        posBus.OnPosBusMessage += OnPosBusMessage;
+        _posBus.OnPosBusMessage += OnPosBusMessage;
+        _c.Get<IUnityJSAPI>().Token_Event += OnReceivedToken;
+        _posBus.OnPosBusDisconnected += OnPosBusDisconnected;
+        _posBus.OnPosBusConnected += OnPosBusConnected;
     }
 
     void OnDisable()
     {
-        posBus.OnPosBusMessage -= OnPosBusMessage;
+        _posBus.OnPosBusMessage -= OnPosBusMessage;
+        _c.Get<IUnityJSAPI>().Token_Event -= OnReceivedToken;
+        _posBus.OnPosBusDisconnected -= OnPosBusDisconnected;
+        _posBus.OnPosBusConnected -= OnPosBusConnected;
     }
 
     public void Dispose()
@@ -51,17 +56,36 @@ public class AppRunner : MonoBehaviour, IRequiresContext
     {
         if (_c == null) return;
 
-        if (posBus.IsConnected)
+        if (_posBus.IsConnected)
         {
-            posBus.ProcessReceivedMessagesFromMainThread();
+            _posBus.ProcessReceivedMessagesFromMainThread();
         }
 
+        if (_doPosBusReconnect)
+        {
+            Logging.Log("[AppRunner] Trying to reconnect to Controller..");
+            _doPosBusReconnect = false;
+            if (!_posBus.IsConnected) _posBus.Connect();
+        }
 
-        networkingService.Update();
+        _textureCache.Update();
+        _stateMachine.Update();
 
-        textureCache.Update();
-        stateMachine.Update();
+    }
 
+    void OnReceivedToken(string token)
+    {
+        _c.Get<ISessionData>().ParseToken(token);
+
+        _posBus.UserID = _c.Get<ISessionData>().UserID.ToString();
+        _posBus.SessionID = _c.Get<ISessionData>().SessionID;
+        _posBus.AuthenticationToken = _c.Get<ISessionData>().Token;
+        _posBus.TokenIsNotValid = false;
+
+        if (!_posBus.IsConnected)
+        {
+            _posBus.Connect();
+        }
     }
 
     void OnPosBusMessage(IPosBusMessage msg)
@@ -77,9 +101,9 @@ public class AppRunner : MonoBehaviour, IRequiresContext
                     // If we re-connected to the same world, while the World was ticking
                     // meaning that posbus disconnected for some reason (restart of service, error)
                     // just send the UnityReady event and nothing else
-                    if (posBus.HasReconnected)
+                    if (_posBus.HasReconnected)
                     {
-                        posBus.HasReconnected = false;
+                        _posBus.HasReconnected = false;
                         _ignorePositionMessages = true;
 
                         if (_c.Get<ISessionData>().WorldIsTicking)
@@ -118,18 +142,48 @@ public class AppRunner : MonoBehaviour, IRequiresContext
 
                 _c.Get<ISessionData>().GotSelfPositionMsg = true;
                 _c.Get<ISessionData>().SelfPosition = m.position;
+
                 break;
 
             case PosBusSignalMsg m:
                 if (m.signal == PosBusSignalType.InvalidToken)
                 {
                     Logging.Log("[NetworkingServicer] Got PosBus Signal: Invalid Token");
-                    posBus.TokenIsNotValid = true;
+                    _posBus.TokenIsNotValid = true;
                     _c.Get<IReactAPI>().SendInvalidTokenError();
                 }
                 break;
         }
+
+
     }
 
+    void OnPosBusConnected()
+    {
+        if (_posBus.IsAuthenticated) return;
 
+        // Authenticate to Controller
+        _posBus.IsAuthenticated = true;
+        _posBus.SendHandshake(_isFirstConnect ? _c.Get<ISessionData>().NetworkingConfig.domain : "");
+        _isFirstConnect = false;
+
+    }
+
+    void OnPosBusDisconnected(PosBusDisconnectError errorCode)
+    {
+        if (errorCode == PosBusDisconnectError.UNKNOWN)
+        {
+            // if we still have a valid token, re-connect
+            if (!_posBus.TokenIsNotValid)
+            {
+                // use this flag to trigger a reconnect on the main thread, because the OnDisconnect event, might be received on a different one
+                _doPosBusReconnect = true;
+            }
+            else
+            {
+                Logging.Log("[AppRunner] Controller has an invalid token, waiting for a valid one to re-connect ");
+            }
+
+        }
+    }
 }

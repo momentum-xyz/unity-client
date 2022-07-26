@@ -39,7 +39,6 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IWorldObjectsStateManager>(new WorldObjectsStateManager());
         context.RegisterService<IStructureMover>(new StructureMover(3.0f));
         context.RegisterService<ITextureCache>(new TextureCache());
-        context.RegisterService<INetworkingService>(new NetworkingSerivce());
         context.RegisterService<IWorldDataService>(new WorldDataService());
         context.RegisterService<IStateMachine>(new StateMachine());
         context.RegisterService<ISessionData>(new SessionData());

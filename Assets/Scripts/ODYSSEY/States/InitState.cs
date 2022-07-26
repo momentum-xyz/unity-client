@@ -64,10 +64,8 @@ namespace Odyssey
                 _c.Get<ISessionData>().ControllerSettings = controllerSettingsScriptableObj.Settings;
             }
 
-            // Setup NetworkingService from configuration
-            _c.Get<INetworkingService>().SetupEventHandling();
-            _c.Get<INetworkingService>().SetupFromConfig(_networkConfigData);
-            _c.Get<INetworkingService>().InitNetworkingServices();
+            //setup networkingConfig
+            SetupFromConfig(_networkConfigData);
 
             // Call Momentum Loaded event in Start, because
             // at that point in time React has access to the unityInstance
@@ -94,11 +92,24 @@ namespace Odyssey
                 }
             }
 
+            // Initialize PosBus
+            _c.Get<IPosBus>().Domain = _c.Get<ISessionData>().NetworkingConfig.domain;
+            _c.Get<IPosBus>().Init(_c.Get<ISessionData>().NetworkingConfig.posBusURL);
+
 #if UNITY_EDITOR
-            // Use a test token if you are in the Editor, because we don't have 
-            _c.Get<INetworkingService>().SetUserToken(_c.Get<ISessionData>().NetworkingConfig.AuthenticationToken);
-            _c.Get<INetworkingService>().InitNetworkingServices();
-            _c.Get<INetworkingService>().ConnectServices();
+
+            // Use the Token configuration in NetworkingConfiguration
+            _c.Get<ISessionData>().ParseToken(_c.Get<ISessionData>().NetworkingConfig.AuthenticationToken);
+
+            _c.Get<IPosBus>().UserID = _c.Get<ISessionData>().UserID.ToString();
+            _c.Get<IPosBus>().SessionID = _c.Get<ISessionData>().SessionID;
+            _c.Get<IPosBus>().AuthenticationToken = _c.Get<ISessionData>().Token;
+            _c.Get<IPosBus>().TokenIsNotValid = false;
+
+            // Connect to PosBus
+            _c.Get<IPosBus>().Connect();
+
+
 #endif
 
         }
@@ -112,6 +123,35 @@ namespace Odyssey
         {
 
 
+        }
+
+        public void SetupFromConfig(NetworkingConfigData configData)
+        {
+            // Clone the original configuration and use the clone 
+            // because if we modify something after that
+            // that will modify the original data file, because it is a ScripableObject and it is Serialized
+            NetworkingConfigData networkingConfigCopy = configData.Clone();
+
+#if !UNITY_EDITOR && UNITY_WEBGL
+        string domain = DataHelpers.GetDomainFromURL(Application.absoluteURL);
+        
+        // if we are running on localhost
+        // overwrite the domain with one provided in the configuration
+        if(domain.Contains("localhost") || domain.Contains("127.0.0.1")) {
+            domain = configData.localDomainOverwrite;      
+        }
+
+        if(!networkingConfigCopy.ignoreApplicationURL)
+            networkingConfigCopy.InitFromDomain(domain);
+#endif
+
+            networkingConfigCopy.AuthenticationToken = configData.AuthenticationToken;
+
+            _c.Get<ISessionData>().NetworkingConfig = networkingConfigCopy;
+
+            _c.Get<IBackendService>().APIEndpoint = _c.Get<ISessionData>().NetworkingConfig.apiEndpoint;
+            _c.Get<IRendermanService>().RendermanEndpoint = _c.Get<ISessionData>().NetworkingConfig.rendermanURL;
+            _c.Get<IRendermanService>().DefaultHash = _c.Get<ITextureService>().DefaultTextureHash;
         }
 
     }

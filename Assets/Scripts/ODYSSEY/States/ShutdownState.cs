@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Odyssey.Networking;
 
 namespace Odyssey
 {
@@ -16,7 +17,7 @@ namespace Odyssey
         public void OnEnter()
         {
             Debug.Log("Unity is shutting down!");
-            _c.Get<INetworkingService>().Dispose();
+            _c.Get<IPosBus>().Disconnect();
         }
 
         public void OnExit()
