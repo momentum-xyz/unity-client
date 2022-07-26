@@ -7,6 +7,8 @@ using System;
 
 public class MockPosBus : IPosBus
 {
+    public bool HasReconnected { get; set; } = false;
+    public bool TokenIsNotValid { get; set; } = false;
     public IWebsocketsHandler WebsocketHandler { get; set; }
     public MockData Data { get; set; }
     public Action<IPosBusMessage> OnPosBusMessage { get; set; }

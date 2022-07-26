@@ -36,10 +36,7 @@ namespace Odyssey
         IPosBus _posBus;
         bool _resendHandshakeOnConnect = false;
         bool _doReconnect = false;
-        bool _afterReconnect = false;
-        bool _ignorePositionMessages = false;
         bool _isConnected = false;
-        bool _tokenIsInvalid = false;
 
         bool _isInit = false;
 
@@ -102,7 +99,7 @@ namespace Odyssey
             _posBus.OnPosBusDisconnected += OnPosBusDisconnected;
             _posBus.OnPosBusMessage += OnPosBusMessage;
 
-            _afterReconnect = false;
+            _c.Get<IPosBus>().HasReconnected = false;
             _doReconnect = false;
             _isInit = true;
 
@@ -117,7 +114,7 @@ namespace Odyssey
 #endif
             _posBus.Disconnect();
 
-            _afterReconnect = false;
+            _c.Get<IPosBus>().HasReconnected = false;
             _doReconnect = false;
             _isConnected = false;
         }
@@ -164,7 +161,7 @@ namespace Odyssey
             Logging.Log("Got userID:" + _c.Get<ISessionData>().UserID, LogMsgType.USER);
             Logging.Log("Got name: " + tokenData.name);
 
-            _tokenIsInvalid = false;
+            _c.Get<IPosBus>().TokenIsNotValid = false;
         }
 
 
@@ -188,7 +185,7 @@ namespace Odyssey
         {
             _isConnected = false;
 
-            if (errorCode == PosBusDisconnectError.UNKNOWN && _tokenIsInvalid)
+            if (errorCode == PosBusDisconnectError.UNKNOWN && _c.Get<IPosBus>().TokenIsNotValid)
             {
                 Logging.Log("[NetworkingManager] Our token is invalid, so do not re-connect until we receive a new token.");
                 return;
@@ -213,9 +210,10 @@ namespace Odyssey
         void OnReceivedToken(string token)
         {
             SetUserToken(token);
+
             _posBus.SetToken(_c.Get<ISessionData>().Token, _c.Get<ISessionData>().UserID.ToString(), _c.Get<ISessionData>().SessionID);
 
-            if(!_isConnected)
+            if (!_isConnected)
             {
                 ConnectServices();
             }
@@ -224,69 +222,7 @@ namespace Odyssey
 
         void OnPosBusMessage(IPosBusMessage msg)
         {
-            switch (msg)
-            {
-                case PosBusSetWorldMsg m:
 
-                    // If we are connected to the same world, do nothing
-                    // probably means that PosBus disconnected and then re-connected again
-                    if (_c.Get<ISessionData>().WorldID.Equals(m.worldID.ToString()))
-                    {
-                        // If we re-connected to the same world, while the World was ticking
-                        // meaning that posbus disconnected for some reason (restart of service, error)
-                        // just send the UnityReady event and nothing else
-                        if (_afterReconnect)
-                        {
-                            _afterReconnect = false;
-                            _ignorePositionMessages = true;
-
-                            if (_c.Get<ISessionData>().WorldIsTicking)
-                                _c.Get<IPosBus>().UnityReady();
-                        }
-
-                        Logging.Log("[NetworkingService] Receive SetWorldMsg for the world we are already connected to: " + m.worldID.ToString());
-                        return;
-                    }
-
-                    bool isSwitching = _c.Get<ISessionData>().WorldID.Length == 0 ? false : true;
-
-                    Debug.Log(((isSwitching) ? "Switching" : "Connecting") + " to WorldID: " + m.worldID.ToString());
-
-                    WorldDefinition worldDefinition = _c.Get<IWorldDataService>().CreateWorldDefinitionFromMsg(m);
-
-                    _c.Get<ISessionData>().worldDefinition = worldDefinition;
-                    _c.Get<ISessionData>().WorldID = m.worldID.ToString();
-                    _c.Get<IWorldDataService>().GetWorldList().Forget();
-
-                    _c.Get<IStateMachine>().SwitchState(typeof(ReceiveWorldDataState));
-
-                    break;
-
-                case PosBusSelfPosMsg m:
-
-                    // Do not process User position message, after a reconnect 
-                    if (_ignorePositionMessages)
-                    {
-                        Logging.Log("[NetworkingService] We re-connected from a PosBus Error, so ignoring position message...");
-                        _ignorePositionMessages = false;
-                        return;
-                    }
-
-                    Debug.Log("SelfPosMsg: " + m.position);
-
-                    _c.Get<ISessionData>().GotSelfPositionMsg = true;
-                    _c.Get<ISessionData>().SelfPosition = m.position;
-                    break;
-
-                case PosBusSignalMsg m:
-                    if (m.signal == PosBusSignalType.InvalidToken)
-                    {
-                        Logging.Log("[NetworkingServicer] Got PosBus Signal: Invalid Token");
-                        _tokenIsInvalid = true;
-                        _c.Get<IReactAPI>().SendInvalidTokenError();
-                    }
-                    break;
-            }
         }
 
         /// <summary>
@@ -295,7 +231,7 @@ namespace Odyssey
         void DoReconnect()
         {
             _resendHandshakeOnConnect = true;
-            _afterReconnect = true;
+            _c.Get<IPosBus>().HasReconnected = true;
             _doReconnect = true;
         }
 
@@ -303,12 +239,6 @@ namespace Odyssey
 
         public void Update()
         {
-
-            if (_isConnected)
-            {
-                _posBus.ProcessReceivedMessagesFromMainThread();
-            }
-
             if (_doReconnect)
             {
                 _doReconnect = false;

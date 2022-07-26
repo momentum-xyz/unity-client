@@ -10,6 +10,8 @@ namespace Odyssey.Networking
 {
     public interface IPosBus
     {
+        public bool TokenIsNotValid { get; set; }
+        public bool HasReconnected { get; set; }
         public IWebsocketsHandler WebsocketHandler { get; set; }
         public Action<IPosBusMessage> OnPosBusMessage { get; set; }
         public Action OnPosBusConnected { get; set; }
@@ -292,6 +294,9 @@ namespace Odyssey.Networking
 
     public class PosBus : IPosBus
     {
+        public bool HasReconnected { get; set; } = false;
+        public bool TokenIsNotValid { get; set; } = false;
+
         public IWebsocketsHandler WebsocketHandler { get; set; }
 
         public bool IsConnected => _connected;
@@ -337,6 +342,8 @@ namespace Odyssey.Networking
             _sessionId = sessionId;
             _userToken = userToken;
             _userUUID = userUUID;
+
+            TokenIsNotValid = false;
         }
 
         public void Connect()
@@ -360,7 +367,6 @@ namespace Odyssey.Networking
 
             _connected = false;
             ProcessMessageQueue = false;
-
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
 
             OnPosBusDisconnected?.Invoke(PosBusDisconnectError.NORMAL);
@@ -638,8 +644,8 @@ namespace Odyssey.Networking
         private void OnClose(WebsocketHandlerCloseCode code)
         {
             Logging.Log("[PosBus] Websocket OnClose Event with code: " + code.ToString(), LogMsgType.NETWORKING);
-            _connected = false;
 
+            _connected = false;
             _receivedMessages = new ConcurrentQueue<IPosBusMessage>();
 
             if (code == WebsocketHandlerCloseCode.Normal)
