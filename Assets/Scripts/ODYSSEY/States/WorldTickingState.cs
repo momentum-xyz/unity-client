@@ -37,7 +37,8 @@ namespace Odyssey
                 new NotificationsController(context),
                 new UserPositionController(context),
                 new TextureUpdatesController(context),
-                new ReactEventsController(context)
+                new ReactEventsController(context),
+                new MomentumAPIController(context)
             };
         }
         public void OnEnter()

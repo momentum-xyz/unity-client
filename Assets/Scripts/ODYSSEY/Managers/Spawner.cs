@@ -310,6 +310,17 @@ namespace Odyssey
 
             }
 
+            // Handle MomentumAPI Injection into all IScriptable
+
+            IScriptable[] scriptables = worldObject.GO.GetComponentsInChildren<IScriptable>();
+            if (scriptables.Length > 0) Debug.Log("Injecting API");
+            for (var i = 0; i < scriptables.Length; ++i)
+            {
+                scriptables[i].Owner = worldObject.guid;
+                scriptables[i].API = _c.Get<IMomentumAPI>();
+            }
+
+
             structureDriver.InitBehaviours();
 
             structureDriver.FillTextureSlot("solution", textScreenDefault);
