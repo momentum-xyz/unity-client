@@ -15,7 +15,7 @@ namespace UnitTests
         [SetUp]
         public void Init()
         {
-            _networkingServiceMock = Substitute.For<INetworkingService>();
+
             _sessionDataMock = Substitute.For<ISessionData>();
             _worldDataServiceMock = Substitute.For<IWorldDataService>();
             _stateMachineMock = Substitute.For<IStateMachine>();
@@ -24,7 +24,7 @@ namespace UnitTests
             _worldObjectsStateManagerMock = Substitute.For<IWorldObjectsStateManager>();
 
             var context = new MomentumContext();
-            context.RegisterService(_networkingServiceMock);
+
             context.RegisterService(_sessionDataMock);
             context.RegisterService(_worldDataServiceMock);
             context.RegisterService(_stateMachineMock);
@@ -108,7 +108,7 @@ namespace UnitTests
 
 
         WorldObjectsMetadataController _controller;
-        INetworkingService _networkingServiceMock;
+
         ISessionData _sessionDataMock;
         IWorldDataService _worldDataServiceMock;
         IStateMachine _stateMachineMock;

@@ -7,12 +7,19 @@ using System;
 
 public class MockPosBus : IPosBus
 {
+    public string AuthenticationToken { get; set; }
+    public string UserID { get; set; }
+    public string SessionID { get; set; }
+    public string Domain { get; set; }
+    public bool HasReconnected { get; set; } = false;
+    public bool TokenIsNotValid { get; set; } = false;
     public IWebsocketsHandler WebsocketHandler { get; set; }
     public MockData Data { get; set; }
     public Action<IPosBusMessage> OnPosBusMessage { get; set; }
     public Action OnPosBusConnected { get; set; }
     public Action<PosBusDisconnectError> OnPosBusDisconnected { get; set; }
 
+    public bool IsAuthenticated { get; set; } = true;
     public bool IsConnected => true;
 
     public bool ProcessMessageQueue { get; set; } = true;
@@ -37,7 +44,7 @@ public class MockPosBus : IPosBus
 
     }
 
-    public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "")
+    public void SendHandshake(string URL = "")
     {
         Debug.Log("Got handshake!");
 

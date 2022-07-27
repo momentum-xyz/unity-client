@@ -83,7 +83,7 @@ namespace Odyssey
                 text = newObject.name
             };
 
-            if(!doesExists)
+            if (!doesExists)
             {
                 _c.Get<IWorldData>().WorldHierarchy.Add(newObject.guid, newObject);
                 _c.Get<ILODSystem>().AddToLODCalculation(newObject);
@@ -233,6 +233,8 @@ namespace Odyssey
             var worlds = await _c.Get<IBackendService>().GetWorldsList();
 
             if (worlds == null) return;
+
+            _c.Get<IWorldData>().WorldsList.Clear();
 
             for (int i = 0; i < worlds.data.Length; i++)
             {

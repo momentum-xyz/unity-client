@@ -27,6 +27,8 @@ namespace Odyssey
         public Vector3 SelfPosition { get; set; }
         public ControllerSettings ControllerSettings { get; set; }
         public bool AppPaused { get; set; }
+
+        public void ParseToken(string token);
     }
 
     /// <summary>
@@ -80,6 +82,34 @@ namespace Odyssey
                 if (avatarControllerGo != null)
                     avatarControllerGo.GetComponent<ThirdPersonController>().Settings = value;
             }
+        }
+
+        /// <summary>
+        /// Parse the authentication token received from React and store it in the SessionData
+        /// </summary>
+        /// <param name="token"></param>
+        public void ParseToken(string token)
+        {
+            if (token.Length == 0)
+            {
+                Debug.LogError("Trying to set empty token!");
+                return;
+            }
+
+            UserTokenContent tokenData = DataHelpers.DecodeToken(token);
+
+            if (tokenData == null)
+            {
+                Logging.LogError("[NetworkManager] Provided token is invalid.");
+                return;
+            }
+
+            UserID = Guid.Parse(tokenData.sub);
+            Token = token;
+
+            //Logging.Log("Got token: " + token, LogMsgType.USER);
+            Logging.Log("Got userID:" + UserID, LogMsgType.USER);
+            Logging.Log("Got name: " + tokenData.name);
         }
     }
 

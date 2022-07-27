@@ -7,8 +7,15 @@ using System;
 
 public class PosBusSimulator : IPosBus
 {
+    public string AuthenticationToken { get; set; }
+    public string UserID { get; set; }
+    public string SessionID { get; set; }
+    public string Domain { get; set; }
+    public bool HasReconnected { get; set; } = false;
+    public bool TokenIsNotValid { get; set; } = false;
     public IWebsocketsHandler WebsocketHandler { get; set; }
     public bool IsConnected => true;
+    public bool IsAuthenticated { get; set; } = true;
     public bool ProcessMessageQueue { get; set; } = true;
 
     public Action<IPosBusMessage> OnPosBusMessage { get; set; }
@@ -43,7 +50,7 @@ public class PosBusSimulator : IPosBus
 
     }
 
-    public void SendHandshake(string userToken, string userUUID, string sessionID, string URL = "")
+    public void SendHandshake(string URL = "")
     {
         // OnPosBusMessage?.Invoke(new PosBusAssignWorldMsg()
         // {
