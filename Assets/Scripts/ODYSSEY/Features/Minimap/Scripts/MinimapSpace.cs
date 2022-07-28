@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MinimapSpace : MonoBehaviour
+public class MinimapSpace : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("References")]
     [SerializeField]
@@ -32,13 +32,14 @@ public class MinimapSpace : MonoBehaviour
 
     #region Event Handlers
 
-    public void OnPointerEnter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
         HoverEffect.SetActive(true);
     }
 
-    public void OnPointerExit()
+    public void OnPointerExit(PointerEventData eventData)
     {
+        if (!eventData.fullyExited) return;
         HoverEffect.SetActive(false);
     }
 

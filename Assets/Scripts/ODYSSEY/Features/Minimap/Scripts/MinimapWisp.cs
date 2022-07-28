@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MinimapWisp : MonoBehaviour
+public class MinimapWisp : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("References")]
     [SerializeField]
@@ -32,13 +32,15 @@ public class MinimapWisp : MonoBehaviour
 
     #region Event Handlers
 
-    public void OnPointerEnter()
+    public void OnPointerEnter(PointerEventData eventData)
     {
         HoverEffect.SetActive(true);
     }
 
-    public void OnPointerExit()
+
+    public void OnPointerExit(PointerEventData eventData)
     {
+        if (!eventData.fullyExited) return;
         HoverEffect.SetActive(false);
     }
 
@@ -67,6 +69,7 @@ public class MinimapWisp : MonoBehaviour
             OnSelected?.Invoke(this);
         }
     }
+
 
     #endregion
 
