@@ -9,9 +9,10 @@ namespace Odyssey
 {
     public class WorldEffectsController : StateController
     {
+        private IMomentumAPI _api;
         public WorldEffectsController(IMomentumContext context) : base(context)
         {
-
+            _api = context.Get<IMomentumAPI>();
         }
 
         public override void OnEnter()
@@ -26,20 +27,8 @@ namespace Odyssey
 
         async UniTask TriggerEffect(Guid effectEmitter, WorldObject positionObject, int effectType)
         {
-
             if (!await WaitUnitilObjectIsSpawned(effectEmitter)) return;
-
-            var triggers = _c.Get<IWorldData>().EffectsHandlers;
-
-            if (!triggers.ContainsKey(effectEmitter)) return;
-
-            var triggersList = triggers[effectEmitter];
-
-            for (var i = 0; i < triggersList.Count; ++i)
-            {
-                triggersList[i].TriggerEffect(positionObject.WorldPosition(), effectType);
-                triggersList[i].TriggerEffect(positionObject.GO, effectType);
-            }
+            _api.PublishEffect(effectEmitter, positionObject.WorldPosition(), positionObject.GO, effectType);
 
         }
 
@@ -47,40 +36,13 @@ namespace Odyssey
         async UniTask TriggerEffect(Guid effectEmitter, Vector3 position, int effectType)
         {
             if (!await WaitUnitilObjectIsSpawned(effectEmitter)) return;
-
-            var triggers = _c.Get<IWorldData>().EffectsHandlers;
-
-            if (!triggers.ContainsKey(effectEmitter)) return;
-
-            var triggersList = triggers[effectEmitter];
-
-            for (var i = 0; i < triggersList.Count; ++i)
-            {
-                triggersList[i].TriggerEffect(position, effectType);
-            }
-
+            _api.PublishEffect(effectEmitter, position, null, effectType);
         }
 
         async UniTask TriggerBridgeEffect(Guid effectEmitter, WorldObject source, WorldObject dest, int effectType)
         {
             if (!await WaitUnitilObjectIsSpawned(effectEmitter)) return;
-
-            // find if there are are EffectsHAndlers with this assetID
-            var triggers = _c.Get<IWorldData>().EffectsHandlers;
-
-            if (!triggers.ContainsKey(effectEmitter))
-            {
-                Debug.Log("Could not find Effects emitter with guid: " + effectEmitter.ToString());
-                return;
-            }
-
-            var triggersList = triggers[effectEmitter];
-
-            for (var i = 0; i < triggersList.Count; ++i)
-            {
-                triggersList[i].TriggerBridgeEffect(source.WorldPosition(), dest.WorldPosition(), effectType);
-                triggersList[i].TriggerBridgeEffect(source.GO, dest.GO, effectType);
-            }
+            _api.PublishBridgeEffect(effectEmitter, source.WorldPosition(), dest.WorldPosition(), source.GO, dest.GO, effectType);
 
         }
 
@@ -88,17 +50,7 @@ namespace Odyssey
         {
             if (!await WaitUnitilObjectIsSpawned(effectEmitter)) return;
 
-            // find if there are are EffectsHAndlers with this assetID
-            var triggers = _c.Get<IWorldData>().EffectsHandlers;
-
-            if (!triggers.ContainsKey(effectEmitter)) return;
-
-            var triggersList = triggers[effectEmitter];
-
-            for (var i = 0; i < triggersList.Count; ++i)
-            {
-                triggersList[i].TriggerBridgeEffect(source, dest, effectType);
-            }
+            _api.PublishBridgeEffect(effectEmitter, source, dest, null, null, effectType);
 
         }
 

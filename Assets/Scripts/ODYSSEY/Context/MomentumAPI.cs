@@ -13,12 +13,24 @@ public class MomentumAPI : IMomentumAPI
     private MomentumEvent<PrivacyUpdateHandler> privacySubscribers = new MomentumEvent<PrivacyUpdateHandler>();
     private MomentumEvent<IntDataUpdateHandler> intDataSubscribers = new MomentumEvent<IntDataUpdateHandler>();
     private MomentumEvent<StringDataUpdateHandler> stringDataSubscribers = new MomentumEvent<StringDataUpdateHandler>();
+    private MomentumEvent<TextureUpdateHandler> textureDataSubscribers = new MomentumEvent<TextureUpdateHandler>();
+    private MomentumEvent<EffectHandler> effectSubscribers = new MomentumEvent<EffectHandler>();
+    private MomentumEvent<BridgeEffectHandler> bridgeEffectSubscribers = new MomentumEvent<BridgeEffectHandler>();
 
     private IMomentumContext _c;
+
+    private Texture2D defaultTexture = new Texture2D(0, 0);
+    private Texture2D defaultMemeTexture;
+    private Texture2D defaultPosterTexture;
 
     public MomentumAPI(IMomentumContext context)
     {
         _c = context;
+
+        defaultTexture = Resources.Load<Texture2D>("Textures/textscreen_default");
+        defaultMemeTexture = Resources.Load<Texture2D>("Textures/meme");
+        defaultPosterTexture = Resources.Load<Texture2D>("Textures/poster");
+
     }
 
     // LOD
@@ -150,7 +162,84 @@ public class MomentumAPI : IMomentumAPI
         }
     }
 
+    public void RegisterForTextureUpdates(IScriptable subscriber, TextureUpdateHandler callback)
+    {
+        textureDataSubscribers.Register(subscriber, callback);
 
+        callback("poster", defaultPosterTexture, 1.0f);
+        callback("meme", defaultMemeTexture, 1.0f);
+        callback("video", defaultTexture, 1.0f);
+        callback("description", defaultTexture, 1.0f);
+        callback("solution", defaultTexture, 1.0f);
+        callback("problem", defaultTexture, 1.0f);
+    }
+
+    public void UnregisterForTextureUpdates(IScriptable subscriber)
+    {
+        textureDataSubscribers.Unregister(subscriber);
+    }
+
+    public void PublishTextureUpdate(Guid guid, string label, Texture2D texture, float ratio)
+    {
+        if (!textureDataSubscribers.Subscribers.ContainsKey(guid))
+        {
+            return;
+        }
+
+        var subs = textureDataSubscribers.Subscribers[guid];
+        for (var i = 0; i < subs.Count; ++i)
+        {
+            subs[i].Item2(label, texture, ratio);
+        }
+    }
+
+    public void RegisterForEffectUpdates(IScriptable subscriber, EffectHandler callback)
+    {
+        effectSubscribers.Register(subscriber, callback);
+    }
+
+    public void UnregisterForEffectUpdates(IScriptable subscriber)
+    {
+        effectSubscribers.Unregister(subscriber);
+    }
+
+    public void RegisterForBridgeEffectUpdates(IScriptable subscriber, BridgeEffectHandler callback)
+    {
+        bridgeEffectSubscribers.Register(subscriber, callback);
+    }
+
+    public void UnregisterForBridgeEffectUpdates(IScriptable subscriber)
+    {
+        bridgeEffectSubscribers.Unregister(subscriber);
+    }
+
+    public void PublishEffect(Guid guid, Vector3 position, GameObject go, int effectType)
+    {
+        if (!effectSubscribers.Subscribers.ContainsKey(guid))
+        {
+            return;
+        }
+
+        var subs = effectSubscribers.Subscribers[guid];
+        for (var i = 0; i < subs.Count; ++i)
+        {
+            subs[i].Item2(position, go, effectType);
+        }
+    }
+
+    public void PublishBridgeEffect(Guid guid, Vector3 sourcePosition, Vector3 destinationPosition, GameObject sourceGO, GameObject destinationGO, int effectType)
+    {
+        if (!bridgeEffectSubscribers.Subscribers.ContainsKey(guid))
+        {
+            return;
+        }
+
+        var subs = bridgeEffectSubscribers.Subscribers[guid];
+        for (var i = 0; i < subs.Count; ++i)
+        {
+            subs[i].Item2(sourcePosition, destinationPosition, sourceGO, destinationGO, effectType);
+        }
+    }
 }
 
 public class MomentumEvent<Handler>

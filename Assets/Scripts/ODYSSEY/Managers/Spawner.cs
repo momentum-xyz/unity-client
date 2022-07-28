@@ -86,7 +86,6 @@ namespace Odyssey
                     if (decorationAsset == null) continue;
                     var temp = Instantiate(decorationAsset, currentWorldDefinition.worldDecorations[i].position, new Quaternion(0, 0, 0, 1));
                     temp.transform.parent = _decorationsContainer;
-                    FindAndAddEffectTriggers(currentWorldDefinition.worldDecorations[i].guid, temp, currentWorldDefinition.worldDecorations[i].guid);
                     _c.Get<IWorldData>().WorldDecorations.Add(temp);
                 }
             }
@@ -249,12 +248,12 @@ namespace Odyssey
             // Calculate the initial position
             var spawnPosition = animateAppear ? worldObject.position + new Vector3(0, -200, 0) : worldObject.position;
 
-            var goName = "Guid:" + worldObject.guid + " Name: " + worldObject.name;
+            var goName = worldObject.guid.ToString();
             var worldObjectGO = objectPool.Instantiate(goName);
             worldObjectGO.transform.position = spawnPosition;
             worldObject.GO = worldObjectGO;
 
-            FindAndAddEffectTriggers(worldObject.guid, worldObject.GO, worldObject.assetGuid);
+
 
             // Update spaces/structure related behaviours
             var structureDriver = worldObject.GetStructureDriver();
@@ -264,23 +263,21 @@ namespace Odyssey
                 structureDriver = worldObject.GO.AddComponent<AlphaStructureDriver>();
             }
 
+            // Handle MomentumAPI Injection into all IScriptable
+            IScriptable[] scriptables = worldObject.GO.GetComponentsInChildren<IScriptable>();
+
+            for (var i = 0; i < scriptables.Length; ++i)
+            {
+                scriptables[i].Owner = worldObject.guid;
+                scriptables[i].API = _c.Get<IMomentumAPI>();
+
+                scriptables[i].Init();
+            }
+
             var options = worldObjectGO.GetComponent<StructureOptions>();
 
             if (options != null)
             {
-                if (options.preloadMemeTexture)
-                {
-
-                    TextureData td = null;
-                    worldObject.textures.TryGetValue("meme", out td);
-
-                    if (td != null)
-                    {
-                        _c.Get<ITextureService>().LoadMemeTextureForStructure(td.originalHash, worldObject);
-                    }
-
-                }
-
                 structureDriver.LookAtParent = options.lookAtParent;
 
                 worldObject.onlyHighQualityTextures = options.onlyHighQualityTextures;
@@ -309,25 +306,6 @@ namespace Odyssey
                 }
 
             }
-
-            // Handle MomentumAPI Injection into all IScriptable
-
-            IScriptable[] scriptables = worldObject.GO.GetComponentsInChildren<IScriptable>();
-
-            for (var i = 0; i < scriptables.Length; ++i)
-            {
-                scriptables[i].Owner = worldObject.guid;
-                scriptables[i].API = _c.Get<IMomentumAPI>();
-
-                scriptables[i].Init();
-            }
-
-            structureDriver.FillTextureSlot("solution", textScreenDefault);
-            structureDriver.FillTextureSlot("problem", textScreenDefault);
-            structureDriver.FillTextureSlot("video", textScreenDefault);
-            structureDriver.FillTextureSlot("description", textScreenDefault);
-            structureDriver.FillTextureSlot("meme", memeDefault);
-            structureDriver.FillTextureSlot("poster", posterDefault);
 
             if (options != null && options.randomRotation)
             {
@@ -363,24 +341,6 @@ namespace Odyssey
 
             worldObject.state = WorldObjectState.SPAWNED;
             OnObjectSpawned?.Invoke(worldObject);
-        }
-
-        void FindAndAddEffectTriggers(Guid key, GameObject go, Guid assetID)
-        {
-            IEffectsTrigger[] effectsTriggers = go.GetComponents<IEffectsTrigger>();
-
-            var effectsHandlers = _c.Get<IWorldData>().EffectsHandlers;
-
-            for (var i = 0; i < effectsTriggers.Length; ++i)
-            {
-                if (!effectsHandlers.ContainsKey(key))
-                {
-                    effectsHandlers[key] = new List<IEffectsTrigger>();
-                }
-
-                effectsHandlers[key].Add(effectsTriggers[i]);
-            }
-
         }
 
         /// <summary>

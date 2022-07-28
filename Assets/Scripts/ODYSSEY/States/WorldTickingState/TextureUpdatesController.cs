@@ -60,9 +60,8 @@ namespace Odyssey
                 aspectRatio = (float)texture.width / (float)texture.height;
             }
 
-            AlphaStructureDriver alphaStructureDriver = wo.GetStructureDriver();
+            _c.Get<IMomentumAPI>().PublishTextureUpdate(wo.guid, label, texture.texReference, aspectRatio);
 
-            if (alphaStructureDriver) alphaStructureDriver.FillTextureSlot(label, texture.texReference, aspectRatio);
         }
 
         async UniTask SendPosterEvent(Guid key, string posterHashURL)

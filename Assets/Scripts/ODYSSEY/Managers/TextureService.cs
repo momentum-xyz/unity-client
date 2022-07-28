@@ -74,7 +74,7 @@ namespace Odyssey
 
                 if (ts.state == TextureDataState.DOWNLOADED) _c.Get<ITextureCache>().DecRefCount(ts.lodHash);
 
-                if (alphaStructureDriver) alphaStructureDriver.FillTextureSlot(ts.label, (Texture2D)DefaultEmptyTexture);
+                _c.Get<IMomentumAPI>().PublishTextureUpdate(wo.guid, ts.label, (Texture2D)DefaultEmptyTexture, 1.0f);
 
                 ts.state = TextureDataState.NOTLOADED;
             }

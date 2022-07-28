@@ -21,7 +21,7 @@ namespace UnitTests
             _stateMachineMock = Substitute.For<IStateMachine>();
             _posBusMock = Substitute.For<IPosBus>();
             _worldData = Substitute.For<IWorldData>();
-            _effectsTriggerMock = Substitute.For<IEffectsTrigger>();
+
 
             var context = new MomentumContext();
 
@@ -59,11 +59,8 @@ namespace UnitTests
             _worldData.Get(_sourceGuid).Returns(_sourceObject);
             _worldData.Get(_destinationGuid).Returns(_destinationObject);
 
-            _effectsHandlers = new Dictionary<Guid, List<IEffectsTrigger>>();
-            _effectsHandlers[_emitterGuid] = new List<IEffectsTrigger>();
-            _effectsHandlers[_emitterGuid].Add(_effectsTriggerMock);
 
-            _worldData.EffectsHandlers.Returns(_effectsHandlers);
+
         }
 
 
@@ -82,7 +79,7 @@ namespace UnitTests
             _controller.OnEnter();
             _posBusMock.OnPosBusMessage(posBusMsg);
 
-            _effectsTriggerMock.Received().TriggerEffect(position, (int)effectId);
+
 
         }
 
@@ -96,8 +93,6 @@ namespace UnitTests
             _controller.OnEnter();
             _posBusMock.OnPosBusMessage(posBusMsg);
 
-            _effectsTriggerMock.Received().TriggerEffect(_sourceObject.position, (int)effectId);
-            _effectsTriggerMock.Received().TriggerEffect(_sourceObject.GO, (int)effectId);
         }
 
         [Test]
@@ -113,7 +108,7 @@ namespace UnitTests
             _controller.OnEnter();
             _posBusMock.OnPosBusMessage(posBusMsg);
 
-            _effectsTriggerMock.Received().TriggerBridgeEffect(sourcePosition, destPosition, (int)effectId);
+
 
         }
 
@@ -125,11 +120,8 @@ namespace UnitTests
             _controller.OnEnter();
             _posBusMock.OnPosBusMessage(posBusMsg);
 
-            _effectsTriggerMock.Received().TriggerBridgeEffect(_sourceObject.GO, _destinationObject.GO, (int)effectId);
+
         }
-
-
-
 
         IWorldData _worldData;
 
@@ -139,7 +131,6 @@ namespace UnitTests
         WorldEffectsController _controller;
         WorldObject _emitterObject, _sourceObject, _destinationObject;
         Guid _emitterGuid, _sourceGuid, _destinationGuid;
-        Dictionary<Guid, List<IEffectsTrigger>> _effectsHandlers;
-        IEffectsTrigger _effectsTriggerMock;
+
     }
 }

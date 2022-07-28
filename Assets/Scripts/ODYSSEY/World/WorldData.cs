@@ -11,7 +11,6 @@ namespace Odyssey
     {
 
         public Dictionary<Guid, WorldObject> WorldHierarchy { get; }
-        public Dictionary<Guid, List<IEffectsTrigger>> EffectsHandlers { get; }
         public List<Guid> WorldsList { get; }
         public List<GameObject> WorldDecorations { get; }
         public List<WorldObject> AlwaysUpdateTexturesList { get; set; }
@@ -67,18 +66,6 @@ namespace Odyssey
 
             }
         }
-
-        public Dictionary<Guid, List<IEffectsTrigger>> EffectsHandlers
-        {
-            get
-            {
-                return effectsHandlers;
-            }
-
-            internal set { }
-        }
-
-        public Dictionary<Guid, List<IEffectsTrigger>> effectsHandlers = new Dictionary<Guid, List<IEffectsTrigger>>();
 
         List<Guid> worldsList = new List<Guid>();
         Dictionary<Guid, WorldObject> worldHierarchy = new Dictionary<Guid, WorldObject>();

@@ -343,7 +343,7 @@ namespace Odyssey
             GameObject fullWisp = GetFreeWispFromPool();
             fullWisp.SetActive(true);
             fullWisp.transform.position = wispData.currentPosition;
-            fullWisp.name = wispData.name + " " + userID.ToString();
+            fullWisp.name = userID.ToString();
 
             FullWispManager wispManager = fullWisp.GetComponent<FullWispManager>();
 
