@@ -100,13 +100,6 @@ namespace Odyssey
                     nearby[i].texturesDirty = true;
                     nearby[i].texturesLOD = texturesLod;
                 }
-
-                // Update object's behaviours
-                AlphaStructureDriver structureDriver = nearby[i].GetStructureDriver();
-
-                if (!structureDriver) continue;
-
-                structureDriver.SetLOD(nearby[i].LOD);
             }
         }
 

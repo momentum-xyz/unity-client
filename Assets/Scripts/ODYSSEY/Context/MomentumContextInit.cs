@@ -36,7 +36,6 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IAddressablesProvider>(new AddressablesProvider());
         context.RegisterService<ITextureService>(new TextureService());
         context.RegisterService<IWorldData>(new WorldData());
-        context.RegisterService<IWorldObjectsStateManager>(new WorldObjectsStateManager());
         context.RegisterService<IStructureMover>(new StructureMover(3.0f));
         context.RegisterService<ITextureCache>(new TextureCache());
         context.RegisterService<IWorldDataService>(new WorldDataService());
@@ -47,7 +46,7 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IUserInteraction>(new UserInteraction());
         context.RegisterService<IUnityJSAPI>(new UnityJSAPI());
         context.RegisterService<ISessionStats>(new SessionStats());
-        context.RegisterService<IMomentumAPI>(new MomentumAPI());
+        context.RegisterService<IMomentumAPI>(new MomentumAPI(context));
 
         if (networkingConfigData.useMockData)
         {

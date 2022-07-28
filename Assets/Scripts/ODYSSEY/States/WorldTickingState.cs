@@ -213,7 +213,6 @@ namespace Odyssey
 
                 if (!driver) continue;
 
-                driver.UpdateBehaviours(Time.deltaTime);
                 driver.lastVisit = Time.fixedTime;
             }
 

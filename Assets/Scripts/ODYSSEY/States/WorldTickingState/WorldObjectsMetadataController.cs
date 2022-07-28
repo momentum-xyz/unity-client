@@ -8,7 +8,8 @@ namespace Odyssey
     public class WorldObjectsMetadataController : StateController
     {
         private IWorldDataService _worldDataService;
-        private IWorldObjectsStateManager _worldObjectsStateManager;
+
+        private IMomentumAPI _api;
         public WorldObjectsMetadataController(IMomentumContext context) : base(context)
         {
 
@@ -17,7 +18,8 @@ namespace Odyssey
         public override void OnEnter()
         {
             _worldDataService = _c.Get<IWorldDataService>();
-            _worldObjectsStateManager = _c.Get<IWorldObjectsStateManager>();
+
+            _api = _c.Get<IMomentumAPI>();
 
             _c.Get<IPosBus>().OnPosBusMessage += OnPosBusMessage;
         }
@@ -37,15 +39,14 @@ namespace Odyssey
                     {
                         switch (m.attributes[i].label)
                         {
-                            case "stagemode":
-                                _worldObjectsStateManager.SetState<int>(m.spaceID.ToString(), "stagemode", (int)m.attributes[i].attribute);
-                                break;
                             case "private":
                                 int privacyValue = m.attributes[i].attribute;
                                 _worldDataService.UpdatePermissionsForObject(m.spaceID, privacyValue);
+                                _api.PublishPrivacyUpdate(m.spaceID, privacyValue);
                                 break;
                             default:
-                                _worldObjectsStateManager.SetState<int>(m.spaceID.ToString(), m.attributes[i].label, (int)m.attributes[i].attribute);
+                                _api.PublishIntData(m.spaceID, m.attributes[i].label, (int)m.attributes[i].attribute);
+
                                 break;
                         }
 
@@ -57,16 +58,14 @@ namespace Odyssey
                     break;
                 case PosBusSetStringsMsg m:
                     WorldObject wo = _c.Get<IWorldData>().Get(m.spaceID);
+
                     if (wo == null) return;
+
                     _worldDataService.UpdateObjectStrings(wo, m.strings);
-
-                    AlphaStructureDriver structureDriver = wo.GetStructureDriver();
-
-                    if (structureDriver == null) return;
 
                     for (var i = 0; i < m.strings.Length; ++i)
                     {
-                        structureDriver.FillTextSlot(m.strings[i].label, m.strings[i].data);
+                        _api.PublishStringData(m.spaceID, m.strings[i].label, m.strings[i].data);
                     }
 
                     break;

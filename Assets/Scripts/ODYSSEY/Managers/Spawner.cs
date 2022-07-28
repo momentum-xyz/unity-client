@@ -313,15 +313,14 @@ namespace Odyssey
             // Handle MomentumAPI Injection into all IScriptable
 
             IScriptable[] scriptables = worldObject.GO.GetComponentsInChildren<IScriptable>();
-            if (scriptables.Length > 0) Debug.Log("Injecting API");
+
             for (var i = 0; i < scriptables.Length; ++i)
             {
                 scriptables[i].Owner = worldObject.guid;
                 scriptables[i].API = _c.Get<IMomentumAPI>();
+
+                scriptables[i].Init();
             }
-
-
-            structureDriver.InitBehaviours();
 
             structureDriver.FillTextureSlot("solution", textScreenDefault);
             structureDriver.FillTextureSlot("problem", textScreenDefault);
@@ -329,9 +328,6 @@ namespace Odyssey
             structureDriver.FillTextureSlot("description", textScreenDefault);
             structureDriver.FillTextureSlot("meme", memeDefault);
             structureDriver.FillTextureSlot("poster", posterDefault);
-
-            // Set the LOD to the lowest by default
-            structureDriver.SetLOD(3);
 
             if (options != null && options.randomRotation)
             {

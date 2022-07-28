@@ -21,7 +21,7 @@ namespace UnitTests
             _stateMachineMock = Substitute.For<IStateMachine>();
             _worldDataMock = Substitute.For<IWorldData>();
             _posBusMock = Substitute.For<IPosBus>();
-            _worldObjectsStateManagerMock = Substitute.For<IWorldObjectsStateManager>();
+
 
             var context = new MomentumContext();
 
@@ -30,7 +30,7 @@ namespace UnitTests
             context.RegisterService(_stateMachineMock);
             context.RegisterService(_worldDataMock);
             context.RegisterService(_posBusMock);
-            context.RegisterService(_worldObjectsStateManagerMock);
+
 
             _controller = new WorldObjectsMetadataController(context);
 
@@ -59,6 +59,7 @@ namespace UnitTests
             });
 
             _worldDataServiceMock.Received().UpdatePermissionsForObject(guid, privacy);
+
         }
 
         [Test]
@@ -79,7 +80,7 @@ namespace UnitTests
                 } }
             });
 
-            _worldObjectsStateManagerMock.Received().SetState<int>(guid.ToString(), "stagemode", stagemode);
+            //   _worldObjectsStateManagerMock.Received().SetState<int>(guid.ToString(), "stagemode", stagemode);
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace UnitTests
         IStateMachine _stateMachineMock;
         IWorldData _worldDataMock;
         IPosBus _posBusMock;
-        IWorldObjectsStateManager _worldObjectsStateManagerMock;
+
 
     }
 };

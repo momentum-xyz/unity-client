@@ -247,14 +247,7 @@ namespace Odyssey
             WorldObject wo = _c.Get<IWorldData>().Get(guid);
 
             if (wo == null) return;
-
             wo.privateMode = privacyValue;
-
-            AlphaStructureDriver structureDriver = wo.GetStructureDriver();
-
-            if (structureDriver == null) return;
-
-            structureDriver.SetPrivacy(wo.privateMode > 0, wo.privateMode < 2);
 
         }
 
