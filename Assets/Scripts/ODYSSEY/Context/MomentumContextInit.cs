@@ -47,6 +47,7 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IUnityJSAPI>(new UnityJSAPI());
         context.RegisterService<ISessionStats>(new SessionStats());
         context.RegisterService<IMomentumAPI>(new MomentumAPI(context));
+        context.RegisterService<ISpawner>(new Spawner());
 
         if (networkingConfigData.useMockData)
         {
@@ -66,7 +67,6 @@ public class MomentumContextInit : MonoBehaviour
         context.RegisterService<IWorldPrefabHolder>(GetComponentInChildren<IWorldPrefabHolder>(true));
         context.RegisterService<IWispManager>(GetComponentInChildren<IWispManager>(true));
         context.RegisterService<ITeleportSystem>(GetComponentInChildren<ITeleportSystem>(true));
-        context.RegisterService<ISpawner>(GetComponentInChildren<ISpawner>(true));
         context.RegisterService<IMinimapDriver>(GetComponentInChildren<IMinimapDriver>(true));
         context.RegisterService<IInfoUIDriver>(GetComponentInChildren<IInfoUIDriver>(true));
         context.RegisterService<IResolutionManager>(GetComponentInChildren<IResolutionManager>(true));

@@ -5514,7 +5514,6 @@ GameObject:
   - component: {fileID: 1835432966}
   - component: {fileID: 1835432969}
   - component: {fileID: 1835432971}
-  - component: {fileID: 1835432964}
   - component: {fileID: 1835432960}
   - component: {fileID: 1835432974}
   - component: {fileID: 1835432961}
@@ -5618,23 +5617,6 @@ MonoBehaviour:
   activateInfoUIOnDistanceSq: 1200
   canHoverAtDistance: 1000
   infoUI: {fileID: 1049519676}
---- !u!114 &1835432964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835432958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e53114d0a0016624f9fed4764cbc979d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnFXPrefab: {fileID: 2164170829780855335, guid: 9a1d32a63aa4cd34999d9dd0e9c4199f,
-    type: 3}
-  memeDefault: {fileID: 2800000, guid: c5aa305e069a0a14aa0c6ca713514f00, type: 3}
-  posterDefault: {fileID: 2800000, guid: 8315a1aec0a272e45afaa0958c39e0ad, type: 3}
-  textScreenDefault: {fileID: 2800000, guid: 3253adc27d3a56344af1c9d23d033a75, type: 3}
 --- !u!114 &1835432966
 MonoBehaviour:
   m_ObjectHideFlags: 0

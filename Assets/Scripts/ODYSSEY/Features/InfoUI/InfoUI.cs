@@ -166,7 +166,6 @@ namespace Odyssey
                 {
                     var parentTransform = _hoveredObjects[i].transform.parent;
 
-                    /*
                     IInfoUICapable infoUIHoveredComp = parentTransform.GetComponentInParent<IInfoUICapable>();
 
                     if (infoUIHoveredComp == null) continue;
@@ -178,11 +177,11 @@ namespace Odyssey
                             hoveredWorldObject = (IInfoUIHovarable)WispManager.GetWisps()[infoUIHoveredComp.guid];
                         }
                     }
-                    */
+                    else if (infoUIHoveredComp is AlphaStructureDriver)
+                    {
+                        hoveredWorldObject = (IInfoUIHovarable)WorldData.Get(infoUIHoveredComp.guid);
+                    }
 
-                    //TODO: Add Support for hovering Wisps
-
-                    hoveredWorldObject = (IInfoUIHovarable)WorldData.Get(Guid.Parse(parentTransform.gameObject.name));
 
                     if (hoveredWorldObject != null && hoveredWorldObject.uiAssetGuid != Guid.Empty)
                     {

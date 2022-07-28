@@ -15,7 +15,6 @@ namespace Odyssey
         public void UnloadWorld();
         public UniTask SpawnWorldObject(WorldObject wo, bool animateAppear = false);
         public UniTask SpawnWorld();
-        public UniTask SpawnEffect(Guid assetID, Vector3 position);
         public void DestoryWorldObject(WorldObject wo);
 
         public Action<WorldObject> OnObjectSpawned { get; set; }
@@ -24,15 +23,11 @@ namespace Odyssey
 
     }
 
-    public class Spawner : MonoBehaviour, ISpawner, IRequiresContext
+    public class Spawner : ISpawner, IRequiresContext
     {
         public Action<WorldObject> OnObjectSpawned { get; set; }
         public Action<WorldObject> OnBeforeObjectDestroyed { get; set; }
         public Action<GameObject> OnPlayerAvatarSpawned { get; set; }
-        public GameObject spawnFXPrefab;
-        public Texture2D memeDefault;
-        public Texture2D posterDefault;
-        public Texture2D textScreenDefault;
 
         private Transform _decorationsContainer;
         IMomentumContext _c;
@@ -73,7 +68,7 @@ namespace Odyssey
 
             if (skyboxAsset != null)
             {
-                var skyboxGO = Instantiate(skyboxAsset, Vector3.zero, Quaternion.identity);
+                var skyboxGO = GameObject.Instantiate(skyboxAsset, Vector3.zero, Quaternion.identity);
                 skyboxGO.transform.parent = _decorationsContainer;
                 _c.Get<IWorldData>().WorldDecorations.Add(skyboxGO);
             }
@@ -84,7 +79,7 @@ namespace Odyssey
                 {
                     var decorationAsset = await _c.Get<IWorldPrefabHolder>().GetAssetAsync(currentWorldDefinition.worldDecorations[i].guid.ToString());
                     if (decorationAsset == null) continue;
-                    var temp = Instantiate(decorationAsset, currentWorldDefinition.worldDecorations[i].position, new Quaternion(0, 0, 0, 1));
+                    var temp = GameObject.Instantiate(decorationAsset, currentWorldDefinition.worldDecorations[i].position, new Quaternion(0, 0, 0, 1));
                     temp.transform.parent = _decorationsContainer;
                     _c.Get<IWorldData>().WorldDecorations.Add(temp);
                 }
@@ -92,7 +87,7 @@ namespace Odyssey
 
             if (avatarPrefab != null)
             {
-                var tempAvatarGO = Instantiate(avatarPrefab, null);
+                var tempAvatarGO = GameObject.Instantiate(avatarPrefab, null);
 
                 // Add the third person controller to the Context
                 ThirdPersonController thirdPersonController = tempAvatarGO.GetComponent<ThirdPersonController>();
@@ -174,19 +169,6 @@ namespace Odyssey
         }
 
         /// <summary>
-        /// Loads an effect asset and just instantiate it at position
-        /// </summary>
-        /// <param name="assetID"></param>
-        /// <param name="position"></param>
-        /// <returns></returns>
-        public async UniTask SpawnEffect(Guid assetID, Vector3 position)
-        {
-            GameObject effectPrefab = await _c.Get<IWorldPrefabHolder>().GetAssetAsync(assetID.ToString());
-            if (effectPrefab == null) return;
-            Instantiate(effectPrefab, position, Quaternion.identity);
-        }
-
-        /// <summary>
         /// Destroy just the GameObject representation of a GameObject
         /// </summary>
         /// <param name="wo"></param>
@@ -201,28 +183,6 @@ namespace Odyssey
                 objectPool.Destroy(wo.GO);
             }
             wo.GO = null;
-        }
-
-        /// <summary>
-        /// Shows as simple particle effect at the location of a spawned World Object
-        /// </summary>
-        /// <param name="location"></param>
-        /// <returns></returns>
-        async UniTask ShowSpawnEffectsAfterDelay(Vector3 location)
-        {
-            await UniTask.Delay(3000);
-            // Dont instantiate a particle system which the user won't see
-            if (_c.Get<ISessionData>().WorldAvatarController != null)
-            {
-                var userPosition = _c.Get<ISessionData>().WorldAvatarController.transform.position;
-
-                if ((userPosition - location).sqrMagnitude > 10000.0f)
-                {
-                    return;
-                }
-            }
-
-            Destroy(Instantiate(spawnFXPrefab, location, new Quaternion(0, 0, 0, 1)), 10);
         }
 
         /// <summary>
@@ -323,21 +283,14 @@ namespace Odyssey
                 worldObject.GO.transform.SetParent(parentOfCurrentObject.GO.transform);
             }
 
-            if (animateAppear)
-            {
-                ShowSpawnEffectsAfterDelay(worldObject.position).Forget();
-                worldObjectGO.transform.position = worldObject.position + new Vector3(0, -200, 0);
-                _c.Get<IStructureMover>().MoveStructure(worldObject.GO.transform, worldObject.GO.transform.parent, worldObject.position, structureDriver.LookAtParent).Forget();
-            }
-            else
-            {
-                worldObjectGO.transform.position = worldObject.position;
 
-                if (worldObjectGO.transform.parent != null && structureDriver.LookAtParent)
-                {
-                    worldObjectGO.transform.LookAt(new Vector3(worldObjectGO.transform.parent.position.x, worldObjectGO.transform.position.y, worldObjectGO.transform.parent.position.z));
-                }
+            worldObjectGO.transform.position = worldObject.position;
+
+            if (worldObjectGO.transform.parent != null && structureDriver.LookAtParent)
+            {
+                worldObjectGO.transform.LookAt(new Vector3(worldObjectGO.transform.parent.position.x, worldObjectGO.transform.position.y, worldObjectGO.transform.parent.position.z));
             }
+
 
             worldObject.state = WorldObjectState.SPAWNED;
             OnObjectSpawned?.Invoke(worldObject);
@@ -366,7 +319,7 @@ namespace Odyssey
             // clear decorations
             for (int i = 0; i < _c.Get<IWorldData>().WorldDecorations.Count; i++)
             {
-                Destroy(_c.Get<IWorldData>().WorldDecorations[i]);
+                GameObject.Destroy(_c.Get<IWorldData>().WorldDecorations[i]);
             }
 
             // clear asset pools
