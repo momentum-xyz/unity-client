@@ -54,8 +54,10 @@ public class WorldObject : IInfoUIHovarable
 
     public int texturesLOD = 1; // the last level by default
     public int LOD = 3; // the last level by default
+    public bool lodDirty = false;
     public bool texturesLoaded = false;
     public bool texturesDirty = false;
+    public bool texturesLODDirty = false;
     public bool hasFullMetadata = false;    // a flag that shows if the object has received it's full metadata information
     public bool onlyHighQualityTextures = false;
     public bool alwaysUpdateTextures = false;

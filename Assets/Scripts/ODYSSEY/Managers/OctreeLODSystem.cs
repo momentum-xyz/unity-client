@@ -84,7 +84,13 @@ namespace Odyssey
 
                 // Object LOD 
                 int lod = GetLODLevelForDistance(distance);
-                nearby[i].LOD = lod;
+
+                if (nearby[i].LOD != lod)
+                {
+                    nearby[i].lodDirty = true;
+                    nearby[i].LOD = lod;
+                }
+
 
                 // Textures LOD
                 // Currently we have only two depths - 0 (distance less than 100) and 1
@@ -98,6 +104,7 @@ namespace Odyssey
                 if (nearby[i].texturesLOD != texturesLod)
                 {
                     nearby[i].texturesDirty = true;
+                    nearby[i].texturesLODDirty = true;
                     nearby[i].texturesLOD = texturesLod;
                 }
             }

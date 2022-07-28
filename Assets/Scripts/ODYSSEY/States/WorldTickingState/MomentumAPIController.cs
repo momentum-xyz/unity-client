@@ -30,7 +30,18 @@ public class MomentumAPIController : StateController
 
         for (var i = 0; i < nearBy.Count; ++i)
         {
-            _api.PublishLODUpdate(nearBy[i].guid, nearBy[i].LOD);
+            if (nearBy[i].lodDirty)
+            {
+                _api.PublishLODUpdate(nearBy[i].guid, nearBy[i].LOD);
+                nearBy[i].lodDirty = false;
+            }
+
+            if (nearBy[i].texturesLODDirty)
+            {
+                _api.PublishTextureLODUpdate(nearBy[i].guid, nearBy[i].texturesLOD);
+                nearBy[i].texturesLODDirty = false;
+            }
+
             _api.Update(nearBy[i].guid, Time.deltaTime);
         }
     }

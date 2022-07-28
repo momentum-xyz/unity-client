@@ -16,6 +16,7 @@ public class MomentumAPI : IMomentumAPI
     private MomentumEvent<TextureUpdateHandler> textureDataSubscribers = new MomentumEvent<TextureUpdateHandler>();
     private MomentumEvent<EffectHandler> effectSubscribers = new MomentumEvent<EffectHandler>();
     private MomentumEvent<BridgeEffectHandler> bridgeEffectSubscribers = new MomentumEvent<BridgeEffectHandler>();
+    private MomentumEvent<TextureLodHandler> textureLodSubscribers = new MomentumEvent<TextureLodHandler>();
 
     private IMomentumContext _c;
 
@@ -238,6 +239,36 @@ public class MomentumAPI : IMomentumAPI
         for (var i = 0; i < subs.Count; ++i)
         {
             subs[i].Item2(sourcePosition, destinationPosition, sourceGO, destinationGO, effectType);
+        }
+    }
+
+    public void RegisterForTextureLODUpdates(IScriptable subscriber, TextureLodHandler callback)
+    {
+        textureLodSubscribers.Register(subscriber, callback);
+
+        WorldObject wo = _c.Get<IWorldData>().Get(subscriber.Owner);
+
+        if (wo == null) return;
+
+        callback(wo.texturesLOD);
+    }
+
+    public void UnregisterForTextureLODUpdates(IScriptable subscriber)
+    {
+        textureDataSubscribers.Unregister(subscriber);
+    }
+
+    public void PublishTextureLODUpdate(Guid guid, int lod)
+    {
+        if (!textureLodSubscribers.Subscribers.ContainsKey(guid))
+        {
+            return;
+        }
+
+        var subs = textureLodSubscribers.Subscribers[guid];
+        for (var i = 0; i < subs.Count; ++i)
+        {
+            subs[i].Item2(lod);
         }
     }
 }
