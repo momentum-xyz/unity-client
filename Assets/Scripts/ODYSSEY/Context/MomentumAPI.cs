@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Odyssey;
+using Cysharp.Threading.Tasks;
 
 public class MomentumAPI : IMomentumAPI
 {
@@ -118,6 +119,15 @@ public class MomentumAPI : IMomentumAPI
     public void RegisterForIntDataUpdates(IScriptable subscriber, IntDataUpdateHandler callback)
     {
         intDataSubscribers.Register(subscriber, callback);
+
+        WorldObject wo = _c.Get<IWorldData>().Get(subscriber.Owner);
+
+        if (wo == null) return;
+
+        foreach (var attr in wo.attributes)
+        {
+            callback(attr.Key, attr.Value);
+        }
     }
 
     public void UnregisterForIntDataUpdates(IScriptable subscriber)
@@ -142,6 +152,15 @@ public class MomentumAPI : IMomentumAPI
     public void RegisterForStringDataUpdates(IScriptable subscriber, StringDataUpdateHandler callback)
     {
         stringDataSubscribers.Register(subscriber, callback);
+
+        WorldObject wo = _c.Get<IWorldData>().Get(subscriber.Owner);
+
+        if (wo == null) return;
+
+        foreach (var tl in wo.textlabels)
+        {
+            callback(tl.Key, tl.Value);
+        }
     }
 
     public void UnregisterForStringDataUpdates(IScriptable subscriber)

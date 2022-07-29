@@ -18,3 +18,6 @@ MonoBehaviour:
     GUID: 959b4b32-7891-4e4b-be2d-9f0e27d77a69
     prefab: {fileID: 7937534554988483322, guid: 9459c0c763cb4bd4cae5e4d70deaee89,
       type: 3}
+    textureData:
+    - label: name
+      hash: a6d61b2bffb785299aa1eb26e1b540e9

@@ -10,6 +10,14 @@ public class InjectedAsset
     public string name;
     public string GUID;
     public GameObject prefab;
+    public List<InjectedTextureData> textureData;
+}
+
+[System.Serializable]
+public class InjectedTextureData
+{
+    public string label;
+    public string hash;
 }
 
 [CreateAssetMenu]

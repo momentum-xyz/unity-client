@@ -109,6 +109,13 @@ namespace Odyssey
 
                 _worldDataService.AddOrUpdateWorldObject(objectMetadata);
 
+                WorldObject wo = _c.Get<IWorldData>().Get(objectMetadata.objectId);
+
+                for (var j = 0; j < a.textureData.Count; ++j)
+                {
+                    _worldDataService.UpdateObjectTexture(wo, a.textureData[j].label, a.textureData[j].hash);
+                }
+
 
             }
         }

@@ -297,7 +297,7 @@ namespace Odyssey
 
                 foreach (var label in wo.textlabels)
                 {
-                    newUIEl.UpdateTextLabels(label.Key, label.Value.text);
+                    newUIEl.UpdateTextLabels(label.Key, label.Value);
                 }
 
                 foreach (var texture in newUIEl.Textures)

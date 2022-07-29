@@ -20,12 +20,6 @@ public class TextureData
     public TextureDataState state = TextureDataState.NOTLOADED;
 }
 
-public class TextLabelData
-{
-    public string label;
-    public string text;
-}
-
 public enum WorldObjectState
 {
     ADDED,
@@ -44,7 +38,8 @@ public class WorldObject : IInfoUIHovarable
     public Guid uiAssetGuid { get; set; } = Guid.Empty;        // type of asset to use for the 3D UI (Info UI)
     public Vector3 position;                    // position of this structures
     public Dictionary<string, TextureData> textures = new Dictionary<string, TextureData>();
-    public Dictionary<string, TextLabelData> textlabels = new Dictionary<string, TextLabelData>();
+    public Dictionary<string, string> textlabels = new Dictionary<string, string>();
+    public Dictionary<string, int> attributes = new Dictionary<string, int>();
     public string assetSubtype;                 // used to determine model of structure
     public int privateMode;                    // is this platform shielded? 
     public Guid assetGuid;                      // the GUID of the asset that should be instantiated!

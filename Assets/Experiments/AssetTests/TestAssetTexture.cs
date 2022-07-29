@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class TestAssetTexture : MonoBehaviour, IScriptable
 {
+    public string textureLabel = "";
+
     public Guid Owner { get; set; }
     public IMomentumAPI API { get; set; }
+
+    private int textureLOD = -1;
 
     public void Init()
     {
@@ -25,6 +29,8 @@ public class TestAssetTexture : MonoBehaviour, IScriptable
 
     void OnTextureLOD(int objectLOD, int lod)
     {
-        Debug.Log(objectLOD + "," + lod);
+
+
     }
+
 }

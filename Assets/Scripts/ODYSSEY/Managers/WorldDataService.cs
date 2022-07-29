@@ -16,6 +16,7 @@ namespace Odyssey
         public void RemoveWorldObject(Guid guid);
         public void UpdateObjectTexture(WorldObject wo, string textureLabel, string newTextureHash);
         public void UpdateObjectTextures(Guid guid, TextureMetadata[] textures);
+        public void UpdateObjectAttributes(WorldObject wo, AttributeMetadata[] attributes);
         public UniTask GetWorldList();
         public bool CanAccessObject(Guid guid);
         public void UpdatePermissionsForObject(Guid guid, int privacyValue);
@@ -77,11 +78,7 @@ namespace Odyssey
             newObject.showOnMiniMap = metaData.isMinimap;
             newObject.uiAssetGuid = metaData.infoUIType;
 
-            newObject.textlabels["name"] = new TextLabelData()
-            {
-                label = "name",
-                text = newObject.name
-            };
+            newObject.textlabels["name"] = newObject.name;
 
             if (!doesExists)
             {
@@ -212,18 +209,15 @@ namespace Odyssey
         {
             for (var i = 0; i < strings.Length; ++i)
             {
-                if (wo.textlabels.ContainsKey(strings[i].label))
-                {
-                    wo.textlabels[strings[i].label].text = strings[i].data;
-                }
-                else
-                {
-                    wo.textlabels[strings[i].label] = new TextLabelData()
-                    {
-                        label = strings[i].label,
-                        text = strings[i].data
-                    };
-                }
+                wo.textlabels[strings[i].label] = strings[i].data;
+            }
+        }
+
+        public void UpdateObjectAttributes(WorldObject wo, AttributeMetadata[] attributes)
+        {
+            for (var i = 0; i < attributes.Length; ++i)
+            {
+                wo.attributes[attributes[i].label] = attributes[i].attribute;
             }
         }
 

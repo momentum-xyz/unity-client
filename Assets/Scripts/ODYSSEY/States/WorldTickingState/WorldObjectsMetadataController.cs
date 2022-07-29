@@ -35,40 +35,49 @@ namespace Odyssey
             {
 
                 case PosBusSetAttributesMsg m:
-                    for (var i = 0; i < m.attributes.Length; ++i)
                     {
-                        switch (m.attributes[i].label)
-                        {
-                            case "private":
-                                int privacyValue = m.attributes[i].attribute;
-                                _worldDataService.UpdatePermissionsForObject(m.spaceID, privacyValue);
-                                _api.PublishPrivacyUpdate(m.spaceID, privacyValue);
-                                break;
-                            default:
-                                _api.PublishIntData(m.spaceID, m.attributes[i].label, (int)m.attributes[i].attribute);
+                        WorldObject wo = _c.Get<IWorldData>().Get(m.spaceID);
 
-                                break;
+                        if (wo == null) return;
+
+                        _worldDataService.UpdateObjectAttributes(wo, m.attributes);
+
+                        for (var i = 0; i < m.attributes.Length; ++i)
+                        {
+                            switch (m.attributes[i].label)
+                            {
+                                case "private":
+                                    int privacyValue = m.attributes[i].attribute;
+                                    _worldDataService.UpdatePermissionsForObject(m.spaceID, privacyValue);
+                                    _api.PublishPrivacyUpdate(m.spaceID, privacyValue);
+                                    break;
+                                default:
+                                    _api.PublishIntData(m.spaceID, m.attributes[i].label, (int)m.attributes[i].attribute);
+                                    break;
+                            }
+
                         }
 
+                        break;
                     }
-
-                    break;
                 case PosBusSetTexturesMsg m:
                     _worldDataService.UpdateObjectTextures(m.objectID, m.textures);
                     break;
                 case PosBusSetStringsMsg m:
-                    WorldObject wo = _c.Get<IWorldData>().Get(m.spaceID);
-
-                    if (wo == null) return;
-
-                    _worldDataService.UpdateObjectStrings(wo, m.strings);
-
-                    for (var i = 0; i < m.strings.Length; ++i)
                     {
-                        _api.PublishStringData(m.spaceID, m.strings[i].label, m.strings[i].data);
-                    }
+                        WorldObject wo = _c.Get<IWorldData>().Get(m.spaceID);
 
-                    break;
+                        if (wo == null) return;
+
+                        _worldDataService.UpdateObjectStrings(wo, m.strings);
+
+                        for (var i = 0; i < m.strings.Length; ++i)
+                        {
+                            _api.PublishStringData(m.spaceID, m.strings[i].label, m.strings[i].data);
+                        }
+
+                        break;
+                    }
             }
         }
 
