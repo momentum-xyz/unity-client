@@ -3,6 +3,7 @@ using Odyssey.Networking;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.Profiling;
 
 /// <summary>
@@ -16,6 +17,8 @@ namespace Odyssey
         public Action<WorldObject, string, CachedTexture> TextureDownloaded_Event { get; set; }
         public void UnloadAllTexturesForObject(WorldObject wo, bool skipMeme = false);
         public void LoadMemeTextureForStructure(string hash, WorldObject worldObject);
+
+        public UniTask<Texture2D> DownloadTextureFromURL(string url);
 
         public void UpdateTexturesForObject(WorldObject wo);
         public string DefaultTextureHash { get; }
@@ -34,6 +37,7 @@ namespace Odyssey
 
         IMomentumContext _c;
 
+        private int _downloadsAtTheSameTime = 0;
         public Texture DefaultEmptyTexture
         {
             get
@@ -235,5 +239,39 @@ namespace Odyssey
 
             return size;
         }
+
+        public async UniTask<Texture2D> DownloadTextureFromURL(string url)
+        {
+            // Do not have more then 5 concurent downloads at the same time
+            await UniTask.WaitUntil(() => _downloadsAtTheSameTime <= 5);
+
+            try
+            {
+                _downloadsAtTheSameTime++;
+                using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
+                {
+                    await www.SendWebRequest();
+                    if (www.result == UnityWebRequest.Result.Success)
+                    {
+                        Texture2D texture = DownloadHandlerTexture.GetContent(www);
+                        _downloadsAtTheSameTime--;
+                        return texture;
+                    }
+                    else
+                    {
+                        throw new Exception(www.result.ToString());
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _downloadsAtTheSameTime--;
+                Logging.Log("[TextureService] Could not download texture with url " + url + "," + ex.Message);
+                throw new Exception("[TextureService] Could not download texture with url: " + url + "," + ex.Message);
+            }
+        }
+
+
     }
 }

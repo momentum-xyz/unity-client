@@ -24,7 +24,7 @@ MonoBehaviour:
   mockData: {fileID: 0}
   useMockAddressables: 0
   mockAddressableData: {fileID: 0}
-  injectAssets: 1
+  injectAssets: 0
   assetsToInjectData: {fileID: 11400000, guid: 865c8a60d94694e4b883dcb24b60e6e3, type: 2}
   overwriteWebGLAddressables: 0
   overwriteWebGLAddressablesURL: 

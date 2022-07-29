@@ -290,6 +290,26 @@ public class MomentumAPI : IMomentumAPI
             subs[i].Item2(objectLod, lod);
         }
     }
+
+    public void DownloadTextureFromURL(string url, TextureDownloadedHandler callback)
+    {
+        DownloadTextureFromURLAsync(url, callback).Forget();
+    }
+
+    async UniTask DownloadTextureFromURLAsync(string url, TextureDownloadedHandler callback)
+    {
+        try
+        {
+            Texture2D texture = await _c.Get<ITextureService>().DownloadTextureFromURL(url);
+
+            callback(texture);
+        }
+        catch (Exception ex)
+        {
+
+            callback(null);
+        }
+    }
 }
 
 public class MomentumEvent<Handler>
