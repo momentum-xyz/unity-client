@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90e554d941ba176478b1ede32ac525a1, type: 3}
+  m_Name: Assets To Inject
+  m_EditorClassIdentifier: 
+  assetsToInject:
+  - position: {x: 0, y: 50, z: 0}
+    name: TestAsset
+    GUID: 959b4b32-7891-4e4b-be2d-9f0e27d77a69
+    prefab: {fileID: 7937534554988483322, guid: 9459c0c763cb4bd4cae5e4d70deaee89,
+      type: 3}

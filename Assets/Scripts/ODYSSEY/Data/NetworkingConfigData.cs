@@ -39,6 +39,9 @@ public class NetworkingConfigData : ScriptableObject
     public bool useMockAddressables = false;
     public MockAddressablesData mockAddressableData;
 
+    public bool injectAssets = false;
+    public InjectAssetData assetsToInjectData;
+
     [Header("Additional WebGL Settings")]
     public bool overwriteWebGLAddressables = false;
     public string overwriteWebGLAddressablesURL = "";

@@ -67,9 +67,49 @@ namespace Odyssey
                     if (m.signal == PosBusSignalType.Spawn)
                     {
                         _c.Get<IPosBus>().ProcessMessageQueue = false;
+
+                        if (_c.Get<ISessionData>().NetworkingConfig.injectAssets)
+                        {
+                            InjectAssets();
+                        }
+
                         _c.Get<IStateMachine>().SwitchState(typeof(SpawnWorldState));
                     }
                     break;
+            }
+        }
+
+        private void InjectAssets()
+        {
+            if (_c.Get<ISessionData>().NetworkingConfig.assetsToInjectData == null) return;
+
+            List<InjectedAsset> assets = _c.Get<ISessionData>().NetworkingConfig.assetsToInjectData.assetsToInject;
+
+            for (var i = 0; i < assets.Count; ++i)
+            {
+                var a = assets[i];
+
+                // Add the asset
+                Guid assetTypeGuid = Guid.NewGuid();
+                AddressableAsset addr = new AddressableAsset("", "", "");
+                addr.gameObject = a.prefab;
+                addr.status = AddressableAssetStatus.Loaded;
+
+                _c.Get<IAddressablesProvider>().AddressablesAssets.Add(assetTypeGuid.ToString(), addr);
+
+                ObjectMetadata objectMetadata = new ObjectMetadata();
+
+                objectMetadata.objectId = Guid.Parse(a.GUID);
+                objectMetadata.parentId = Guid.Parse(_c.Get<ISessionData>().WorldID);
+                objectMetadata.position = a.position;
+                objectMetadata.assetType = assetTypeGuid;
+                objectMetadata.infoUIType = Guid.Empty;
+                objectMetadata.isMinimap = false;
+                objectMetadata.name = a.name;
+
+                _worldDataService.AddOrUpdateWorldObject(objectMetadata);
+
+
             }
         }
 

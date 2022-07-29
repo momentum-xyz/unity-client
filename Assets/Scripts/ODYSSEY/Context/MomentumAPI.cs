@@ -250,7 +250,7 @@ public class MomentumAPI : IMomentumAPI
 
         if (wo == null) return;
 
-        callback(wo.texturesLOD);
+        callback(wo.LOD, wo.texturesLOD);
     }
 
     public void UnregisterForTextureLODUpdates(IScriptable subscriber)
@@ -258,7 +258,7 @@ public class MomentumAPI : IMomentumAPI
         textureDataSubscribers.Unregister(subscriber);
     }
 
-    public void PublishTextureLODUpdate(Guid guid, int lod)
+    public void PublishTextureLODUpdate(Guid guid, int objectLod, int lod)
     {
         if (!textureLodSubscribers.Subscribers.ContainsKey(guid))
         {
@@ -268,7 +268,7 @@ public class MomentumAPI : IMomentumAPI
         var subs = textureLodSubscribers.Subscribers[guid];
         for (var i = 0; i < subs.Count; ++i)
         {
-            subs[i].Item2(lod);
+            subs[i].Item2(objectLod, lod);
         }
     }
 }

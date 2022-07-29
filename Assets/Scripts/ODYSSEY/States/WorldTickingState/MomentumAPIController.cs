@@ -33,12 +33,13 @@ public class MomentumAPIController : StateController
             if (nearBy[i].lodDirty)
             {
                 _api.PublishLODUpdate(nearBy[i].guid, nearBy[i].LOD);
+                _api.PublishTextureLODUpdate(nearBy[i].guid, nearBy[i].LOD, nearBy[i].texturesLOD);
                 nearBy[i].lodDirty = false;
             }
 
             if (nearBy[i].texturesLODDirty)
             {
-                _api.PublishTextureLODUpdate(nearBy[i].guid, nearBy[i].texturesLOD);
+                _api.PublishTextureLODUpdate(nearBy[i].guid, nearBy[i].LOD, nearBy[i].texturesLOD);
                 nearBy[i].texturesLODDirty = false;
             }
 
