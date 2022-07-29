@@ -67,7 +67,9 @@ namespace Odyssey
                     if (m.signal == PosBusSignalType.Spawn)
                     {
                         _c.Get<IPosBus>().ProcessMessageQueue = false;
-
+#if UNITY_WEBGL && !UNITY_EDITOR
+                        _c.Get<ISessionData>().NetworkingConfig.injectAssets = false;
+#endif
                         if (_c.Get<ISessionData>().NetworkingConfig.injectAssets)
                         {
                             InjectAssets();
